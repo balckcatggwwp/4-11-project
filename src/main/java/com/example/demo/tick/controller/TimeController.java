@@ -1,6 +1,7 @@
 package com.example.demo.tick.controller;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -40,6 +41,15 @@ public class TimeController {
 		
 		return list;
 	}
+	@PostMapping("timese/{showtimeid}")
+	@ResponseBody
+	public ShowtimeBean getMethodName(@PathVariable Integer showtimeid) {
+		
+		Optional<ShowtimeBean> op =timeService.findtimedate(showtimeid);
+		return op.get();
+	}
+	
+	
 	
 	@GetMapping("hall")
 	@ResponseBody

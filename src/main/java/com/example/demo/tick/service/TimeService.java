@@ -1,6 +1,7 @@
 package com.example.demo.tick.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,5 +17,9 @@ public class TimeService {
 	
 	public List<ShowtimeBean> findtimebydate(String date) {
 		return showtimeRepository.findStarttimeByStartdate(date);
+	}
+	
+	public Optional<ShowtimeBean> findtimedate(Integer id) {
+		return showtimeRepository.findById(id);
 	}
 }
