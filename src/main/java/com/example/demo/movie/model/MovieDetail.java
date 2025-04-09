@@ -3,9 +3,6 @@ package com.example.demo.movie.model;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.MapsId;
-import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
 @Entity
@@ -14,11 +11,6 @@ public class MovieDetail {
 	
 	@Id
 	private Integer id;
-	
-	@OneToOne
-    @MapsId
-    @JoinColumn(name = "id")
-    private MovieList movieList;
 	
 	@Column(name = "rating")
 	private String rating;
@@ -51,14 +43,6 @@ public class MovieDetail {
 
 	public void setId(Integer id) {
 		this.id = id;
-	}
-
-	public MovieList getMovieList() {
-		return movieList;
-	}
-
-	public void setMovieList(MovieList movieList) {
-		this.movieList = movieList;
 	}
 
 	public String getRating() {

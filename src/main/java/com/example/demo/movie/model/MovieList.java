@@ -2,13 +2,11 @@ package com.example.demo.movie.model;
 
 import java.time.LocalDate;
 
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
 @Entity
@@ -34,9 +32,6 @@ public class MovieList {
 	@Column(name = "state")
 	private String state;
 
-	
-	@OneToOne(mappedBy = "movieList", cascade = CascadeType.ALL)
-	private MovieDetail movieDetail;
 	 
 	public MovieList() {
 		
@@ -90,15 +85,5 @@ public class MovieList {
 		this.state = state;
 	}
 
-	public MovieDetail getMovieDetail() {
-		return movieDetail;
-	}
-
-	public void setMovieDetail(MovieDetail movieDetail) {
-		this.movieDetail = movieDetail;
-	}
-
-
-	
 	
 }
