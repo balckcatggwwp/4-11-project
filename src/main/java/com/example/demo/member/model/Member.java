@@ -33,7 +33,7 @@ public class Member {
 	@Column(name = "gender",nullable = false)
 	private String gender;
 	
-	@Column(name = "nationalId",nullable = false,length = 10,unique = true)
+	@Column(name = "nationalId",nullable = false,length = 10)
 	private String nationalId;
 	
 //	認證相關

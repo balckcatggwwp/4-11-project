@@ -8,7 +8,7 @@
     <div layout:fragment="main-content" class="container-fluid emp-dashboard-container">
     <div class="container" style="width:100%;margin:auto">
     <h1>新增會員</h1>
-	<form class="register-form" th:action="@{/member/register}" method="post">
+	<form class="register-form" th:action="@{/member/insertMember}" method="post">
 	<div class="form-group">
 		<label class="t1">會員姓名 (Name):</label>
 		<input type="text" name="name" placeholder="中英文皆可(全名)" required>
@@ -52,5 +52,5 @@
     </div>
     
      <th:block  layout:fragment="scripts">
-	 <script src="/js/register.js"></script>
+	 <script src="/js/insertMember.js"></script>
     </th:block >
