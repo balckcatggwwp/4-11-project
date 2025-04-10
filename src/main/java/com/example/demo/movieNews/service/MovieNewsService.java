@@ -1,11 +1,12 @@
-package com.example.demo.service;
+package com.example.demo.movieNews.service;
 
-import com.example.demo.model.MovieNews;
-import com.example.demo.model.MovieNewsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+
+import com.example.demo.movieNews.model.MovieNews;
+import com.example.demo.movieNews.model.MovieNewsRepository;
 
 import java.util.Date;
 import java.util.List;

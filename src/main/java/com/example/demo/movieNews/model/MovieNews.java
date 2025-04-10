@@ -1,4 +1,4 @@
-package com.example.demo.model;
+package com.example.demo.movieNews.model;
 
 import jakarta.persistence.*;
 import java.util.Date;
