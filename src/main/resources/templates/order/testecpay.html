@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org/">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Document</title>
+  <style>
+    .ud {
+      pointer-events: none;
+
+    }
+  </style>
+</head>
+
+<body>
+  <input type="text" name="orderid" value="" class="orderid ud" />
+  <input name="userid" placeholder="會員" class="form-control ud" type="text" th:value="${order.userid}">
+  <!-- ajax求 -->
+  <input type="text" id="datepicker" class="form-control ud" placeholder="日期" value="">
+  <input type="text" id="timeq" class="form-control ud" placeholder="場次" value="">
+  <input type="text" name="showtimeid" id="time" class="form-control ud" placeholder="場次" th:value="${order.showtimeid}"
+    hidden>
+  <input type="text" name="hallid" id="halls" class="form-control ud" placeholder="廳" th:value="${order.hallid}">
+
+  <select name="tickettypeid" class="form-control selectpicker ud" id="type" placeholder="票種"></select>
+
+  <select type="text" name="movieid" class="form-control selectpicker ud" id="moviename" placeholder="電影"></select>
+
+  <!-- <input name="onemoney" placeholder="單價" class="form-control ud" type="text" id="money"> -->
+
+
+
+
+
+  <form action="https://payment-stage.ecpay.com.tw/Cashier/AioCheckOut/V5" method="post">
+    <!-- 特店id固定 -->
+    <input type="hidden" name="MerchantID" value="2000132" />
+    <!-- orderid -->
+    <input type="hidden" name="MerchantTradeNo" value="" class="orderid" />
+    <!-- daratime -->
+    <input type="hidden" name="MerchantTradeDate" value="" id="daratime" />
+    <!-- 固定aio -->
+    <input type="hidden" name="PaymentType" value="aio" />
+    <!-- 金額 -->
+    <input type="hidden" name="TotalAmount" value="500" id="total" />
+    <!-- 交易描述 -->
+    <input type="hidden" name="TradeDesc" value="交易描述" id="trade" />
+    <!-- 商品名稱 -->
+    <input type="hidden" name="ItemName" value="商品名稱" id="item" />
+
+    <input type="hidden" name="EncryptType" value="1" />
+
+    <input type="hidden" name="ReturnURL" value="http://localhost:8080/pay" />
+    <input type="hidden" name="ClientBackURL" value="http://localhost:8080" />
+    <input type="hidden" name="OrderResultURL" value="http://localhost:8080/pay" />
+
+    <input type="hidden" name="ChoosePayment" value="ALL" />
+    <!-- 廠商自訂參數我要6個 -->
+    <input type="hidden" name="CustomField1" th:value="${order.userid} + '+' + ${order.showtimeid}" id="CustomField1" />
+    <input type="hidden" name="CustomField2" th:value="${seat}" id="CustomField2" />
+
+    <!-- 偷懶hall+name-->
+    <input type="hidden" name="CustomField3" th:value="${order.hallid}" id="CustomField3" />
+    "/>
+    <input type="hidden" name="CustomField4" th:value="${order.tickettypeid}" id="CustomField4" />
+
+
+
+
+    <button type="submit">確認</button>
+  </form>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
+  <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+  <!-- 幫我生成檢查碼[CheckMacValue]SHA256加密 -->
+  <script>
+    function generateCheckMacValue(params, hashKey, hashIV) {
+      let sortedParams = Object.keys(params)
+        .sort()
+        .reduce((obj, key) => {
+          obj[key] = params[key];
+          return obj;
+        }, {});
+
+      let encodedParams = Object.keys(sortedParams)
+        .map((key) => `${key}=${sortedParams[key]}`)
+        .join("&");
+      let preHash = `HashKey=${hashKey}&${encodedParams}&HashIV=${hashIV}`;
+      let encodedPreHash = encodeURIComponent(preHash)
+        .toLowerCase()
+        .replace(/%20/g, "+")
+        .replace(/%2d/g, "-")
+        .replace(/%5f/g, "_")
+        .replace(/%2e/g, ".")
+        .replace(/%21/g, "!")
+        .replace(/%2a/g, "*")
+        .replace(/%28/g, "(")
+        .replace(/%29/g, ")");
+      let sha256Hash = CryptoJS.SHA256(encodedPreHash)
+        .toString()
+        .toUpperCase();
+      return sha256Hash;
+    }
+    console.log();
+
+    function generateOrderIdWithRandom() {
+      const now = new Date();
+      const year = now.getFullYear();
+      const month = String(now.getMonth() + 1).padStart(2, "0");
+      const day = String(now.getDate()).padStart(2, "0");
+      const hour = String(now.getHours()).padStart(2, "0");
+      const minute = String(now.getMinutes()).padStart(2, "0");
+      const second = String(now.getSeconds()).padStart(2, "0");
+      const millisecond = String(now.getMilliseconds()).padStart(3, "0");
+      const random = Math.floor(Math.random() * 1000); // 產生 0-999 的隨機數
+
+      return `${year}${month}${day}${hour}${minute}${second}${millisecond}${String(
+        random
+      ).padStart(3, "0")}`;
+    }
+    function getCurrentDateTimeFormatted() {
+      const now = new Date();
+      const year = now.getFullYear();
+      const month = String(now.getMonth() + 1).padStart(2, "0"); // 月份從 0 開始，需要 +1 並補零
+      const day = String(now.getDate()).padStart(2, "0");
+      const hour = String(now.getHours()).padStart(2, "0");
+      const minute = String(now.getMinutes()).padStart(2, "0");
+      const second = String(now.getSeconds()).padStart(2, "0");
+
+      return `${year}/${month}/${day} ${hour}:${minute}:${second}`;
+    }
+
+    const currentDateTime = getCurrentDateTimeFormatted();
+
+    $("#daratime").val(currentDateTime);
+
+    const orderId = generateOrderIdWithRandom();
+    console.log(orderId); // 輸出類似：20250409091200456789
+    $(".orderid").val(orderId);
+
+    let params = {
+      MerchantID: "2000132",
+      MerchantTradeNo: orderId,
+      MerchantTradeDate: $("#daratime").val(),
+      PaymentType: "aio",
+      TotalAmount: $("#total").val(),
+      TradeDesc: $("#trade").val(),
+      ItemName: $("#item").val(),
+      ReturnURL: "http://localhost:8080/pay",
+      ClientBackURL: "http://localhost:8080",
+      OrderResultURL: "http://localhost:8080/pay",
+      ChoosePayment: "ALL",
+      EncryptType: "1",
+      CustomField1: $("#CustomField1").val(),
+      CustomField2: $("#CustomField2").val(),
+      CustomField3: $("#CustomField3").val(),
+      CustomField4: $("#CustomField4").val(),
+
+    };
+
+    let hashKey = "5294y06JbISpM5x9";
+    let hashIV = "v77hoKGq4kWxNNIS";
+    let checkMacValue = generateCheckMacValue(params, hashKey, hashIV);
+
+    let checkMacValueInput = document.createElement("input");
+    checkMacValueInput.type = "hidden";
+    checkMacValueInput.name = "CheckMacValue";
+    checkMacValueInput.value = checkMacValue;
+    document.querySelector("form").appendChild(checkMacValueInput);
+
+    $(function () {
+      let hall = $("#halls").val();
+      $.ajax({
+        url: '/booktick/name',
+        data: { hallid: hall },
+        dataType: 'json',
+        type: 'GET',
+        success: function (respones) {
+
+
+          $('#moviename').append(`<option value="${respones.movieid}">${respones.moviename}</option>`)
+
+
+        }
+      })
+      /////
+      let ticktimeid = $('#time').val()
+      console.log(ticktimeid);
+
+      $.ajax({
+        url: '/booktick/timese/' + ticktimeid,
+        dataType: 'json',
+        type: 'post',
+        success: function (respones) {
+
+
+          console.log(respones);
+          $('#datepicker').val(respones.startdate);
+          $('#timeq').val(respones.starttime);
+
+
+
+        }
+      })
+      ////
+      $.ajax({
+        url: '/booktick/type',
+        dataType: 'json',
+        type: 'GET',
+        success: function (respones) {
+          $.each(respones, function (i, e) {
+            let ticktyp =/*[[${order.tickettypeid}]]*/'';
+
+            //console.log(ticktyp)
+            let se = e.tickettypeid
+            let selectty = (ticktyp == se) ? 'selected' : '';
+            //console.log(ticktyp)
+            //console.log(se)
+            //console.log(selectty)
+            $('#type').append(`<option value="${e.tickettypeid}" ${selectty}>${e.tickettype}</option>`)
+
+
+          })
+        }
+      })
+    })
+
+
+
+  </script>
+</body>
+
+</html>
