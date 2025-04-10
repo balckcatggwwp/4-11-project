@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+    <meta charset="UTF-8">
+    <title>光影之門後台系統</title>
+<!--     工具 -->
+    <link rel="stylesheet"  href="/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
+	<link rel="stylesheet" href="https://cdn.datatables.net/2.2.2/css/dataTables.bootstrap5.min.css">
+	<link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.2.9/css/responsive.bootstrap5.min.css">
+	<link rel="stylesheet" href="https://cdn.datatables.net/buttons/3.0.0/css/buttons.bootstrap5.min.css">
+<!--     單獨的css -->
+    <link href="/css/empLayout.css" rel="stylesheet" />
+<!--     <div layout:fragment="head"></div> -->
+    <th:block layout:fragment="head"></th:block>
+    
+</head>
+<body>
+    <!-- Header -->
+    <header class="py-3 border-bottom d-flex justify-content-between align-items-center bg-dark text-white px-4">
+        <div class="d-flex align-items-center">
+            <button class="menu-toggle me-3 d-md-none" onclick="toggleSidebar()">
+                <i class="fa-solid fa-bars"></i>
+            </button>
+            <img src="/imgs/logo.png" alt="Logo" style="height: 90px;" class="me-3"><h2 class="m-0">光影之門管理系統 現在時間 <span id="MyClockDisplay"></span></h2>
+        </div>
+        <div>
+            <span class="me-3">歡迎 : <span th:text="${session.empName}"></span>！</span>
+            <a th:href=@{/employee/empLogout} class="btn btn-outline-secondary btn-sm">登出</a>
+        </div>
+    </header>
+
+    <div class="container-fluid">
+        <div class="row">
+            <!-- Sidebar -->
+            <nav id="sidebarMenu" class="collapse d-md-block bg-dark col-md-2 p-3">
+                <div class="container-fluid">
+                    <ul class="nav nav-pills flex-column">
+                        <li class="nav-item index">
+                            <a class="nav-link text-white" th:href="@{/employee/empIndex}">
+                                <i class="fa-solid fa-house me-2"></i>首頁
+                            </a>
+                        </li>
+                        <li class="nav-item one">
+                            <a class="nav-link text-white" th:href="@{/member/MemberManager}">
+                                <i class="fa-solid fa-user me-2"></i>會員
+                            </a>
+                        </li>
+                        <li class="nav-item two">
+                            <a class="nav-link text-white" th:href="@{/emp/tickets}">
+                                <i class="fa-solid fa-ticket me-2"></i>訂票
+                            </a>
+                        </li>
+                        <li class="nav-item three">
+                            <a class="nav-link text-white" th:href="@{/emp/schedule}">
+                                <i class="fa-solid fa-clock me-2"></i>場次
+                            </a>
+                        </li>
+                        <li class="nav-item four">
+                            <a class="nav-link text-white" th:href="@{/emp/movies}">
+                                <i class="fa-solid fa-film me-2"></i>電影
+                            </a>
+                        </li>
+                        <li class="nav-item five">
+                            <a class="nav-link text-white" th:href="@{/emp/meals}">
+                                <i class="fa-solid fa-utensils me-2"></i>訂餐
+                            </a>
+                        </li>
+                        <li class="nav-item six">
+                            <a class="nav-link text-white" th:href="@{/emp/announcement}">
+                                <i class="fa-solid fa-bullhorn me-2"></i>公告
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+
+            <!-- Main Content Area -->
+            <main class="col-md-10 ms-sm-auto px-md-4 mt-4">
+                <div layout:fragment="main-content">
+                    <!-- 子頁面內容會放這裡 -->
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="py-3 border-top text-center small text-muted bg-light">
+        &copy; 2025 光影之門. All rights reserved.
+    </footer>
+
+    <script src="/js/jquery.js"></script>
+    <script src="/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <!-- DataTables 核心 -->
+    <script src="https://cdn.datatables.net/2.2.2/js/dataTables.min.js"></script>
+	<!-- DataTables Bootstrap5 整合 -->
+	<script src="https://cdn.datatables.net/2.2.2/js/dataTables.bootstrap5.min.js"></script>
+    <script>
+    function showTime() {
+        var date = new Date();
+        var h = date.getHours();
+        var m = date.getMinutes();
+        var s = date.getSeconds();
+        var session = "AM";
+
+        if (h == 0) {
+            h = 12;
+        }
+
+        if (h > 12) {
+            h = h - 12;
+            session = "PM";
+        }
+
+        h = (h < 10) ? "0" + h : h;
+        m = (m < 10) ? "0" + m : m;
+        s = (s < 10) ? "0" + s : s;
+
+        var time = h + ":" + m + ":" + s + " " + session;
+        document.getElementById("MyClockDisplay").textContent = time;
+
+        setTimeout(showTime, 1000);
+    }
+
+    showTime();
+
+    $(document).ready(function () {
+        $(".nav-pills .nav-link").on("mouseenter", function () {
+            if (!$(this).hasClass("clicked")) {
+                $(this).addClass("hovered");
+            }
+        });
+
+        $(".nav-pills .nav-link").on("mouseleave", function () {
+            if (!$(this).hasClass("clicked")) {
+                $(this).removeClass("hovered");
+            }
+        });
+
+        $(".nav-pills .nav-link").on("click", function () {
+            $(".nav-pills .nav-link").removeClass("clicked hovered");
+            $(this).addClass("clicked");
+        });
+    });
+
+    function toggleSidebar() {
+        const sidebar = document.getElementById("sidebarMenu");
+        sidebar.classList.toggle("show");
+    }
+    </script>
+    <th:block layout:fragment="scripts"></th:block>
+</body>
+</html>

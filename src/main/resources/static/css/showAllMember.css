@@ -1,0 +1,168 @@
+@charset "UTF-8";
+
+/* /css/showAllMember.css */
+
+/* --- General Container & Heading --- */
+.emp-dashboard-container {
+    padding-top: 1.5rem;
+    padding-bottom: 2rem;
+}
+
+.emp-dashboard-container h3 {
+    color: #343a40;
+    border-bottom: 2px solid #6c757d; /* Slightly softer underline */
+    padding-bottom: 0.5rem;
+    display: inline-block;
+}
+
+/* --- Table Styling --- */
+.table-responsive {
+    margin-top: 1rem;
+}
+
+/* Apply base styles to the table */
+#myTable {
+    width: 100%; /* Ensure table uses full width */
+    border: 1px solid #dee2e6; /* Add a subtle border around the table */
+    font-size: 0.9rem; /* Slightly smaller font for potentially dense data */
+}
+
+/* Header Styling (thead.table-dark is handled by Bootstrap) */
+#myTable thead th {
+    vertical-align: middle; /* Center text vertically */
+    white-space: nowrap; /* Prevent headers from wrapping */
+    padding: 0.8rem 0.6rem; /* Adjust padding */
+    text-align: left; /* Default, but explicit */
+}
+
+/* Body Cell Styling */
+#myTable tbody td {
+    vertical-align: middle; /* Align content vertically */
+    padding: 0.6rem 0.6rem; /* Consistent padding */
+    line-height: 1.4; /* Improve readability */
+    border-top: 1px solid #eff2f7; /* Lighter horizontal lines */
+}
+
+/* Specific Column Adjustments */
+
+/* Member ID (UUID) - Allow breaking */
+#myTable td:nth-child(1) span {
+    word-break: break-all; /* Allow long UUID to break */
+    display: inline-block; /* Helps with word-break */
+    /* Optional: slightly smaller font for UUID */
+    /* font-family: monospace; */
+    /* font-size: 0.85em; */
+}
+
+/* Email - Allow breaking if needed */
+#myTable td:nth-child(3) span {
+    word-break: break-word; /* Prefer breaking at word boundaries */
+}
+
+/* Dates & Phone - Try to keep on one line */
+#myTable td:nth-child(6), /* DateOfBirth */
+#myTable td:nth-child(7), /* PhoneNumber */
+#myTable td:nth-child(9) { /* CreateTime */
+    white-space: nowrap;
+}
+
+/* Verification Badge */
+#myTable .badge {
+    font-size: 0.8em;
+    padding: 0.4em 0.7em;
+    font-weight: 600;
+}
+
+/* Action Buttons Column */
+#myTable td:nth-child(10), /* Modify */
+#myTable td:nth-child(11) { /* Delete */
+    text-align: center; /* Center buttons */
+    white-space: nowrap; /* Keep buttons on one line */
+    width: 60px; /* Give action columns a fixed width */
+}
+
+#myTable .btn {
+    /* Bootstrap .btn-sm is already small */
+    padding: 0.2rem 0.5rem; /* Fine-tune padding if needed */
+    line-height: 1.2;
+}
+#myTable .btn i {
+   font-size: 0.9em; /* Adjust icon size within button */
+   vertical-align: middle;
+}
+
+/* Empty Table State */
+#myTable tbody tr td[colspan="11"] {
+    padding: 2.5rem 1rem;
+    font-style: italic;
+    color: #6c757d; /* Bootstrap text-muted color */
+    background-color: #f8f9fa; /* Light background for empty state */
+}
+
+/* --- DataTables Integration Styling --- */
+
+/* Search Box and Length Selector */
+.dataTables_wrapper .dataTables_filter input,
+.dataTables_wrapper .dataTables_length select {
+    border: 1px solid #ced4da;
+    border-radius: 0.25rem;
+    padding: 0.375rem 0.75rem;
+    margin-left: 0.5em;
+    transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+}
+.dataTables_wrapper .dataTables_filter input:focus,
+.dataTables_wrapper .dataTables_length select:focus {
+    border-color: #86b7fe;
+    outline: 0;
+    box-shadow: 0 0 0 0.25rem rgba(13,110,253,.25);
+}
+
+.dataTables_wrapper .dataTables_filter label,
+.dataTables_wrapper .dataTables_length label {
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+}
+
+/* Pagination */
+.dataTables_wrapper .dataTables_paginate .paginate_button {
+    padding: 0.4em 0.9em;
+    margin-left: 3px;
+    border-radius: 0.25rem;
+    border: 1px solid #dee2e6;
+    background-color: #fff;
+    transition: all 0.2s ease-in-out;
+}
+
+.dataTables_wrapper .dataTables_paginate .paginate_button:hover {
+    background-color: #e9ecef;
+    border-color: #dee2e6;
+    color: #000 !important; /* Ensure text color resets on hover */
+    text-decoration: none;
+}
+
+.dataTables_wrapper .dataTables_paginate .paginate_button.current,
+.dataTables_wrapper .dataTables_paginate .paginate_button.current:hover {
+    background: #0d6efd; /* Bootstrap primary */
+    color: white !important;
+    border-color: #0d6efd;
+    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+}
+
+.dataTables_wrapper .dataTables_paginate .paginate_button.disabled,
+.dataTables_wrapper .dataTables_paginate .paginate_button.disabled:hover {
+    background-color: #fff;
+    color: #6c757d !important;
+    border-color: #dee2e6;
+    cursor: default;
+}
+
+/* Table Info (Showing x of y entries) */
+.dataTables_wrapper .dataTables_info {
+    padding-top: 0.85em;
+    font-size: 0.9em;
+    color: #6c757d;
+}
+
+/* --- Hover Effects (using Bootstrap's default hover) --- */
+/* .table-hover > tbody > tr:hover { ... } is handled by Bootstrap */
+
