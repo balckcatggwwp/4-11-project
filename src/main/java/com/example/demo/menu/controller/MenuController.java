@@ -75,7 +75,7 @@ public class MenuController {
                              @RequestParam("imageFile") MultipartFile imageFile) {
         try {
             if (!imageFile.isEmpty()) {
-                Path uploadPath = Paths.get("src/main/resources/static/uploads");
+                Path uploadPath = Paths.get("uploads");
                 if (!Files.exists(uploadPath)) {
                     Files.createDirectories(uploadPath);
                 }
@@ -116,7 +116,7 @@ public class MenuController {
                            @RequestParam("imageFile") MultipartFile imageFile) {
         try {
             if (!imageFile.isEmpty()) {
-                Path uploadPath = Paths.get("src/main/resources/static/uploads");
+                Path uploadPath = Paths.get("uploads");
                 if (!Files.exists(uploadPath)) {
                     Files.createDirectories(uploadPath);
                 }
