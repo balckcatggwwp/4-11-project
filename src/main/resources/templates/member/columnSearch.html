@@ -1,0 +1,54 @@
+<div layout:decorate="~{layout/empLayout}" xmlns:th="http://www.thymeleaf.org"
+     xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+
+<th:block layout:fragment="head">
+    <style>
+    a{
+	    color:white;
+		text-decoration: none;
+    }
+    </style>
+</th:block >
+
+
+<div layout:fragment="main-content" class="container-fluid emp-dashboard-container">
+
+<h2 class="mb-4 page-title"><i class="fas fa-users-cog me-2"></i>欄位搜尋</h2>
+        <div class="row justify-content-center"> <!-- Center the card if it's the main focus -->
+			
+            <!-- 會員操作 Card -->
+            <div class="col-md-8 col-lg-6 mb-4"> <!-- Adjust column width as needed -->
+                <div class="card shadow-sm">
+                    <div class="card-header bg-primary text-white">
+                        <i class="fas fa-tasks me-2"></i>選擇單一搜尋的欄位
+                    </div>
+                    <form method="post" th:action="@{/member/columnSearch}">
+					    <div class="mb-3">
+					        <label for="columnInfo" class="form-label">搜尋內容</label>
+					        <input id="columnInfo" type="text" name="columnInfo" class="form-control">
+					    </div>
+					
+					    <div class="mb-3">
+					        <label for="columnName" class="form-label">搜尋欄位</label>
+					        <select id="columnName" name="columnName" class="form-select" required>
+					            <option value="" disabled selected>請選擇單筆搜尋功能</option>
+					            <option value="email">透過 Email 搜尋</option>
+					            <option value="phoneNumber">透過手機號碼搜尋</option>
+					            <option value="nationalId">透過身分證搜尋</option>
+					        </select>
+					    </div>
+					
+					    <div class="d-flex justify-content-end gap-2">
+						    <button type="submit" class="btn btn-primary">確定</button>
+						    <button type="reset" class="btn btn-secondary"><a th:href="@{/member/MemberManager}">取消</a></button>
+						</div>
+					</form>
+                </div>
+            </div>
+	</div>
+</div>
+
+<th:block layout:fragment="scripts">
+	<script src=""></script>
+</th:block>
+			

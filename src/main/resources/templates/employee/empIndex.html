@@ -1,0 +1,88 @@
+<div layout:decorate="~{layout/empLayout}" xmlns:th="http://www.thymeleaf.org"
+     xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+
+ 	<th:block layout:fragment="head">
+        <link href="/css/empIndex.css" rel="stylesheet" />
+    </th:block>
+    <div layout:fragment="main-content" class="container-fluid emp-dashboard-container"> <!-- Added container class -->
+        <h2 class="mb-4 page-title"><i class="fas fa-tachometer-alt me-2"></i>員工儀表板</h2> <!-- Added page title -->
+        <div class="row">
+            <!-- 員工資訊總覽 Card -->
+            <div class="col-lg-6 mb-4"> <!-- Use lg for larger screens -->
+                <div class="card shadow-sm h-100"> <!-- Added shadow and height utility -->
+                    <div class="card-header bg-primary text-white">
+                        <i class="fas fa-info-circle me-2"></i>員工資訊總覽
+                    </div>
+                    <div class="card-body d-flex flex-column"> <!-- Flex column for button alignment -->
+                        <p class="card-text flex-grow-1">歡迎來到員工管理系統！您可以在此進行員工相關操作。</p>
+                        <a th:href="@{/emp/list}" class="btn btn-outline-primary mt-auto">
+                            <i class="fas fa-users me-1"></i>查看員工列表
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 快速操作 Card -->
+            <div class="col-lg-6 mb-4">
+                <div class="card shadow-sm h-100">
+                    <div class="card-header bg-success text-white">
+                        <i class="fas fa-bolt me-2"></i>快速操作
+                    </div>
+                    <div class="card-body">
+                        <div class="d-grid gap-3"> <!-- Increased gap -->
+                            <a th:href="@{/emp/profile}" class="btn btn-success"> <!-- Changed href, assuming a profile page -->
+                                <i class="fas fa-edit me-1"></i>編輯個人資料
+                            </a>
+                            <a th:href="@{/emp/contact-supervisor}" class="btn btn-secondary"> <!-- Changed href -->
+                                <i class="fas fa-headset me-1"></i>聯繫主管
+                            </a>
+                            <a th:href="@{/emp/leave-request}" class="btn btn-info text-white"> <!-- Changed href, added text-white for better contrast -->
+                                <i class="fas fa-file-alt me-1"></i>請假表單
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 出缺勤狀況 Card -->
+            <div class="col-lg-6 mb-4"> <!-- Changed to lg-6 for potentially better layout -->
+                <div class="card shadow-sm h-100">
+                    <div class="card-header bg-warning text-dark"> <!-- Changed background/text color -->
+                        <i class="fas fa-calendar-check me-2"></i>出缺勤狀況
+                    </div>
+                    <div class="card-body d-flex flex-column">
+                         <p class="card-text flex-grow-1">查看您的出勤記錄與統計圖表。</p>
+                        <a th:href="@{/emp/attendance}" class="btn btn-warning mt-auto"> <!-- Changed href -->
+                            <i class="fas fa-chart-bar me-1"></i>出缺勤圖表
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 系統功能說明 Card -->
+            <div class="col-lg-6 mb-4">
+                 <div class="card shadow-sm h-100">
+                    <div class="card-header bg-secondary text-white">
+                        <i class="fas fa-book-open me-2"></i>系統功能說明
+                    </div>
+                    <div class="card-body">
+                        <p>主要功能入口:</p>
+                        <ul class="list-unstyled system-features"> <!-- Use list-unstyled -->
+                            <li><i class="fas fa-user-plus me-2 text-primary"></i><strong>新增員工:</strong> 透過側邊欄或管理介面新增。</li>
+                            <li><i class="fas fa-users me-2 text-primary"></i><strong>查看員工:</strong> 點擊上方按鈕或側邊欄。</li>
+                            <li><i class="fas fa-user-check me-2 text-success"></i><strong>員工註冊:</strong> (通常由管理員操作)</li>
+                            <li><i class="fas fa-sign-in-alt me-2 text-success"></i><strong>員工登入:</strong> 透過登入頁面進入系統。</li>
+                            <!-- Add more relevant descriptions -->
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+        </div> <!-- End row -->
+    </div> <!-- End main-content -->
+
+     <th:block layout:fragment="scripts">
+        <script src="/js/empIndex.js"></script>
+    </th:block>
+
+</div>

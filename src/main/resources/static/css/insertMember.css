@@ -1,0 +1,80 @@
+@charset "UTF-8";
+
+* {
+    padding: 0 ;
+    margin: 0;
+}
+
+/* 配色還有風格改得更好看一點 */
+form {
+    padding: 20px;
+    width: 90%;
+    margin: 0 auto;
+}
+
+a {
+	color:white;
+	text-decoration: none;
+}
+
+
+h1 {
+    text-decoration: underline;
+}
+label{
+	width: 100%;
+	padding: 10px;
+    font-weight: bold;
+    color: rgba(4, 222, 207, 0.932);
+    font-size: 20px;
+}
+
+.gender-label{
+    font-weight: bold;
+    color: rgba(4, 222, 207, 0.932);
+    font-size: 20px;
+}
+
+input[type="text"],input[type="password"],input[type="email"],select,option{
+	width: 100%;
+	padding: 10px;
+    font-weight: bold;
+    color: rgb(102, 100, 100);
+    font-size: 20px;
+}
+
+.container {
+    width: 100%;
+    margin: 0 auto;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    border-radius: 5px;
+    box-sizing: border-box;
+}
+
+.form-group {
+    margin:15px 0px;
+}
+
+
+button[type="submit"],
+button[type="reset"] {
+    background-color: rgba(4, 222, 207, 0.932);
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    width: 300px;
+}
+
+button[type="submit"]:hover,
+button[type="reset"]:hover {
+    background-color: rgba(4, 222, 207, 0.7);
+}
+
+.button-group {
+    box-sizing: border-box;
+}
+

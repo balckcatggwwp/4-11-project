@@ -1,0 +1,129 @@
+<div layout:decorate="~{layout/empLayout}" xmlns:th="http://www.thymeleaf.org"
+     xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+
+<th:block layout:fragment="head">
+    <link href="/css/showAllMember.css" rel="stylesheet" />
+</th:block >
+<div layout:fragment="main-content" class="container-fluid emp-dashboard-container">
+<div class="container-fluid mt-4">
+    <h3 class="mb-3"><i class="fas fa-users me-2"></i>會員列表</h3>
+
+    <div class="table-responsive"> <!-- Added for better responsiveness on small screens -->
+    <table id="myTable" class="display">
+            <thead> <!-- Darker header -->
+                <tr>
+                    <th>會員 ID</th> <!-- Changed from MemberID -->
+                    <th>姓名</th>   <!-- Changed from FullName -->
+                    <th>Email</th>
+                    <th>身分證字號</th> <!-- Changed from NationalId -->
+                    <th>性別</th>   <!-- Changed from Gender -->
+                    <th>出生日期</th> <!-- Changed from DateOfBirth -->
+                    <th>手機號碼</th> <!-- Changed from PhoneNumber -->
+                    <th>已驗證</th> <!-- Added Verification Status -->
+                    <th>建立時間</th> <!-- Added Create Time -->
+                    <th>修改</th>
+                    <th>刪除</th>
+                </tr>
+            </thead>
+            <!-- Body when members list is NOT empty -->
+            <tbody th:if="${members != null and !members.isEmpty()}">
+                <!-- Loop through members using th:each -->
+                <tr th:each="member : ${members}">
+                    <!-- Display member properties using th:text -->
+                    <!-- Note: Access properties directly, e.g., member.name -->
+                    <td><span th:text="${member.memberId}"></span></td>
+                    <td><span th:text="${member.name}"></span></td>
+                    <td><span th:text="${member.email}"></span></td>
+                    <td><span th:text="${member.nationalId}"></span></td>
+                    <td><span th:text="${member.gender}"></span></td>
+                    <td><span th:text="${member.dateOfBirth}"></span></td>
+                    <td><span th:text="${member.phoneNumber}"></span></td>
+                    <!-- Display boolean verification status nicely -->
+                    <td>
+                        <span th:if="${member.verification}" class="badge bg-success">是</span>
+                        <span th:unless="${member.verification}" class="badge bg-secondary">否</span>
+                    </td>
+                    <!-- Format LocalDateTime using Thymeleaf extras -->
+                    <td>
+                        <span th:if="${member.createTime}"
+                              th:text="${#temporals.format(member.createTime, 'yyyy-MM-dd HH:mm')}"></span>
+                    </td>
+
+                    <!-- Modify Action Link - Using memberId -->
+                    <td>
+                        <!-- Assuming your edit URL is like /member/edit/{id} -->
+                        <a th:href="@{/member/updateMember/{id}(id=${member.memberId})}"
+                           class="btn btn-sm btn-warning" title="修改"> <!-- Added Bootstrap button style & title -->
+                           <i class="fas fa-edit"></i> <!-- Font Awesome Icon -->
+                        </a>
+                    </td>
+                    <!-- Delete Action Link - Using memberId -->
+                    <td>
+                        <!-- Assuming your delete URL is like /member/delete/{id} -->
+                        <!-- Added basic JS confirmation -->
+                        <button type="button" th:onclick="deleteMember([[${member.memberId}]])"
+                                class="btn btn-sm btn-danger" title="刪除">
+                            <i class="fas fa-trash-alt"></i>
+                        </button>
+
+                    </td>
+                </tr>
+            </tbody>
+             <!-- Body when members list IS empty -->
+            <tbody th:unless="${members != null and !members.isEmpty()}">
+                <tr>
+                    <!-- Adjust colspan to match the number of columns -->
+                    <td colspan="11" class="text-center text-muted">目前沒有會員資料</td>
+                </tr>
+            </tbody>
+       </table>
+       <div id="message-holder"th:attr="data-message=${message}" style="display: none;"></div>
+    </div> <!-- End table-responsive -->
+</div>
+</div>
+<th:block layout:fragment="scripts">
+	
+<script>
+    $(document).ready(function() {
+    $('#myTable').DataTable();
+
+    const message = $('#message-holder').data('message');
+    if (message) {
+        Swal.fire({
+            icon: message.includes("成功") ? "success" : "error",
+            title: message
+    });
+    }	
+});
+function deleteMember(id) {
+    console.log(id);
+    Swal.fire({
+        title: '確定要刪除這位會員嗎？',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: '是的，刪除',
+        cancelButtonText: '取消',
+        reverseButtons: true
+    }).then((result) => {
+        if (result.isConfirmed) {
+            fetch(`/member/deleteMember/${id}`, {
+                method: 'DELETE'
+            }).then(res => {
+                if (res.ok) {
+                    Swal.fire('刪除成功', '', 'success').then(() => {
+                        location.reload();
+                    });
+                } else {
+                    Swal.fire('刪除失敗', '', 'error');
+                }
+            }).catch(() => {
+                Swal.fire('刪除錯誤', '', 'error');
+            });
+        }
+    });
+}
+
+    
+</script>
+</th:block>
+</div>
