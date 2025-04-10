@@ -51,9 +51,22 @@
 
     <input type="hidden" name="EncryptType" value="1" />
 
-    <input type="hidden" name="ReturnURL" value="https://www.ecpay.com.tw/return_url.php" />
-    <input type="hidden" name="ClientBackURL" value="https://www.ecpay.com.tw/client_back_url.php" />
+    <input type="hidden" name="ReturnURL" value="http://localhost:8080/pay" />
+    <input type="hidden" name="ClientBackURL" value="http://localhost:8080" />
+    <input type="hidden" name="OrderResultURL" value="http://localhost:8080/pay" />
+
     <input type="hidden" name="ChoosePayment" value="ALL" />
+    <!-- 廠商自訂參數我要6個 -->
+    <input type="hidden" name="CustomField1" th:value="${order.userid} + '+' + ${order.showtimeid}" id="CustomField1" />
+    <input type="hidden" name="CustomField2" th:value="${seat}" id="CustomField2" />
+
+    <!-- 偷懶hall+name-->
+    <input type="hidden" name="CustomField3" th:value="${order.hallid}" id="CustomField3" />
+    "/>
+    <input type="hidden" name="CustomField4" th:value="${order.tickettypeid}" id="CustomField4" />
+
+
+
 
     <button type="submit">確認</button>
   </form>
@@ -133,10 +146,16 @@
       TotalAmount: $("#total").val(),
       TradeDesc: $("#trade").val(),
       ItemName: $("#item").val(),
-      ReturnURL: "https://www.ecpay.com.tw/return_url.php",
-      ClientBackURL: "https://www.ecpay.com.tw/client_back_url.php",
+      ReturnURL: "http://localhost:8080/pay",
+      ClientBackURL: "http://localhost:8080",
+      OrderResultURL: "http://localhost:8080/pay",
       ChoosePayment: "ALL",
       EncryptType: "1",
+      CustomField1: $("#CustomField1").val(),
+      CustomField2: $("#CustomField2").val(),
+      CustomField3: $("#CustomField3").val(),
+      CustomField4: $("#CustomField4").val(),
+
     };
 
     let hashKey = "5294y06JbISpM5x9";
