@@ -21,7 +21,7 @@ public class BooktickController {
 	@Autowired
 	private BookvuService bookvuService;
 
-	@GetMapping("/")
+	@GetMapping("/ticktable")
 	public String tickall(Model model) {
 		List<BookticketvuBean> vu = bookvuService.tickfindAll();
 		model.addAttribute("tickall", vu);
