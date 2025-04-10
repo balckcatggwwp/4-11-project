@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="zh-Hant">
+<html xmlns:th="http://www.thymeleaf.org/">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -13,11 +13,11 @@
 </head>
 
 <body>
-<div th:replace="~{laout/tableremack}"></div>
+
     
 	<nav class="navbar navbar-dark bg-dark mb-4">
 		<div class="container-fluid">
-			<a class="navbar-brand" href="admin.html">電影公告後台</a>
+			<a class="navbar-brand" href="/admin1">電影公告後台</a>
 			<form class="d-flex ms-auto" id="adminSearchForm">
 				<input class="form-control me-2" type="search" placeholder="搜尋標題"
 					id="adminSearchInput">
@@ -116,7 +116,7 @@
         tbody.innerHTML += `
           <tr>
             <td>${news.id}</td>
-            <td><a href="news-detail.html?id=${news.id}" target="_blank">${news.title}</a></td>
+            <td><a href="/news-detail1?id=${news.id}" target="_blank">${news.title}</a></td>
             <td>${news.status}</td>
             <td>${new Date(news.publishDate).toLocaleString()}</td>
             <td>
@@ -225,7 +225,7 @@ document.getElementById('adminSearchForm').addEventListener('submit', async func
     tbody.innerHTML += `
       <tr>
         <td>${news.id}</td>
-        <td><a href="news-detail.html?id=${news.id}" target="_blank">${news.title}</a></td>
+        <td><a href="/news-detail1?id=${news.id}" target="_blank">${news.title}</a></td>
         <td>${news.status}</td>
         <td>${new Date(news.publishDate).toLocaleString()}</td>
         <td>

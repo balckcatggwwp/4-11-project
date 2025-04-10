@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="zh-Hant">
+<html xmlns:th="http://www.thymeleaf.org/">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -15,7 +15,7 @@
 <body>
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <div class="container-fluid">
-      <a class="navbar-brand" href="public.html">電影新聞網</a>
+      <a class="navbar-brand" href="/public1">電影新聞網</a>
       <form class="d-flex ms-auto" role="search" id="searchForm">
         <input class="form-control me-2" type="search" placeholder="搜尋新聞" aria-label="Search" id="searchInput">
         <button class="btn btn-outline-light" type="submit">搜尋</button>
@@ -48,7 +48,7 @@ const activeNews = newsList.filter(news => news.status === "active");
               <div class="card-body">
                 <h5 class="card-title">${news.title}</h5>
                 <p class="card-text text-truncate">${news.summary || ''}</p>
-                <a href="news-detail.html?id=${news.id}" class="btn btn-primary">閱讀更多</a>
+                <a href="/news-detail1?id=${news.id}" class="btn btn-primary">閱讀更多</a>
               </div>
             </div>
           </div>
