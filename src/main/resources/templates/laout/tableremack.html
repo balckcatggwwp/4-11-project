@@ -18,7 +18,7 @@
             box-sizing: border-box;
         }
 
-        li {
+        .list {
             list-style: none;
             display: flex;
             align-items: center;
@@ -36,18 +36,18 @@
             justify-content: center;
         }
 
-        li:hover {
+        .list:hover {
             background-color: #FFCC00;
             color: #000;
             transform: scale(1.1);
         }
 
-        li i {
+        .list i {
             font-size: 24px;
             transition: all 0.3s ease;
         }
 
-        li:active {
+        .list:active {
             position: relative;
             top: 2px;
             background-color: #B22222;
@@ -76,7 +76,7 @@
             padding-left: 0;
         }
 
-        li a {
+        .list a {
             display: block;
             width: 100%;
             padding: 10px;
@@ -85,7 +85,7 @@
 
         }
 
-        li a:active {
+        .list a:active {
             position: relative;
             top: 2px;
             background-color: transparent;
@@ -304,12 +304,12 @@
 
         <ul>
             <div id="MyClockDisplay" class="clock" onload="showTime()"></div>
-            <li class="one"><i class="fa-solid fa-house"></i></li>
-            <li class="two"><i class="fa-solid fa-ticket"></i></li>
+            <li class="one list"><i class="fa-solid fa-house"></i></li>
+            <li class="two list"><i class="fa-solid fa-ticket"></i></li>
             <!-- <li class="three"><i class="fa-solid fa-clock"></i></li> -->
-            <li class="fort"><i class="fa-solid fa-film"></i></li>
-            <li class="five"><i class="fa-solid fa-utensils"></i></li>
-            <li class="six"><i class="fa-solid fa-bullhorn"></i></li>
+            <li class="fort list"><i class="fa-solid fa-film"></i></li>
+            <li class="five list"><i class="fa-solid fa-utensils"></i></li>
+            <li class="six list"><i class="fa-solid fa-bullhorn"></i></li>
         </ul>
     </figure>
     <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
@@ -318,28 +318,28 @@
     <script>
 
         document.addEventListener('DOMContentLoaded', function () {
-            let elem = document.querySelectorAll("li");
+            let elem = document.querySelectorAll(".list");
             elem.forEach(function (v) {
                 v.addEventListener('mouseenter', function () {
 
-                    if (v.classList == "one") {
+                    if (v.classList == "one list") {
 
-                        v.innerHTML = `<a href="http://localhost:8080/project/backEnd.view/HomePage.html"><i class="fa-solid fa-house"></i>會員</a>`
-                    } else if (v.classList == "two") {
+                        v.innerHTML = `<a href="http://localhost:8080/"><i class="fa-solid fa-house"></i>會員</a>`
+                    } else if (v.classList == "two list") {
 
-                        v.innerHTML = `<a href=""><i class="fa-solid fa-ticket"></i>訂票</a>`
-                    } else if (v.classList == "three") {
+                        v.innerHTML = `<a href="http://localhost:8080/ticktable"><i class="fa-solid fa-ticket"></i>訂票</a>`
+                    } else if (v.classList == "three list") {
 
                         // v.innerHTML = `<a href="https://www.youtube.com/"><i class="fa-solid fa-clock"></i>場次</a>`
-                    } else if (v.classList == "fort") {
+                    } else if (v.classList == "fort list") {
 
-                        v.innerHTML = `<a href="http://localhost:8080/project/JSP-zh/select.html"><i class="fa-solid fa-film"></i>電影</a>`
-                    } else if (v.classList == "five") {
+                        v.innerHTML = `<a href="http://localhost:8080/MovieList"><i class="fa-solid fa-film"></i>電影</a>`
+                    } else if (v.classList == "five list") {
 
-                        v.innerHTML = `<a href="http://localhost:8080/project/hw2/menupage.html"><i class="fa-solid fa-utensils"></i>訂餐</a>`
-                    } else if (v.classList == "six") {
+                        v.innerHTML = `<a href="http://localhost:8080/menu/list"><i class="fa-solid fa-utensils"></i>訂餐</a>`
+                    } else if (v.classList == "six list") {
 
-                        v.innerHTML = `<a href="http://localhost:8080/project/GetAllNews"><i class="fa-solid fa-bullhorn"></i>公告</a>`
+                        v.innerHTML = `<a href="http://localhost:8080/admin.html"><i class="fa-solid fa-bullhorn"></i>公告</a>`
                     }
 
                 })
@@ -347,25 +347,25 @@
                 //滑鼠移出時恢復背景顏色
                 v.addEventListener('mouseleave', function () {
                     // this.style.fontSize = '';
-                    if (v.classList == "one") {
+                    if (v.classList == "one list") {
                         console.log("aaa");
                         v.innerHTML = `<i class="fa-solid fa-house"></i>`
-                    } if (v.classList == "one") {
+                    } if (v.classList == "one list") {
 
                         v.innerHTML = `<i class="fa-solid fa-house"></i>  `
-                    } else if (v.classList == "two") {
+                    } else if (v.classList == "two list") {
 
-                        // v.innerHTML = `<i class="fa-solid fa-ticket"></i>  `
-                    } else if (v.classList == "three") {
+                        v.innerHTML = `<i class="fa-solid fa-ticket"></i>  `
+                    } else if (v.classList == "three list") {
 
                         v.innerHTML = `<i class="fa-solid fa-clock"></i>  `
-                    } else if (v.classList == "fort") {
+                    } else if (v.classList == "fort list") {
 
                         v.innerHTML = `<i class="fa-solid fa-film"></i>  `
-                    } else if (v.classList == "five") {
+                    } else if (v.classList == "five list") {
 
                         v.innerHTML = `<i class="fa-solid fa-utensils"></i>  `
-                    } else if (v.classList == "six") {
+                    } else if (v.classList == "six list") {
 
                         v.innerHTML = `<i class="fa-solid fa-bullhorn"></i>  `
                     }

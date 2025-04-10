@@ -320,18 +320,6 @@
 
 	<body>
 	<div th:replace="~{laout/tableremack}"></div>
-		<div class="header">光影之門後台系統MovieTicket</div>
-		<figure>
-			<ul>
-				<div id="MyClockDisplay" class="clock" onload="showTime()"></div>
-				<li class="one"><i class="fa-solid fa-house"></i></li>
-				<!--  <li class="two"><i class="fa-solid fa-ticket"></i></li>-->
-				<!-- <li class="three"><i class="fa-solid fa-clock"></i></li> -->
-				<li class="fort"><i class="fa-solid fa-film"></i></li>
-				<li class="five"><i class="fa-solid fa-utensils"></i></li>
-				<li class="six"><i class="fa-solid fa-bullhorn"></i></li>
-			</ul>
-		</figure>
 		<div id="bodddd">
 			<h1 class="mb-4">電影資料列表</h1>
 
@@ -695,80 +683,7 @@
 		<script src="https://code.jquery.com/jquery-3.7.1.js"></script>
 		<script src="https://cdn.datatables.net/2.2.2/js/dataTables.min.js"></script>
 		<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-		<script>
-			document.addEventListener("DOMContentLoaded", function () {
-				let elem = document.querySelectorAll("li");
-				elem.forEach(function (v) {
-					v.addEventListener("mouseenter", function () {
-						if (v.classList == "one") {
-							v.innerHTML = `<a href="http://localhost:8080/project/backEnd.view/HomePage.html"><i class="fa-solid fa-house"></i>會員</a>`;
-						} else if (v.classList == "two") {
-							v.innerHTML = `<a href=""><i class="fa-solid fa-ticket"></i>訂票</a>`;
-						} else if (v.classList == "three") {
-							// v.innerHTML = `<a href="https://www.youtube.com/"><i class="fa-solid fa-clock"></i>場次</a>`
-						} else if (v.classList == "fort") {
-							v.innerHTML = `<a href="http://localhost:8080/project/JSP-zh/select.html"><i class="fa-solid fa-film"></i>電影</a>`;
-						} else if (v.classList == "five") {
-							v.innerHTML = `<a href="http://localhost:8080/project/hw2/menupage.html"><i class="fa-solid fa-utensils"></i>訂餐</a>`;
-						} else if (v.classList == "six") {
-							v.innerHTML = `<a href="http://localhost:8080/project/GetAllNews"><i class="fa-solid fa-bullhorn"></i>公告</a>`;
-						}
-					});
-
-					//滑鼠移出時恢復背景顏色
-					v.addEventListener("mouseleave", function () {
-						// this.style.fontSize = '';
-						if (v.classList == "one") {
-							console.log("aaa");
-							v.innerHTML = `<i class="fa-solid fa-house"></i>`;
-						}
-						if (v.classList == "one") {
-							v.innerHTML = `<i class="fa-solid fa-house"></i>  `;
-						} else if (v.classList == "two") {
-							// v.innerHTML = `<i class="fa-solid fa-ticket"></i>  `
-						} else if (v.classList == "three") {
-							v.innerHTML = `<i class="fa-solid fa-clock"></i>  `;
-						} else if (v.classList == "fort") {
-							v.innerHTML = `<i class="fa-solid fa-film"></i>  `;
-						} else if (v.classList == "five") {
-							v.innerHTML = `<i class="fa-solid fa-utensils"></i>  `;
-						} else if (v.classList == "six") {
-							v.innerHTML = `<i class="fa-solid fa-bullhorn"></i>  `;
-						}
-					});
-				});
-				//滑鼠移入時改變背景顏色（藍）
-			});
-
-			function showTime() {
-				var date = new Date();
-				var h = date.getHours(); // 0 - 23
-				var m = date.getMinutes(); // 0 - 59
-				var s = date.getSeconds(); // 0 - 59
-				var session = "AM";
-
-				if (h == 0) {
-					h = 12;
-				}
-
-				if (h > 12) {
-					h = h - 12;
-					session = "PM";
-				}
-
-				h = h < 10 ? "0" + h : h;
-				m = m < 10 ? "0" + m : m;
-				s = s < 10 ? "0" + s : s;
-
-				var time = h + ":" + m + ":" + s + " " + session;
-				document.getElementById("MyClockDisplay").innerText = time;
-				document.getElementById("MyClockDisplay").textContent = time;
-
-				setTimeout(showTime, 1000);
-			}
-
-			showTime();
-		</script>
+		
 		<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 		<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 		<script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
