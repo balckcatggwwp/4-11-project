@@ -12,7 +12,6 @@
 	<link rel="stylesheet" href="https://cdn.datatables.net/buttons/3.0.0/css/buttons.bootstrap5.min.css">
 <!--     單獨的css -->
     <link href="/css/empLayout.css" rel="stylesheet" />
-<!--     <div layout:fragment="head"></div> -->
     <th:block layout:fragment="head"></th:block>
     
 </head>
@@ -48,26 +47,21 @@
                             </a>
                         </li>
                         <li class="nav-item two">
-                            <a class="nav-link text-white" th:href="@{/emp/tickets}">
+                            <a class="nav-link text-white" th:href="@{/MovieList}">
                                 <i class="fa-solid fa-ticket me-2"></i>訂票
                             </a>
                         </li>
                         <li class="nav-item three">
-                            <a class="nav-link text-white" th:href="@{/emp/schedule}">
-                                <i class="fa-solid fa-clock me-2"></i>場次
-                            </a>
-                        </li>
-                        <li class="nav-item four">
                             <a class="nav-link text-white" th:href="@{/emp/movies}">
                                 <i class="fa-solid fa-film me-2"></i>電影
                             </a>
                         </li>
-                        <li class="nav-item five">
+                        <li class="nav-item four">
                             <a class="nav-link text-white" th:href="@{/emp/meals}">
                                 <i class="fa-solid fa-utensils me-2"></i>訂餐
                             </a>
                         </li>
-                        <li class="nav-item six">
+                        <li class="nav-item five">
                             <a class="nav-link text-white" th:href="@{/emp/announcement}">
                                 <i class="fa-solid fa-bullhorn me-2"></i>公告
                             </a>
