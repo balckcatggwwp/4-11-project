@@ -95,7 +95,7 @@ public class OrderController {
 		}else {
 			System.out.println("你好爛");
 		}
-		return "redirect:/";
+		return "redirect:/ticktable";
 	}
 	
 	

@@ -1,13 +1,15 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.thymeleaf.org/">
+
 <head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"/>
-<link rel="stylesheet" href="/css/index.css"/>
+  <meta charset="UTF-8">
+  <title>Insert title here</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" />
+  <link rel="stylesheet" href="/css/index.css" />
 </head>
+
 <body>
- <div class="menu-btn">
+  <div class="menu-btn">
     <i class="fas fa-bars fa-2x"></i>
   </div>
 
@@ -25,7 +27,7 @@
         <li><a th:href="@{/employee/empLogin}">員工登入(後台)</a></li>
         <li><a th:href="@{/employee/empRegister}">員工註冊(後台)</a></li>
       </ul>
-		
+
       <ul class="right-menu">
         <li>
           <a href="#">
@@ -38,28 +40,29 @@
           </a>
         </li>
         <li class="user-menu">
-		<span th:switch="${session.memberDetail != null}">
-			<span th:case="false">
-			<a th:href="@{/member/login}">登入/註冊</a>
-			<i class="fa-solid fa-user"></i>
-			</span>
-			
-			<span th:case="true">
-				歡迎, <span th:text="${session.memberDetail.name}">使用者</span>
-				<a th:href="@{/member/logout}">登出</a>
-				<i class="fa-solid fa-user-check"></i>
-			</span>
-  		</span>
+          <span th:switch="${session.memberDetail != null}">
+            <span th:case="false">
+              <a th:href="@{/member/login}">登入/註冊</a>
+              <i class="fa-solid fa-user"></i>
+            </span>
+
+            <span th:case="true">
+              歡迎, <span th:text="${session.memberDetail.name}">使用者</span>
+              <a th:href="@{/member/logout}">登出</a>
+              <i class="fa-solid fa-user-check"></i>
+            </span>
+          </span>
         </li>
       </ul>
-      
+
     </nav>
-	
+
     <!-- Showcase -->
+    <!-- 廣告輪播公告 -->
     <header class="showcase">
       <h2>光影之門售票系統</h2>
       <p>
-       即刻展開您的電影體驗
+        即刻展開您的電影體驗
       </p>
       <a href="#" class="btn">
         開始訂票 <i class="fas fa-chevron-right"></i>
@@ -67,12 +70,13 @@
     </header>
 
     <!-- Home cards 1 -->
+    <!-- 廣告輪播電影 -->
     <section class="home-cards">
       <div>
         <img src="/imgs/bear2.jpg" alt="">
         <h3>《柏靈頓：熊熊去祕魯》</h3>
         <p>
-         熊熊出發，揭開祕魯的驚奇冒險！
+          熊熊出發，揭開祕魯的驚奇冒險！
         </p>
         <a href="#">前往訂票<i class="fas fa-chevron-right"></i></a>
       </div>
@@ -96,115 +100,125 @@
         <img src="/imgs/Joker2.jpg" alt="" />
         <h3>《小丑2》</h3>
         <p>
-         瘋狂不再孤單，笑聲背後的黑暗更深邃！
+          瘋狂不再孤單，笑聲背後的黑暗更深邃！
         </p>
         <a href="#">前往訂票<i class="fas fa-chevron-right"></i></a>
       </div>
     </section>
 
     <!-- Xbox -->
-    <section class="xbox">
+    <!-- <section class="xbox">
       <div class="content">
+      </div>
+    </section> -->
+
+    <!-- Home cards 2 -->
+    <!-- 餐點廣告輪播 -->
+    <section class="home-cards">
+      <div>
+        <img src="/imgs/CinemaParadise.jpg" alt="" />
+        <h3>《新天堂樂園》</h3>
+        <p>
+          光影交織的夢想，映照不朽的回憶！
+        </p>
+        <a href="#">前往訂票<i class="fas fa-chevron-right"></i></a>
+      </div>
+      <div>
+        <img src="/imgs/Avengers.jpg" alt="" />
+        <h3>《復仇者聯盟：無限之戰》</h3>
+        <p>
+          宇宙命運懸於一指，英雄殊死一戰！
+        </p>
+        <a href="#">前往訂票<i class="fas fa-chevron-right"></i></a>
+      </div>
+      <div>
+        <img src="/imgs/玩命關頭8.jpg" alt="" />
+        <h3>《玩命關頭8》</h3>
+        <p>
+          家人、背叛、極速對決，熱血永不熄滅！
+        </p>
+        <a href="#">前往訂票<i class="fas fa-chevron-right"></i></a>
+      </div>
+      <div>
+        <img src="/imgs/蠟筆小新.jpg" />
+        <h3>《蠟筆小新：我們的恐龍日記》</h3>
+        <p>
+          小新VS恐龍，爆笑大冒險開啟！
+        </p>
+        <a href="#">前往訂票 <i class="fas fa-chevron-right"></i></a>
       </div>
     </section>
 
-    <!-- Home cards 2 -->
-			<section class="home-cards">
-				<div>
-					<img src="/imgs/CinemaParadise.jpg" alt="" />
-					<h3>《新天堂樂園》</h3>
-					<p>
-						光影交織的夢想，映照不朽的回憶！
-					</p>
-					<a href="#">前往訂票<i class="fas fa-chevron-right"></i></a>
-				</div>
-				<div>
-					<img src="/imgs/Avengers.jpg" alt="" />
-					<h3>《復仇者聯盟：無限之戰》</h3>
-					<p>
-						宇宙命運懸於一指，英雄殊死一戰！
-					</p>
-					<a href="#">前往訂票<i class="fas fa-chevron-right"></i></a>
-				</div>
-				<div>
-					<img src="/imgs/玩命關頭8.jpg" alt="" />
-					<h3>《玩命關頭8》</h3>
-					<p>
-						 家人、背叛、極速對決，熱血永不熄滅！
-					</p>
-					<a href="#">前往訂票<i class="fas fa-chevron-right"></i></a>
-				</div>
-				<div>
-					<img src="/imgs/蠟筆小新.jpg"/>
-					<h3>《蠟筆小新：我們的恐龍日記》</h3>
-					<p>
-						小新VS恐龍，爆笑大冒險開啟！
-					</p>
-					<a href="#">前往訂票 <i class="fas fa-chevron-right"></i></a>
-				</div>
-      </section>
-      
-      <!-- Carbon -->
-      <section class="carbon dark">
-        <div class="content">
-          <h2>光影之門電影院</h2>
-          <p>光影之門電影院，創立於 2001 年，
+    <!-- Carbon -->
+    <section class="carbon dark">
+      <div class="content">
+        <h2>光影之門電影院</h2>
+        <p>光影之門電影院，創立於 2001 年，
           致力於打造沉浸式觀影體驗，讓光影交織夢想，為每一位觀眾呈現極致視聽盛宴。</p>
-            <a href="#" class="btn">
-              了解我們 <i class="fas fa-chevron-right"></i>
-            </a>
-        </div>
-      </section>
+        <a href="#" class="btn">
+          了解我們 <i class="fas fa-chevron-right"></i>
+        </a>
+      </div>
+    </section>
 
-      <!-- Follow -->
-      <section class="follow">
-        <p>Follow Us</p>
-        <a href="https://facebook.com">
-          <img src="https://i.ibb.co/LrVMXNR/social-fb.png" alt="Facebook">
-        </a>
-        <a href="https://twitter.com">
-          <img src="https://i.ibb.co/vJvbLwm/social-twitter.png" alt="Twitter">
-        </a>
-        <a href="https://linkedin.com">
-          <img src="https://i.ibb.co/b30HMhR/social-linkedin.png" alt="Linkedin">
-        </a>
-      </section>
+    <!-- Follow -->
+    <section class="follow">
+      <p>Follow Us</p>
+      <a href="https://facebook.com">
+        <img src="https://i.ibb.co/LrVMXNR/social-fb.png" alt="Facebook">
+      </a>
+      <a href="https://twitter.com">
+        <img src="https://i.ibb.co/vJvbLwm/social-twitter.png" alt="Twitter">
+      </a>
+      <a href="https://linkedin.com">
+        <img src="https://i.ibb.co/b30HMhR/social-linkedin.png" alt="Linkedin">
+      </a>
+    </section>
+  </div>
+  <!-- Links -->
+  <section class="links">
+    <div class="links-inner">
+      <ul>
+        <li>
+          <h3>最新資訊</h3>
+        </li>
+      </ul>
+      <ul>
+        <li>
+          <h3>購票須知</h3>
+        </li>
+      </ul>
+      <ul>
+        <li>
+          <h3>最新公告</h3>
+        </li>
+      </ul>
+      <ul>
+        <li>
+          <h3>聯絡我們</h3>
+        </li>
+      </ul>
     </div>
-      <!-- Links -->
-      <section class="links">
-        <div class="links-inner">
-          <ul>
-            <li><h3>最新資訊</h3></li>
-          </ul>
-          <ul>
-            <li><h3>購票須知</h3></li>
-          </ul>
-          <ul>
-            <li><h3>最新公告</h3></li>
-          </ul>
-          <ul>
-            <li><h3>聯絡我們</h3></li>
-          </ul>
-        </div>
-      </section>
+  </section>
 
-      <!-- Footer -->
-      <footer class="footer">
-        <div class="footer-inner">
-          <div><i class="fas fa-globe fa-2x"></i> Traditional Chinese (繁體中文)</div>
-        </div>
-      </footer>
-      <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-      <script src="/js/jquery.js"></script>
-      <script th:if="${logoutSuccess}">
-	    Swal.fire({
-	        icon: 'success',
-	        title: '登出成功',
-	        text: '您已成功登出！',
-	        confirmButtonText: '確認',
-	        timer: 3000,
-	        timerProgressBar: true
-	    });
-</script>
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-inner">
+      <div><i class="fas fa-globe fa-2x"></i> Traditional Chinese (繁體中文)</div>
+    </div>
+  </footer>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script src="/js/jquery.js"></script>
+  <script th:if="${logoutSuccess}">
+    Swal.fire({
+      icon: 'success',
+      title: '登出成功',
+      text: '您已成功登出！',
+      confirmButtonText: '確認',
+      timer: 3000,
+      timerProgressBar: true
+    });
+  </script>
 </body>
+
 </html>

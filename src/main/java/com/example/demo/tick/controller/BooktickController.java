@@ -40,7 +40,7 @@ public class BooktickController {
 	@PostMapping("/booktick/Updatea")
 	public String updateTick(@ModelAttribute BookticketBean updatedTick) {
 		bookvuService.updatetick(updatedTick);
-		return "redirect:/"; // 更新成功後重定向到訂票列表頁面
+		return "redirect:/ticktable"; // 更新成功後重定向到訂票列表頁面
 	}
 
 	@GetMapping("/booktick/inser")
@@ -57,7 +57,7 @@ public class BooktickController {
 	@GetMapping("/booktick/del")
 	public String dele(@RequestParam Integer id) {
 		bookvuService.deltick(id);
-		return "redirect:/";
+		return "redirect:/ticktable";
 	}
 
 	///////////// other

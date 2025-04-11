@@ -69,7 +69,7 @@
             margin-top: 100px;
         }
 
-        ul {
+        .aul {
             display: flex;
             flex-direction: column;
             gap: 10px;
@@ -271,7 +271,7 @@
             font-weight: 800
         }
 
-        input {
+        /* input {
             padding: 10px;
 
             border: solid .1px black;
@@ -279,7 +279,7 @@
             background-color: #fff;
 
             outline: none;
-        }
+        } */
     </style>
 
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -302,7 +302,7 @@
     <figure>
 
 
-        <ul>
+        <ul class="aul">
             <div id="MyClockDisplay" class="clock" onload="showTime()"></div>
             <li class="one list"><i class="fa-solid fa-house"></i></li>
             <li class="two list"><i class="fa-solid fa-ticket"></i></li>
@@ -339,7 +339,7 @@
                         v.innerHTML = `<a href="http://localhost:8080/menu/list"><i class="fa-solid fa-utensils"></i>訂餐</a>`
                     } else if (v.classList == "six list") {
 
-                        v.innerHTML = `<a href="http://localhost:8080/admin.html"><i class="fa-solid fa-bullhorn"></i>公告</a>`
+                        v.innerHTML = `<a href="http://localhost:8080/admin1"><i class="fa-solid fa-bullhorn"></i>公告</a>`
                     }
 
                 })
