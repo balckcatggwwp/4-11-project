@@ -19,7 +19,7 @@ public class BookticketvuBean {
 	private int tickid;
 	@Column(name = "orderid")
 	private String orderid;
-	@Column(name = "userid")
+	@Column(name = "memberId")
 	private int userid;
 	//private String startdate;
 	@Column(name = "showid")

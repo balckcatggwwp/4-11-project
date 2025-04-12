@@ -21,7 +21,7 @@
       <ul class="main-menu">
         <li><a href="#">會員專區</a></li>
         <li><a href="#">餐點訂購</a></li>
-        <li><a href="#">訂票專區</a></li>
+        <li><a th:href="@{/orderset}">訂票專區</a></li>
         <li><a href="#">最新公告</a></li>
         <li><a href="#">場次查詢</a></li>
         <li><a th:href="@{/employee/empLogin}">員工登入(後台)</a></li>
@@ -78,7 +78,7 @@
         <p>
           熊熊出發，揭開祕魯的驚奇冒險！
         </p>
-        <a href="#">前往訂票<i class="fas fa-chevron-right"></i></a>
+        <a th:href="@{/orderset}">前往訂票<i class="fas fa-chevron-right"></i></a>
       </div>
       <div>
         <img src="/imgs/DeadPool.png" alt="" />

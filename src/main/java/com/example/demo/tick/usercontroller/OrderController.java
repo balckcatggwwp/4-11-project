@@ -1,4 +1,4 @@
-package com.example.demo.tick.controller;
+package com.example.demo.tick.usercontroller;
 
 import java.io.IOException;
 import java.util.List;

@@ -79,7 +79,7 @@ public class BooktickController {
 			vu= bookvuService.findother(select, userid);
 		} else if (select == 4) {
 			vu= bookvuService.findothers(select, startdate);
-		} else if (select == 5) {
+		} else if (select == 5) { 
 			vu= bookvuService.findother(select, hallid);
 		}else if (select == 6) {
 			System.out.println(findname);
