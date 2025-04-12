@@ -4,7 +4,6 @@ package com.example.demo.member.controller;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -51,6 +50,7 @@ public class MemberController {
 	    	httpSession.setAttribute("memberDetail", LoginBean);
 	    	httpSession.setAttribute("memberName", LoginBean.getName());
 	    	httpSession.setAttribute("memberEmail", LoginBean.getEmail());
+	    	httpSession.setAttribute("memberId", LoginBean.getMemberId());
 	        response.put("status", "success");
 	        response.put("name", LoginBean.getName());
 	    } else {
@@ -124,7 +124,7 @@ public class MemberController {
 	
 	//後臺編輯單筆會員資料(透過findById)
 	@GetMapping("member/updateMember/{id}")
-	public String updateMember(@PathVariable("id") UUID id, Model model, RedirectAttributes redirectAttributes) {
+	public String updateMember(@PathVariable("id") Long id, Model model, RedirectAttributes redirectAttributes) {
 		Member member = memberService.findById(id);
 		if (member!=null) {
 			member.setPassword(null);
@@ -143,7 +143,7 @@ public class MemberController {
 	@PostMapping("member/updateMember")
 	public String updateMember(
 			@ModelAttribute Member form,Model model){
-		UUID id = form.getMemberId();
+		Long id = form.getMemberId();
 		Member member = memberService.updateMember(id,form);
 		if(member!=null) {
 			model.addAttribute("message","修改成功");			
@@ -193,7 +193,7 @@ public class MemberController {
 	
 	@DeleteMapping("/member/deleteMember/{id}")
 	@ResponseBody
-	public ResponseEntity<String> deleteMember(@PathVariable UUID id) {
+	public ResponseEntity<String> deleteMember(@PathVariable Long id) {
 	    boolean success = memberService.deleteMemberById(id);
 	    if (success) {
 	        return ResponseEntity.ok("刪除成功");
