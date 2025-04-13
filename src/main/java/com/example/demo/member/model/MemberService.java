@@ -19,7 +19,7 @@ public class MemberService {
 	private PasswordEncoder pwdEncoder;
 	
 	@Transactional
-	public Member updateMember(UUID id,Member updatedMember) {
+	public Member updateMember(Long id,Member updatedMember) {
 		Optional<Member> optional = memberRepository.findById(id);
 		if(optional.isPresent()) {
 			Member originalMember = optional.get();					
@@ -109,7 +109,7 @@ public class MemberService {
 		
 	}
 	
-	public Member findById(UUID id) {
+	public Member findById(Long id) {
 		Optional<Member> optional = memberRepository.findById(id);
 		if (optional.isPresent()) {
 			Member member = optional.get();
@@ -129,7 +129,7 @@ public class MemberService {
 	}
 
 	@Transactional
-	public boolean deleteMemberById(UUID id) {
+	public boolean deleteMemberById(Long id) {
 		 if (memberRepository.existsById(id)) {
 				memberRepository.deleteById(id);
 				return true;

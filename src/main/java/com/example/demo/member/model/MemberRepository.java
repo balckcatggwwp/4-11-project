@@ -1,11 +1,10 @@
 package com.example.demo.member.model;
 
-import java.util.UUID;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 
-public interface MemberRepository extends JpaRepository<Member, UUID> {
+public interface MemberRepository extends JpaRepository<Member, Long> {
 	//Member登入用
 	Member findByEmail(String email);
 	List<Member> findByEmailContaining(String email);
