@@ -8,5 +8,5 @@ import com.example.demo.tick.bean.ShowtimeBean;
 
 public interface ShowtimeRepository extends JpaRepository<ShowtimeBean, Integer> {
 
-	List<ShowtimeBean> findStarttimeByStartdate(String startdate);
+	List<ShowtimeBean> findShowtimeByShowdate(String startdate);
 }

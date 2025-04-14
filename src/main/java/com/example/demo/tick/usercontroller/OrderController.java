@@ -1,4 +1,4 @@
-package com.example.demo.tick.controller;
+package com.example.demo.tick.usercontroller;
 
 import java.io.IOException;
 import java.util.List;
@@ -13,6 +13,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.example.demo.tick.bean.BookticketBean;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
+
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
@@ -22,24 +26,34 @@ import org.springframework.web.bind.annotation.RequestBody;
 public class OrderController {
 
 	@GetMapping("/orderset")
-	public String getMethodName() {
-		return "order/tickcar";
+	public String getMethodName(HttpServletRequest request) {
+		 HttpSession session = request.getSession();
+	        // 假設你在登入時將會員 ID 存放在 session 中，key 為 "memberId"
+	        Long memberId = (Long) session.getAttribute("memberId");
+	        System.out.println(memberId);
+	        if(memberId==null) {
+	        	return "member/login";
+	        }
+		return "order/tickcar"; 
+//		return "redirect:/";
 	}
 	
 	@GetMapping("/ordercheck")
 	public String getMethodName(@RequestParam String selectedSeatsJson
-			,@RequestParam Integer userid
+			,HttpServletRequest request
 			,@RequestParam Integer showtimeid
 			,@RequestParam Integer hallid
 			,@RequestParam Integer tickettypeid
 			,@RequestParam Integer movieid
 			,Model model
 			) {
-		
+		 HttpSession session = request.getSession();
+	        // 假設你在登入時將會員 ID 存放在 session 中，key 為 "memberId"
+	        Long memberId = (Long) session.getAttribute("memberId");
 		ObjectMapper objectMapper = new ObjectMapper();
 	    List<String> selectedSeats = null;
 	    BookticketBean itemBean = new BookticketBean();
-	    itemBean.setUserid(userid);
+	    itemBean.setMemberId(memberId);
 	    itemBean.setShowtimeid(showtimeid);
 	    itemBean.setHallid(hallid);
 	    itemBean.setTickettypeid(tickettypeid);
@@ -48,16 +62,21 @@ public class OrderController {
 	        selectedSeats = objectMapper.readValue(selectedSeatsJson, new TypeReference<List<String>>() {});
 	        // 現在 selectedSeats 就是包含選取座位 ID 的 List
 	        System.out.println(selectedSeats);
-	        
+	        int i = 0;
+           for(String stringgs :selectedSeats) {
+        	   i++;
+        	   System.out.println(i);
+           }
 	        // 在這裡處理你的訂單邏輯
 	    } catch (IOException e) {
 	        System.err.println("解析 JSON 失敗: " + e.getMessage());
 	        // 處理 JSON 解析錯誤
 	        // 可以返回錯誤頁面或者拋出異常
 	    }
-	    model.addAttribute("seat", selectedSeats);
-	    model.addAttribute("order", itemBean);
-		return "order/testecpay";
+//	    model.addAttribute("seat", selectedSeats);
+//	    model.addAttribute("order", itemBean);
+//		return "order/testecpay";
+		return "redirect:/";
 	}
 	
 	//綠界回傳結果
@@ -95,7 +114,7 @@ public class OrderController {
 		}else {
 			System.out.println("你好爛");
 		}
-		return "redirect:/";
+		return "redirect:/ticktable";
 	}
 	
 	

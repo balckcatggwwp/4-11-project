@@ -8,6 +8,6 @@ public class MoviePageController {
 
 	@GetMapping("/MovieList")
 	public String ListPage() {
-		return "/MovieList";
+		return "/Movie";
 	}
 }

@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>會員登入</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+  <link rel="stylesheet" href="/css/login.css">
+  <style>
+
+  </style>
+</head>
+<body>
+  <div class="container">
+  <form class="login-form" th:action="@{/member/login}" method="post">
+    <div class="tilte">
+      <div><span><i class="fa-solid fa-user"></i> 會員登入 </span></div>
+      <button class="btn" type="reset"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    <div class="group">
+      <label class="form-label" for="email">帳號:*</label>
+      <input type="text" name="email" placeholder="帳號">
+    </div>
+    <div class="group">
+      <label class="form-label" for="password">密碼:*</label>
+      <input type="password" name="password" placeholder="密碼">
+    </div>
+    <div class="button-group">
+      <div class="left-button">
+      <button type="submit">登入</button>
+      <button type="button"><a th:href="@{/member/register}">加入會員</button>
+      </div>
+      <div class="right-button" style="display:none;">
+      <button >忘記密碼</button>
+      </div>
+    </div>
+    
+  </form>
+
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script src="/js/jquery.js"></script>
+  <script>
+	$(document).ready(function(){
+	  $('.login-form').submit(function(e){
+	    e.preventDefault();
+	    $.ajax({
+	      url: '/member/login',
+	      type: 'POST',
+	      data: $('.login-form').serialize(), // 修正這裡
+	      success: function(response){
+	        if (response.status === 'success') {
+	          Swal.fire({
+	            icon: 'success',
+	            title: '登入成功',
+	            html: `歡迎 <b>${response.name}</b>！`,
+	            confirmButtonText: '前往首頁'
+	          }).then(() => {
+	            window.location.href = '/';
+	          });
+	        } else {
+	          Swal.fire({
+	            icon: 'error',
+	            title: '登入失敗',
+	            text: response.message || '請稍後再試'
+	          });
+	        }
+	      },
+	      error: function(xhr){
+	        Swal.fire({
+	          icon: 'error',
+	          title: '伺服器錯誤',
+	          text: '請稍後再試或聯絡客服'
+	        });
+	      }
+	    });
+	  });
+	});
+</script>
+</body>
+</html>

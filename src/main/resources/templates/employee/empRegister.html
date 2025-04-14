@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>會員註冊表單</title>
+    <style>
+        body {
+            font-family: "Roboto", sans-serif;
+            background: #f4f4f4;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+        }
+
+        .form {
+            background: #fff;
+            padding: 30px;
+            width: 450px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            text-align: center;
+        }
+
+
+        fieldset {
+            border: none;
+            margin-bottom: 20px;
+            text-align: left;
+        }
+
+        legend {
+            font-size: 18px;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .st1 {
+            margin-bottom: 15px;
+        }
+
+        .t1 {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 5px;
+            color: #555;
+        }
+
+        input,
+        select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+            transition: 0.3s;
+        }
+
+        input:focus,
+        select:focus {
+            border-color: #4CAF50;
+            box-shadow: 0 0 5px rgba(76, 175, 80, 0.5);
+            outline: none;
+        }
+
+        .gender-group input {
+            width: auto;
+            margin-right: 5px;
+        }
+        
+        .level-group input {
+            width: auto;
+            margin-right: 5px;
+        }
+
+        .button-group {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 10px;
+        }
+
+        input[type="submit"],
+        input[type="reset"] {
+            width: 48%;
+            padding: 12px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        input[type="submit"] {
+            background: #4CAF50;
+            color: white;
+        }
+
+        input[type="submit"]:hover {
+            background: #45a049;
+        }
+
+        input[type="reset"] {
+            background: #ccc;
+            color: black;
+        }
+
+        input[type="reset"]:hover {
+            background: #bbb;
+        }
+
+        .message {
+            margin-top: 15px;
+            font-size: 14px;
+            color: #666;
+        }
+
+        .message a {
+            color: #4CAF50;
+            text-decoration: none;
+            font-weight: bold;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="form">
+        <form class="register-form" method="post" th:action="@{/employee/empRegister}">
+              <fieldset>
+                <legend>基本個人資料</legend>
+                <div class="st1">
+                    <label class="t1">員工姓名 (Name):</label>
+                    <input type="text" name="name" required />
+                    <label class="t1">員工生日 (DateOfBirth):</label>
+					<input type="date" name="dateOfBirth" value="2001-01-01" required>
+                </div>
+                <div class="st1 gender-group">
+                    <label class="t1">員工性別 (Gender):</label>
+                    <input type="radio" name="gender" value="male" id="male" required />
+                    <label for="male">男生</label>
+                    <input type="radio" name="gender" value="female" id="female" required />
+                    <label for="female">女生</label>
+                </div>
+                <div class="st1">
+                    <label class="t1">帳號 (Email):</label>
+                    <input id="email" type="email" name="email" required />
+                </div>
+                <div class="st1">
+                    <label class="t1">手機號碼 (Phone Number):</label>
+                    <input id="phoneNumber" type="text" name="phoneNumber" maxlength="10" pattern="[0]{1}[9]{1}\d{8}" placeholder="須按照格式(09XXXXXXXX)" required />
+                </div>
+                <div class="st1">
+                    <label class="t1">請輸入密碼 (Password):</label>
+                    <input id="password" type="password" name="password" required />
+                </div>
+                <div class="st1">
+                    <label class="t1">確認密碼 (Confirm Password):</label>
+                    <input type="password" name="password2" required />
+                </div>
+            </fieldset>
+			
+			<fieldset>
+                <legend>員工資料</legend>
+                <div class="st1">
+                    <label class="t1">員工職稱:</label>
+                    <select id="jobTitle" name="jobTitle" required>
+                      <option value="經理">經理</option>
+                      <option value="店長">店長</option>
+                      <option value="副店長">副店長</option>
+                      <option value="會員管理人員">會員管理人員</option>
+                      <option value="訂票管理人員">訂票管理人員</option>
+                      <option value="餐點管理人員">餐點管理人員</option>
+                      <option value="電影管理人員">電影管理人員</option>
+                      <option value="工讀生">工讀生</option>
+                    </select>
+                </div>
+                <div class="st1 level-group">
+                    <label class="t1">員工權限等級:</label>
+                    <input type="radio" name="permissionLevel" value="1" id="1" required />
+                    <label for="1">1</label>
+                    <input type="radio" name="permissionLevel" value="2" id="2" required />
+                    <label for="2">2</label>
+                    <input type="radio" name="permissionLevel" value="3" id="3" required />
+                    <label for="3">3</label>
+                    <input type="radio" name="permissionLevel" value="4" id="4" required />
+                    <label for="4">4</label>
+                    <input type="radio" name="permissionLevel" value="5" id="5" required />
+                    <label for="5">5</label>
+                </div>
+                <div class="st1">
+                	<label class="t1">員工入職時間(entryTime)</label>
+					<input type="date" name="entryTime">
+                </div>
+            </fieldset>
+			
+            <div class="button-group">
+                <input type="submit" value="送出" />
+                <input type="reset" value="取消"/>
+            </div>
+        </form>
+        
+    </div>
+    <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="/js/empRegister.js"></script>
+	
+</body>
+
+</html>

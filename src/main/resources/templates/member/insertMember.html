@@ -1,0 +1,56 @@
+<div layout:decorate="~{layout/empLayout}" xmlns:th="http://www.thymeleaf.org"
+     xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+
+    <th:block  layout:fragment="head">
+    <link href="/css/insertMember.css" rel="stylesheet" />
+    </th:block >
+    
+    <div layout:fragment="main-content" class="container-fluid emp-dashboard-container">
+    <div class="container" style="width:100%;margin:auto">
+    <h1>新增會員</h1>
+	<form class="register-form" th:action="@{/member/insertMember}" method="post">
+	<div class="form-group">
+		<label class="t1">會員姓名 (Name):</label>
+		<input type="text" name="name" placeholder="中英文皆可(全名)" required>
+	</div>
+	<div class="form-group">
+		<label class="t1">身分證號碼 (NationalId):</label>
+		<input type="text" name="nationalId" maxlength="10" pattern="[a-zA-Z]{1}[1-2,8-9]{1}\d{8}" placeholder="須按照格式(A1XXXXXXXX)" required>
+		<label class="t1">會員生日 (DateOfBirth):</label>
+		<input type="date" name="dateOfBirth" value="2001-01-01" required>
+	</div>
+	<div class="form-group">
+		<label class="t1">會員性別 (Gender):</label>
+		<span class=gender-label>男生</span>
+		<input type="radio" name="gender" value="male" id="male" required />
+		<span class=gender-label>女生</span>
+		<input type="radio" name="gender" value="female" id="female" required />
+		<span class=gender-label>不願透漏</span>
+		<input type="radio" name="gender" value="other" id="other" required />
+	</div>
+	<div class="form-group">
+		<label class="t1">帳號 (Email):</label>
+		<input type="text" name="email" placeholder="請輸入註冊信箱" >
+	</div>
+	<div class="form-group">
+		<label class="t1">手機號碼 (PhoneNumber):</label>
+		<input type="text" name="phoneNumber"  maxlength="10" pattern="[0]{1}[9]{1}\d{8}" placeholder="09XXXXXXXX">
+	</div>
+	<div class="form-group">
+		<label class="t1">密碼 (Password):</label>
+		<input type="text" name="password"placeholder="請輸入密碼">
+		<label class="t1">確認密碼 (Confirm Password):</label>
+		<input type="text" name="password2" placeholder="確認密碼" required />
+	</div>
+	<div class="button-group">
+		<button type="submit">確定新增</button>
+		<button type="reset"><a th:href="@{/member/MemberManager}">取消</a></button>
+	</div>
+	</form>
+    </div>
+    
+    </div>
+    
+     <th:block  layout:fragment="scripts">
+	 <script src="/js/insertMember.js"></script>
+    </th:block >

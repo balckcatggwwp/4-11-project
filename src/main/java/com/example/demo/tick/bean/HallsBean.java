@@ -3,15 +3,16 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-@Entity@Table(name = "halls")
+@Entity@Table(name = "theater")
+@Getter
+@Setter
+@NoArgsConstructor
 public class HallsBean {
-	@Id @Column(name = "hallid")
-	private int hallid;
-	public int getHallid() {
-		return hallid;
-	}
-	public void setHallid(int hallid) {
-		this.hallid = hallid;
-	}
+	@Id @Column(name = "theaterid")
+	private int theaterid;
+	
 }

@@ -27,85 +27,16 @@
         box-sizing: border-box;
       }
 
-      li {
-        list-style: none;
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        font-size: 18px;
-        color: #ffd700;
-        background-color: #222;
-        width: 80%;
-        height: 60px;
-        margin: 5px 0;
-        margin-left: 10%;
-        border-radius: 5px;
-        cursor: pointer;
-        transition: all 0.3s ease;
-        justify-content: center;
-      }
 
-      li:hover {
-        background-color: #ffcc00;
-        color: #000;
-        transform: scale(1.1);
-      }
 
-      li i {
-        font-size: 24px;
-        transition: all 0.3s ease;
-      }
 
-      li:active {
-        position: relative;
-        top: 2px;
-        background-color: #b22222;
-        color: #fff;
-      }
-
-      figure {
-        float: left;
-        background-color: #000;
-        padding: 20px 0;
-        font-size: 100px;
-        color: #ffd700;
-        width: 10%;
-        height: 1000px;
-        text-align: center;
-      }
+    
 
       .one {
         margin-top: 100px;
       }
 
-      ul {
-        display: flex;
-        flex-direction: column;
-        gap: 10px;
-        padding-left: 0;
-      }
-
-      li a {
-        display: block;
-        width: 100%;
-        padding: 10px;
-        text-decoration: none;
-        color: black;
-      }
-
-      li a:active {
-        position: relative;
-        top: 2px;
-        background-color: transparent;
-        color: white;
-      }
-
-      .clock {
-        color: #ffd700;
-        font-size: 20%;
-        letter-spacing: 7px;
-        padding-top: 10px;
-      }
+ 
 
       #new {
         font-size: 30px;
@@ -307,18 +238,8 @@
   </head>
 
   <body>
-    <div class="header">光影之門後台系統MovieTicket</div>
-    <figure>
-      <ul>
-        <!-- div id="MyClockDisplay" class="clock" onload="showTime()"></div> -->
-        <li class="one"><i class="fa-solid fa-house"></i></li>
-        <!--  <li class="two"><i class="fa-solid fa-ticket"></i></li>-->
-        <!-- <li class="three"><i class="fa-solid fa-clock"></i></li> -->
-        <li class="fort"><i class="fa-solid fa-film"></i></li>
-        <li class="five"><i class="fa-solid fa-utensils"></i></li>
-        <li class="six"><i class="fa-solid fa-bullhorn"></i></li>
-      </ul>
-    </figure>
+  <div th:replace="~{laout/tableremack}"></div>
+    
     <!-- -------------------------------------------------------------------------------------------- -->
     <div id="selectfind">
       <form action="/booktick/other">
@@ -441,10 +362,10 @@
               type: "GET",
               success: function (respones) {
                 $.each(respones, function (i, e) {
-                  //$('#moviename').append(`<option value="${e.moviename}">${e.moviename}</option>`)
+                  //$('#moviename').append(`<option value="${e.name}">${e.name}</option>`)
                   //$('#moviename').val(e.moviename)
                   $("#selname").append(
-                    `<option value="${e.moviename}">${e.moviename}</option>`
+                    `<option value="${e.name}">${e.name}</option>`
                   );
                 });
               },
@@ -486,7 +407,15 @@
         });
 
         $(document).ready(function () {
-          $("#myTable").DataTable();
+          $("#myTable").DataTable(
+          
+		{
+		info: false,
+					lengthChange: false,
+		
+		}
+          
+          );
         });
       });
     </script>

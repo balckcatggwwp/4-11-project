@@ -1,0 +1,115 @@
+@charset "UTF-8";
+
+body {
+      font-family: "Roboto", sans-serif;
+      background: #f4f4f4;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      margin: 0;
+}
+
+ .form {
+     background: #fff;
+     padding: 30px;
+     width: 450px;
+     border-radius: 10px;
+     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+     text-align: center;
+}
+
+
+ fieldset {
+     border: none;
+     margin-bottom: 20px;
+     text-align: left;
+ }
+
+ legend {
+     font-size: 18px;
+     font-weight: bold;
+     color: #333;
+     margin-bottom: 10px;
+ }
+
+ .st1 {
+     margin-bottom: 15px;
+ }
+
+ .t1 {
+     display: block;
+     font-weight: bold;
+     margin-bottom: 5px;
+     color: #555;
+ }
+
+ input,
+ select {
+     width: 100%;
+     padding: 10px;
+     border: 1px solid #ccc;
+     border-radius: 5px;
+     font-size: 16px;
+     transition: 0.3s;
+ }
+
+ input:focus,
+ select:focus {
+     border-color: #4CAF50;
+     box-shadow: 0 0 5px rgba(76, 175, 80, 0.5);
+     outline: none;
+ }
+
+ .gender-group input {
+     width: auto;
+     margin-right: 5px;
+ }
+
+ .button-group {
+     display: flex;
+     justify-content: space-between;
+     margin-top: 10px;
+ }
+
+ input[type="submit"],
+ input[type="reset"] {
+     width: 48%;
+     padding: 12px;
+     border: none;
+     border-radius: 5px;
+     font-size: 16px;
+     font-weight: bold;
+     cursor: pointer;
+     transition: background 0.3s;
+ }
+
+ input[type="submit"] {
+     background: #4CAF50;
+     color: white;
+ }
+
+ input[type="submit"]:hover {
+     background: #45a049;
+ }
+
+ input[type="reset"] {
+     background: #ccc;
+     color: black;
+ }
+
+ input[type="reset"]:hover {
+     background: #bbb;
+ }
+
+ .message {
+     margin-top: 15px;
+     font-size: 14px;
+     color: #666;
+ }
+
+ .message a {
+     color: #4CAF50;
+     text-decoration: none;
+     font-weight: bold;
+ }

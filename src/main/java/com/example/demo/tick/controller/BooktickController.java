@@ -21,7 +21,7 @@ public class BooktickController {
 	@Autowired
 	private BookvuService bookvuService;
 
-	@GetMapping("/")
+	@GetMapping("/ticktable")
 	public String tickall(Model model) {
 		List<BookticketvuBean> vu = bookvuService.tickfindAll();
 		model.addAttribute("tickall", vu);
@@ -40,7 +40,7 @@ public class BooktickController {
 	@PostMapping("/booktick/Updatea")
 	public String updateTick(@ModelAttribute BookticketBean updatedTick) {
 		bookvuService.updatetick(updatedTick);
-		return "redirect:/"; // 更新成功後重定向到訂票列表頁面
+		return "redirect:/ticktable"; // 更新成功後重定向到訂票列表頁面
 	}
 
 	@GetMapping("/booktick/inser")
@@ -57,7 +57,7 @@ public class BooktickController {
 	@GetMapping("/booktick/del")
 	public String dele(@RequestParam Integer id) {
 		bookvuService.deltick(id);
-		return "redirect:/";
+		return "redirect:/ticktable";
 	}
 
 	///////////// other
@@ -79,7 +79,7 @@ public class BooktickController {
 			vu= bookvuService.findother(select, userid);
 		} else if (select == 4) {
 			vu= bookvuService.findothers(select, startdate);
-		} else if (select == 5) {
+		} else if (select == 5) { 
 			vu= bookvuService.findother(select, hallid);
 		}else if (select == 6) {
 			System.out.println(findname);

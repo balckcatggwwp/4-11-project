@@ -20,8 +20,8 @@ public class BookticketBean {
 	private int tickid;
 	@Column(name = "orderid")
 	private String orderid;
-	@Column(name = "userid")
-	private int userid;
+	@Column(name = "memberId")
+	private Long memberId;
 	@Column(name = "showtimeid")
 	private int showtimeid;
 	@Column(name = "seatid")
@@ -36,11 +36,11 @@ public class BookticketBean {
 	private int tickettypeid;
 	@Column(name = "payout")
 	private String payout;
-	public BookticketBean(String orderid, int userid, int showtimeid, String seatid, int hallid, int onemoney,
+	public BookticketBean(String orderid, Long memberId, int showtimeid, String seatid, int hallid, int onemoney,
 			int movieid, int tickettypeid, String payout) {
 		super();
 		this.orderid = orderid;
-		this.userid = userid;
+		this.memberId = memberId;
 		this.showtimeid = showtimeid;
 		this.seatid = seatid;
 		this.hallid = hallid;

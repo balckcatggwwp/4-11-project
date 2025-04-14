@@ -5,24 +5,19 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-@Entity@Table(name = "Movieinfo")
+@Entity@Table(name = "movielist")
+@Getter
+@Setter
+@NoArgsConstructor
 public class MovieInfoBean {
-	@Id@Column(name = "movieid")
+	@Id@Column(name = "id")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int movieid;
-	@Column(name = "moviename")
-	private String moviename;
-	public String getMoviename() {
-		return moviename;
-	}
-	public void setMoviename(String moviename) {
-		this.moviename = moviename;
-	}
-	public int getMovieid() {
-		return movieid;
-	}
-	public void setMovieid(int movieid) {
-		this.movieid = movieid;
-	}
+	private int id;
+	@Column(name = "name")
+	private String name;
+
 }
