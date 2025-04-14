@@ -159,6 +159,10 @@
 
         const result = await res.json();
         document.getElementById("imageUrl").value = result.url;
+        const preview = document.getElementById("previewImage");
+  if (preview) {
+    preview.src = result.url;
+  }
       });
 
       form.addEventListener('submit', async function (e) {
