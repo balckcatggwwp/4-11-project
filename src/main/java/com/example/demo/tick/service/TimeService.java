@@ -16,7 +16,7 @@ public class TimeService {
 	private ShowtimeRepository showtimeRepository;
 	
 	public List<ShowtimeBean> findtimebydate(String date) {
-		return showtimeRepository.findStarttimeByStartdate(date);
+		return showtimeRepository.findShowtimeByShowdate(date);
 	}
 	
 	public Optional<ShowtimeBean> findtimedate(Integer id) {

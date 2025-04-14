@@ -16,8 +16,8 @@ public class ShowtimeBean {
 	@Id @Column(name = "showtimeid")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int showtimeid;
-	@Column(name = "startdate")
-	private String startdate;
-	@Column(name = "starttime")
-	private String starttime; 
+	@Column(name = "showdate")
+	private String showdate;
+	@Column(name = "showtime")
+	private String showtime; 
 }

@@ -20,7 +20,7 @@ public class BookticketvuBean {
 	@Column(name = "orderid")
 	private String orderid;
 	@Column(name = "memberId")
-	private int userid;
+	private int memberId;
 	//private String startdate;
 	@Column(name = "showid")
 	private int showtimeid;
@@ -35,9 +35,9 @@ public class BookticketvuBean {
 	@Column(name = "payout")
 	private String payout;
 	@Column(name = "showtimedate")
-	private String startdate;
+	private String showtimedate;
 	@Column(name = "showtime")
-	private String starttime;
+	private String showtime;
 	@Column(name = "ticktype")
 	private String booktype;
 	@Column(name = "ticktypeid")

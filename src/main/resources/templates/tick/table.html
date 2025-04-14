@@ -362,10 +362,10 @@
               type: "GET",
               success: function (respones) {
                 $.each(respones, function (i, e) {
-                  //$('#moviename').append(`<option value="${e.moviename}">${e.moviename}</option>`)
+                  //$('#moviename').append(`<option value="${e.name}">${e.name}</option>`)
                   //$('#moviename').val(e.moviename)
                   $("#selname").append(
-                    `<option value="${e.moviename}">${e.moviename}</option>`
+                    `<option value="${e.name}">${e.name}</option>`
                   );
                 });
               },

@@ -192,7 +192,7 @@ $(function () {
                 $('#time').append(`<option value="">場次</option>`);
                 $.each(respones, function (i, e) {
 
-                    $('#time').append(`<option value="${e.showtimeid}">${e.starttime}</option>`)
+                    $('#time').append(`<option value="${e.showtimeid}">${e.showtime}</option>`)
                 })
             }
 
@@ -212,7 +212,7 @@ $(function () {
             type: 'GET',
             success: function (respones) {
 
-
+				console.log(respones)
                 $('#moviename').append(`<option value="${respones.movieid}">${respones.moviename}</option>`)
 
 
@@ -235,7 +235,7 @@ $(function () {
             success: function (respones) {
                 $.each(respones, function (i, e) {
                     //console.log(e.hallid);
-                    $('#halls').append(`<option value="${e.hallid}" >${e.hallid}</option>`)
+                    $('#halls').append(`<option value="${e.theaterid}" >${e.theaterid}</option>`)
 
 
 
