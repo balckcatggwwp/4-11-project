@@ -40,14 +40,14 @@
           </a>
         </li>
         <li class="user-menu">
-          <span th:switch="${session.memberDetail != null}">
+          <span th:switch="${session.memberId!= null}">
             <span th:case="false">
               <a th:href="@{/member/login}">登入/註冊</a>
               <i class="fa-solid fa-user"></i>
             </span>
 
             <span th:case="true">
-              歡迎, <span th:text="${session.memberDetail.name}">使用者</span>
+              歡迎, <span th:text="${session.memberName}">使用者</span>
               <a th:href="@{/member/logout}">登出</a>
               <i class="fa-solid fa-user-check"></i>
             </span>
