@@ -222,12 +222,25 @@ public class MemberController {
 		return "layout/navbar";
 	}
 	
+	
+	
 
+	@GetMapping("indexLayout")
+	public String indexLayout() {
+		return "indexLayout";
+	}
 	
 	
 	
+	@GetMapping("layout2")
+	public String layout2() {
+		return "layout2";
+	}
 	
-	
+	@GetMapping("index2")
+	public String index2() {
+		return "index2";
+	}
 	
 	
 }
