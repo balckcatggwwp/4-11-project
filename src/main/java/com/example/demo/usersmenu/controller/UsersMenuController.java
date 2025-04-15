@@ -14,6 +14,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import com.example.demo.usersmenu.model.UsersMenu;
 import com.example.demo.usersmenu.model.UsersMenuRepository;
 
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
+
 @Controller
 @RequestMapping("/usersmenu")
 public class UsersMenuController {
@@ -21,7 +24,20 @@ public class UsersMenuController {
     private UsersMenuRepository usersMenuRepository;
 
     @GetMapping("/page/{pageNumber}")
-    public String getMenusByPage(@PathVariable("pageNumber") int pageNumber, Model model) {
+    public String getMenusByPage(@PathVariable("pageNumber") int pageNumber, Model model, HttpServletRequest request) {
+    	
+    	
+    	HttpSession session = request.getSession();
+        // 假設你在登入時將會員 ID 存放在 session 中，key 為 "memberId"
+        Long memberId = (Long) session.getAttribute("memberId");
+        System.out.println(memberId);
+        if(memberId==null) {
+        	return "member/login";
+        }
+    	
+    	
+    	
+    	
         int pageSize = 6;
         Pageable pageable = PageRequest.of(pageNumber - 1, pageSize);
 
