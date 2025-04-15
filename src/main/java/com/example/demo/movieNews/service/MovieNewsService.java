@@ -43,13 +43,17 @@ public class MovieNewsService {
         existing.setSummary(news.getSummary());
         existing.setContent(news.getContent());
         existing.setImageUrl(news.getImageUrl());
-        existing.setStatus(news.getStatus());
+        existing.setType(news.getType());
+        
+        if (news.getStatus() == null || news.getStatus().isBlank()) {
+            news.setStatus("active");
+        }
         
         if (news.getPublishDate() != null) {
             existing.setPublishDate(news.getPublishDate());
         }
         existing.setUpdatedAt(new Date());
-        
+        existing.setIsAd(news.getIsAd() != null ? news.getIsAd() : false);
         
 
         return repository.save(existing);
