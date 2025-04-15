@@ -91,5 +91,10 @@ public class MovieNewsController {
     public List<MovieNews> getActiveNews() {
         return repository.findByStatus("active");
     }
+    
+    @GetMapping("/ads")
+    public List<MovieNews> getAds() {
+        return repository.findByIsAdTrue();
+    }
 
 }
