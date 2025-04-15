@@ -28,6 +28,9 @@ public class HallService {
 	public onofflineBean findnamebyhallid(Integer id) {
 		return onoffRepository.findMovienameByHallid(id);
 	}
+	public List<onofflineBean> findallonline() {
+		return onoffRepository.findAll();
+	}
 	public List<MovieInfoBean> findAll() {
 		return moveinfoRepository.findAll();
 		
