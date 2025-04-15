@@ -1,6 +1,7 @@
 package com.example.demo.tick.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,6 +18,10 @@ public class TypeService {
 	public List<BookTypeBean> findtype() {
 		return bookTypeRepository.findAll();
 		
+	}
+	
+	public BookTypeBean findmony(Integer id) {
+		return bookTypeRepository.findMoneytypebyTickettypeid(id);
 	}
 	
 }

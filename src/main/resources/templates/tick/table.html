@@ -285,9 +285,9 @@
             <tr>
               <td th:text="${tickinfos.tickid}"></td>
               <td th:text="${tickinfos.orderid}"></td>
-              <td th:text="${tickinfos.userid}"></td>
-              <td th:text="${tickinfos.startdate}"></td>
-              <td th:text="${tickinfos.starttime}"></td>
+              <td th:text="${tickinfos.memberId}"></td>
+              <td th:text="${tickinfos.showtimedate}"></td>
+              <td th:text="${tickinfos.showtime}"></td>
               <td th:text="${tickinfos.seatid}"></td>
               <td th:text="${tickinfos.hallid}"></td>
               <td th:text="${tickinfos.onemoney}"></td>
@@ -338,12 +338,12 @@
           } else if ($("#findtick").val() == 3) {
             console.log(3);
             $("#fromfind").append(
-              `<input placeholder="請輸入會員ID" name="userid">`
+              `<input placeholder="請輸入會員ID" name="memberId">`
             );
           } else if ($("#findtick").val() == 4) {
             console.log(4);
             $("#fromfind").append(
-              `<p><input type="date" placeholder="請選擇日期" name="startdate" id="date1"></p>`
+              `<p><input type="date" placeholder="請選擇日期" name="showtimedate" id="date1"></p>`
             );
           } else if ($("#findtick").val() == 5) {
             console.log(5);

@@ -19,7 +19,7 @@ public class BookticketBean {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int tickid;
 	@Column(name = "orderid")
-	private String orderid;
+	private Long orderid;
 	@Column(name = "memberId")
 	private Long memberId;
 	@Column(name = "showtimeid")
@@ -36,7 +36,7 @@ public class BookticketBean {
 	private int tickettypeid;
 	@Column(name = "payout")
 	private String payout;
-	public BookticketBean(String orderid, Long memberId, int showtimeid, String seatid, int hallid, int onemoney,
+	public BookticketBean(Long orderid, Long memberId, int showtimeid, String seatid, int hallid, int onemoney,
 			int movieid, int tickettypeid, String payout) {
 		super();
 		this.orderid = orderid;

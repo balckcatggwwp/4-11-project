@@ -13,9 +13,11 @@ public interface BooktickvuRepository extends JpaRepository<BookticketvuBean, In
 
 	@Query("SELECT b FROM BookticketvuBean b WHERE b.tickid = :id")
     List<BookticketvuBean> findbyTickid(@Param("id") Integer id);
+	@Query("SELECT b FROM BookticketvuBean b WHERE b.tickid = :id")
+	BookticketvuBean findbymoney(@Param("id") Integer id);
 
     @Query("SELECT b FROM BookticketvuBean b WHERE b.orderid = :id")
-    List<BookticketvuBean> findbyOrderid(@Param("id") String id);
+    List<BookticketvuBean> findbyOrderid(@Param("id") Long id);
 
     @Query("SELECT b FROM BookticketvuBean b WHERE b.memberId = :id")
     List<BookticketvuBean> findbyUserid(@Param("id") Integer id);
@@ -32,4 +34,5 @@ public interface BooktickvuRepository extends JpaRepository<BookticketvuBean, In
     @Query("SELECT b FROM BookticketvuBean b WHERE b.payout = :pay")
     List<BookticketvuBean> findbyPayout(@Param("pay") String pay);
 
+    
 }
