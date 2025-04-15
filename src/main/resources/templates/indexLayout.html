@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"/>
+	<link rel="stylesheet" href="/css/indexLayout.css" />
+</head>
+<body>
+<div class="menu-btn">
+   <i class="fas fa-bars fa-2x"></i>
+ </div>
+<!-- Nav -->
+<nav class="main-nav">
+<img src="/imgs/logo.png" alt="光影之門" class="logo" style="width:120px">
+
+	<ul class="main-menu">
+		<li><a href="#">會員專區</a></li>
+		<li><a href="#">餐點訂購</a></li>
+		<li><a th:href="@{/orderset}">訂票專區</a></li>
+		<li><a href="#">最新公告</a></li>
+		<li><a href="#">場次查詢</a></li>
+		<li><a th:href="@{/employee/empLogin}">員工登入(後台)</a></li>
+		<li><a th:href="@{/employee/empRegister}">員工註冊(後台)</a></li>
+	</ul>
+
+	<ul class="right-menu">
+		<li>
+			<a href="#">
+			<i class="fas fa-search"></i>
+			</a>
+		</li>
+		<li>
+			<a href="#">
+			<i class="fas fa-shopping-cart"></i>
+			</a>
+		</li>
+		<li class="user-menu">
+			<span th:switch="${session.memberId!= null}">
+			<span th:case="false">
+			<a th:href="@{/member/login}">登入/註冊</a>
+			<i class="fa-solid fa-user"></i>
+			</span>
+		
+			<span th:case="true">
+			歡迎, <span th:text="${session.memberName}">使用者</span>
+			<a th:href="@{/member/logout}">登出</a>
+			<i class="fa-solid fa-user-check"></i>
+			</span>
+			</span>
+		</li>
+	</ul>
+	<div class="nav-expand-box">
+		<p>這是展開區塊的內容，可放最新消息、快捷連結等等。</p>
+	</div>
+</nav>
+	
+</body>
+</html>
