@@ -8,6 +8,7 @@
 
     <link rel="stylesheet" href="https://code.jquery.com/ui/1.14.1/themes/base/jquery-ui.css">
     <link rel="stylesheet" th:href="@{tickcss/car.css}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.17.2/dist/sweetalert2.min.css" />
 </head>
 
 <body>
@@ -15,22 +16,22 @@
     <form action="ordercheck" method="get" id="yourFormId">
         <!-- 用session自己帶 -->
         <!-- <input name="userid" placeholder="會員" class="form-control ud" type="text"> -->
-        <input type="text" id="datepicker" class="form-control" placeholder="日期">
-        <select name="showtimeid" id="time">
+        <input type="text" id="datepicker" class="form-control" placeholder="日期" required readonly>
+        <select name="showtimeid" id="time" required>
             <option value="">場次</option>
-
         </select>
-        <select class="form-control selectpicker" id="halls" name="hallid">
+        <select class="form-control selectpicker" id="moviename" name="movieid" required>
+            <option value="">電影</option>
+        </select>
+        <select name="tickettypeid" class="form-control selectpicker" id="type" required>
+            <option value="">票種</option>
+        </select>
+        <select name="hallid" class="form-control selectpicker" id="halls" required>
             <option value="">廳</option>
         </select>
-        <select name="tickettypeid" class="form-control selectpicker" id="type">
-            <option value=" ">票種</option>
-        </select>
-        <select name="movieid" class="form-control selectpicker" id="moviename">
-            <option value=" ">電影</option>
-        </select>
-        <input name="onemoney" placeholder="單價" class="form-control" type="text" id="money">
-        <button type="submit">確認</button>
+        <input name="onemoney" placeholder="單價" class="form-control ud" type="text" id="money">
+        <button type="submit" id="gogo">確認</button>
+        <!-- <a id="gogo" class="new"></a> -->
     </form>
     <div class="cinema">
 
@@ -116,15 +117,15 @@
             <ul class="legend">
                 <li>
                     <div class="ok"></div>
-                    <small>可選 (綠)</small>
+                    <small class="da">可選 (綠)</small>
                 </li>
                 <li>
                     <div class="sele"></div>
-                    <small>已選 (藍)</small>
+                    <small class="da">已選 (藍)</small>
                 </li>
                 <li>
                     <div class="red"></div>
-                    <small>已佔用 (紅)</small>
+                    <small class="da">已佔用 (紅)</small>
                 </li>
             </ul>
 
@@ -132,8 +133,8 @@
 
 
             <div class="summary">
-                <p>已選擇 <span id="count">0</span> 個座位</p>
-                <p>總金額: $<span id="total">0</span></p>
+                <p class="da">已選擇 <span id="count">0</span> 個座位</p>
+                <p class="da">總金額: $<span id="total">0</span></p>
                 <!-- 可以加一個確認按鈕 -->
                 <!-- <button>確認訂票</button> -->
             </div>
@@ -145,6 +146,7 @@
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.17.2/dist/sweetalert2.all.min.js"></script>
 
         <script th:inline="javascript" src="/tickjs/car.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 </body>
 

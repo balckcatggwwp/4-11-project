@@ -37,11 +37,19 @@ public class BookvuService {
 		return booktickRepository.save(bean);
 
 	}
+	public BookticketBean inser(BookticketBean bean) {
+		return booktickRepository.save(bean);
+		
+	}
 
 	public void deltick(Integer id) {
 		booktickRepository.deleteById(id);
 	}
-
+	
+	public BookticketvuBean findmoneybyid( Integer id) {
+		return booktickvuRepo.findbymoney(id);
+	}
+	
 	///////////////////////////// find other
 	public List<BookticketvuBean> findother(Integer se, Integer id) {
 
@@ -57,11 +65,11 @@ public class BookvuService {
 		return null;
 	}
 
-	public List<BookticketvuBean> findothers(Integer se, String id) {
+	public List<BookticketvuBean> findothers(Integer se, String id,Long orderid) {
 
 		if (se == 2) {
 
-			return booktickvuRepo.findbyOrderid(id);
+			return booktickvuRepo.findbyOrderid(orderid);
 		} else if (se == 4) {
 
 			return booktickvuRepo.findbyShowtimedate(id);
