@@ -13,7 +13,7 @@ import com.example.demo.tick.bean.BookticketBean;
 import com.example.demo.tick.bean.BookticketvuBean;
 import com.example.demo.tick.bean.OrderBean;
 import com.example.demo.tick.service.BookvuService;
-import com.example.demo.tick.service.OrderService;
+import com.example.demo.tick.service.TickorderService;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -26,7 +26,7 @@ public class BooktickController {
 	@Autowired
 	private BookvuService bookvuService;
 	@Autowired 
-	private OrderService orderService;
+	private TickorderService orderService;
 	
 	@GetMapping("/ticktable")
 	public String tickall(Model model) {

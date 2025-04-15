@@ -19,7 +19,7 @@ import com.example.demo.tick.bean.OrderBean;
 import com.example.demo.tick.repo.BooktickRepository;
 import com.example.demo.tick.repo.BooktickvuRepository;
 import com.example.demo.tick.service.BookvuService;
-import com.example.demo.tick.service.OrderService;
+import com.example.demo.tick.service.TickorderService;
 import com.example.demo.tick.service.TypeService;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -36,7 +36,7 @@ public class OrderController {
 	@Autowired
 	private TypeService typeService;
 	@Autowired
-	private OrderService orderService;
+	private TickorderService orderService;
 	@Autowired
 	private BookvuService bookvuService;
 

@@ -10,7 +10,7 @@ import com.example.demo.tick.bean.OrderBean;
 import com.example.demo.tick.repo.OrderRepository;
 
 @Service
-public class OrderService {
+public class TickorderService {
 
 
 	@Autowired
