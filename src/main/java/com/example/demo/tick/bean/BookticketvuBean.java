@@ -18,7 +18,7 @@ public class BookticketvuBean {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int tickid;
 	@Column(name = "orderid")
-	private String orderid;
+	private Long orderid;
 	@Column(name = "memberId")
 	private int memberId;
 	//private String startdate;

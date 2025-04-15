@@ -8,12 +8,14 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-
+import com.example.demo.DemoApplication;
 import com.example.demo.tick.bean.BookticketBean;
 import com.example.demo.tick.bean.BookticketvuBean;
 import com.example.demo.tick.bean.OrderBean;
 import com.example.demo.tick.service.BookvuService;
 import com.example.demo.tick.service.TickorderService;
+
+import groovyjarjarantlr4.runtime.misc.IntArray;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -23,10 +25,16 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
 public class BooktickController {
+
+    private final DemoApplication demoApplication;
 	@Autowired
 	private BookvuService bookvuService;
 	@Autowired 
 	private TickorderService orderService;
+
+    BooktickController(DemoApplication demoApplication) {
+        this.demoApplication = demoApplication;
+    }
 	
 	@GetMapping("/ticktable")
 	public String tickall(Model model) {
@@ -47,11 +55,15 @@ public class BooktickController {
 	@PostMapping("/booktick/Updatea")
 	public String updateTick(@ModelAttribute BookticketBean updatedTick) {
 		BookticketvuBean vuBean = bookvuService.findmoneybyid(updatedTick.getTickid());
-		vuBean.getOnemoney();
+		
 		OrderBean oBean = new OrderBean();
 		oBean.setUserid(updatedTick.getMemberId());
 		oBean.setOrderid(updatedTick.getOrderid());
-		 
+		Optional<OrderBean>optional= orderService.findbyorder(updatedTick.getOrderid());
+		Integer a = optional.get().getSumpay()-vuBean.getOnemoney()+updatedTick.getOnemoney();
+		oBean.setSumpay(a);
+		oBean.setOrderdate(optional.get().getOrderdate());
+		orderService.update(oBean);
 		bookvuService.updatetick(updatedTick);
 		return "redirect:/ticktable"; // 更新成功後重定向到訂票列表頁面
 	}
@@ -85,6 +97,12 @@ public class BooktickController {
 
 	@GetMapping("/booktick/del")
 	public String dele(@RequestParam Integer id) {
+		Optional<BookticketvuBean>optional =  bookvuService.findtickbyid(id);
+		
+		Optional<OrderBean> op2 = orderService.findbyorder(optional.get().getOrderid());
+		int a= op2.get().getSumpay()-optional.get().getOnemoney();
+		op2.get().setSumpay(a);
+		orderService.update(op2.get());
 		bookvuService.deltick(id);
 		return "redirect:/ticktable";
 	}
