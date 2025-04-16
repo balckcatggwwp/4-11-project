@@ -20,4 +20,14 @@ public class TestController {
 	public String forgotPassword() {
 		return "employee/forgot-password";
 	}
+	
+	@GetMapping("memberCenter")
+	public String memberCenter() {
+		return "memberCenter";
+	}
+	
+	@GetMapping("footer")
+	public String footer() {
+		return "fragments/footer";
+	}
 }
