@@ -30,4 +30,9 @@ public class TestController {
 	public String footer() {
 		return "fragments/footer";
 	}
+	
+	@GetMapping("template")
+	public String template() {
+		return "memberCenterTemplate";
+	}
 }
