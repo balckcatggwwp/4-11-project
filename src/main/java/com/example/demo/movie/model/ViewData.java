@@ -17,10 +17,21 @@ public class ViewData {
 	private String movieName;
 	private LocalDate showDate;
 	private LocalTime showTime;
+	@Transient
+	private String theaterName;
 
 	public Integer getShowtimeId() {
 		return showtimeId;
 	}
+	
+	public String getTheaterName() {
+	    return theaterName;
+	}
+	
+	public void setTheaterName(String theaterName) {
+	    this.theaterName = theaterName;
+	}
+
 
 	public void setShowtimeId(Integer showtimeId) {
 		this.showtimeId = showtimeId;
