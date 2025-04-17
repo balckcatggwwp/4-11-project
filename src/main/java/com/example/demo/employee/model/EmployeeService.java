@@ -60,10 +60,12 @@ public class EmployeeService {
 		//檢查信箱&手機號碼是否已註冊
 		List<Employee> existEmployees = employeeRepository.findByEmailOrPhoneNumber(email,phoneNumber);
 		if(!existEmployees.isEmpty()) {
+			System.out.println("已被註冊");
 			//已存在回傳false 不給註冊
 			return false;
 		}else {
 			//未存在回傳true 表示允許註冊
+			System.out.println("可以註冊");
 			return true;
 		}
 	}
