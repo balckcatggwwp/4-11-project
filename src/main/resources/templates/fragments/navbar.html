@@ -7,36 +7,46 @@
 <body>
 <nav th:fragment="navbar" class="navbar navbar-expand-lg navbar-dark bg-black fixed-top">
   <div class="container-fluid">
-    <a class="navbar-brand" href="#">
+	
+    <!-- Logo -->
+    <a class="navbar-brand" th:href="@{/}">
       <img src="/imgs/logo.png" alt="光影之門" style="height: 60px;" />
     </a>
 
+    <!-- RWD Toggler -->
     <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar"
       aria-controls="offcanvasNavbar">
       <span class="navbar-toggler-icon"></span>
     </button>
 
+    <!-- Navbar Content -->
     <div class="offcanvas offcanvas-end text-bg-dark" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
       <div class="offcanvas-header">
         <h5 class="offcanvas-title" id="offcanvasNavbarLabel">選單</h5>
         <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close"></button>
       </div>
-      <div class="offcanvas-body">
-        <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
+
+      <div class="offcanvas-body d-flex justify-content-between align-items-center">
+
+        <!-- ✅ 左邊功能選單 -->
+        <ul class="navbar-nav flex-grow-1">
+
+          <!-- 會員專區 dropdown -->
           <li class="nav-item dropdown">
-	          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-	            會員專區
-	          </a>
-	          <ul class="dropdown-menu">
-	            <li><a class="dropdown-item" th:href="@{/memberCenter}">個人資料</a></li>
-	            <li><a class="dropdown-item" href="#">訂票明細</a></li>
-	            <li><a class="dropdown-item" href="#">餐點明細</a></li>
-	            <li><a class="dropdown-item" href="#">確認餐點</a></li>
-	            <li><hr class="dropdown-divider"></li>
-	            <li><a class="dropdown-item" href="#">聯絡客服</a></li>
-	            <li><a class="dropdown-item" href="#">業務專區</a></li>
-	          </ul>
+            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              會員專區
+            </a>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item" th:href="@{/memberCenter}">個人資料</a></li>
+              <li><a class="dropdown-item" href="#">訂票明細</a></li>
+              <li><a class="dropdown-item" href="#">餐點明細</a></li>
+              <li><a class="dropdown-item" href="#">確認餐點</a></li>
+              <li><hr class="dropdown-divider"></li>
+              <li><a class="dropdown-item" href="#">聯絡客服</a></li>
+              <li><a class="dropdown-item" href="#">業務專區</a></li>
+            </ul>
           </li>
+
           <li class="nav-item"><a class="nav-link" th:href="@{/template}">會員專區模板</a></li>
           <li class="nav-item"><a class="nav-link" href="#">餐點訂購</a></li>
           <li class="nav-item"><a class="nav-link" th:href="@{/orderset}">訂票專區</a></li>
@@ -44,24 +54,38 @@
           <li class="nav-item"><a class="nav-link" href="#">場次查詢</a></li>
           <li class="nav-item"><a class="nav-link" th:href="@{/employee/empLogin}">員工登入(後台)</a></li>
           <li class="nav-item"><a class="nav-link" th:href="@{/employee/empRegister}">員工註冊(後台)</a></li>
+
         </ul>
-        
-        
-        
-        
-        <hr class="text-white" />
-        <ul class="navbar-nav">
+
+        <!-- ✅ 右邊功能 icon -->
+        <ul class="navbar-nav ms-auto">
+
+          <!-- 搜尋 -->
           <li class="nav-item">
             <a class="nav-link" href="#"><i class="fas fa-search"></i></a>
           </li>
+
+          <!-- 購物車 -->
           <li class="nav-item">
             <a class="nav-link" href="#"><i class="fas fa-shopping-cart"></i></a>
           </li>
+
+          <!-- 登入/註冊 or 使用者 -->
           <li class="nav-item user-menu">
             <span th:switch="${session.memberId != null}">
               <span th:case="false">
                 <a class="nav-link" th:href="@{/member/login}">登入/註冊 <i class="fa-solid fa-user"></i></a>
+              <button type="button" class="btn btn-primary"
+			        data-bs-dismiss="offcanvas"
+			        data-bs-toggle="modal"
+			        data-bs-target="#loginModal">
+			  		登入
+			  </button>
+              
               </span>
+              
+              
+              
               <span th:case="true">
                 <a class="nav-link" th:href="@{/member/logout}">
                   歡迎, <span th:text="${session.memberName}">使用者</span>
@@ -74,6 +98,31 @@
       </div>
     </div>
   </div>
+  <div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="loginModalLabel">會員登入</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="關閉"></button>
+        </div>
+        <div class="modal-body">
+          <form>
+            <div class="mb-3">
+              <label for="username" class="form-label">帳號</label>
+              <input type="text" class="form-control" id="username" placeholder="請輸入帳號">
+            </div>
+            <div class="mb-3">
+              <label for="password" class="form-label">密碼</label>
+              <input type="password" class="form-control" id="password" placeholder="請輸入密碼">
+            </div>
+            <button type="submit" class="btn btn-primary w-100">登入</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+   
 </nav>
+
 </body>
 </html>
