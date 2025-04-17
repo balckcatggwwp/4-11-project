@@ -9,10 +9,11 @@
 
   <!-- FontAwesome -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" />
-
+  <link href="/css/sb-admin-2.min.css" rel="stylesheet">
   <!-- 你的自定義樣式 -->
   <link rel="stylesheet" href="/css/index2.css" />
   <link rel="stylesheet" href="/css/footer.css">
+  
 
   <style>
     body {
@@ -29,7 +30,6 @@
 
   <!-- 載入 Bootstrap navbar fragment -->
   <th:block th:replace="~{fragments/navbar :: navbar}"></th:block>
-
   <!-- 主內容區與 footer 保留不變 -->
   <div class="container">
 
@@ -73,13 +73,23 @@
     </section>
     
   </div>
+  <th:block th:replace="~{fragments/loginPage :: login}"></th:block>
+  
 
   <!-- 載入 footer fragment -->
   <th:block th:replace="~{fragments/footer :: footer}"></th:block>
 
   <!-- Bootstrap JS -->
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="/js/bootstrap.bundle.min.js"></script>
+  <!-- Bootstrap core JavaScript-->
+  <script src="/vendor/jquery/jquery.min.js"></script>
+  <script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 
+  <!-- Core plugin JavaScript-->
+  <script src="/vendor/jquery-easing/jquery.easing.min.js"></script>
+
+  <!-- Custom scripts for all pages-->
+  <script src="/js/sb-admin-2.min.js"></script>
   <!-- 其他 script -->
   <script src="/js/jquery.js"></script>
   <script th:if="${logoutSuccess}">
@@ -91,6 +101,23 @@
       timer: 3000,
       timerProgressBar: true
     });
+  </script>
+  <script>
+	  $(document).ready(function () {
+	  if (localStorage.getItem("autoShowLogin") === "true") {
+	    $('#loginModal').modal('show');
+	    localStorage.removeItem("autoShowLogin");
+	
+	    let msg = localStorage.getItem("loginMessage");
+	    if (msg) {
+	      Swal.fire({
+	        icon: 'success',
+	        title: msg
+	      });
+	      localStorage.removeItem("loginMessage");
+	    }
+	  }
+	  });
   </script>
 </body>
 </html>
