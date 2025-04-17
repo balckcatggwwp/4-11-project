@@ -32,55 +32,7 @@
 
   <!-- 主內容區與 footer 保留不變 -->
   <div class="container">
-<<<<<<< HEAD
-    <!-- Nav -->
-    <nav class="main-nav">
-      <img src="/imgs/logo.png" alt="光影之門" class="logo" style="height:60px">
 
-      <ul class="main-menu">
-        <li><a href="#">會員專區</a></li>
-        <li><a th:href="@{/usersmenu/page/1}">訂餐專區</a></li>
-        <li><a th:href="@{/orderset}">訂票專區</a></li>
-        <li><a href="#">最新公告</a></li>
-        <li><a href="#">場次查詢</a></li>
-        <li><a th:href="@{/employee/empLogin}">員工登入(後台)</a></li>
-        <li><a th:href="@{/employee/empRegister}">員工註冊(後台)</a></li>
-      </ul>
-
-      <ul class="right-menu">
-        <li>
-          <a href="#">
-            <i class="fas fa-search"></i>
-          </a>
-        </li>
-        <li>
-          <a href="#">
-            <i class="fas fa-shopping-cart"></i>
-          </a>
-        </li>
-        <li class="user-menu">
-          <span th:switch="${session.memberDetail != null}">
-            <span th:case="false">
-              <a th:href="@{/member/login}">登入/註冊</a>
-              <i class="fa-solid fa-user"></i>
-            </span>
-
-            <span th:case="true">
-              歡迎, <span th:text="${session.memberDetail.name}">使用者</span>
-              <a th:href="@{/member/logout}">登出</a>
-              <i class="fa-solid fa-user-check"></i>
-            </span>
-          </span>
-        </li>
-      </ul>
-
-    </nav>
-
-    <!-- Showcase -->
-    <!-- 廣告輪播公告 -->
-=======
-     <!-- Showcase -->
->>>>>>> master
     <header class="showcase">
       <h2>光影之門售票系統</h2>
       <p>即刻展開您的電影體驗</p>
