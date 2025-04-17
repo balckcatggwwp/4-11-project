@@ -132,5 +132,11 @@ public class MovieController {
         }
         return "";  // 如果找不到副檔名，返回空字串
     }
+    
+    //上架中的電影
+    @GetMapping("/available")
+    public List<MovieList> getAvailableMovies() {
+        return movieListService.getAvailableMovies();
+    }
  
 }
