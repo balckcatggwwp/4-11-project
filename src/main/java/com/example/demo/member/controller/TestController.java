@@ -16,9 +16,9 @@ public class TestController {
 		return "employee/empRegister2";
 	}
 	
-	@GetMapping("employee/forgot-password")
+	@GetMapping("employee/forgotPassword")
 	public String forgotPassword() {
-		return "employee/forgot-password";
+		return "employee/forgotPassword";
 	}
 	
 	@GetMapping("memberCenter")
@@ -34,5 +34,10 @@ public class TestController {
 	@GetMapping("template")
 	public String template() {
 		return "memberCenterTemplate";
+	}
+	
+	@GetMapping("navbar")
+	public String navbar() {
+		return "fragments/navbar";
 	}
 }

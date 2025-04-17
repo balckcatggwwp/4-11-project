@@ -42,7 +42,7 @@
                             <div class="text-center">
                                 <h1 class="h4 text-gray-900 mb-4">建立員工帳號</h1>
                             </div>
-                            <form class="user">
+                            <form class="register-form user" method="post" th:action="@{/employee/empRegister}">
 							  <!-- 基本資料區塊 -->
 							  <fieldset class="border p-3 mb-4 rounded">
 							    <legend class="w-auto px-2">基本資料</legend>
@@ -152,10 +152,7 @@
 							</form>
                             <hr>
                             <div class="text-center">
-                                <a class="small" href="forgot-password.html">Forgot Password?</a>
-                            </div>
-                            <div class="text-center">
-                                <a class="small" href="login.html">Already have an account? Login!</a>
+                                <a class="small" th:href="@{/employee/empLogin2}">Already have an account? Login!</a>
                             </div>
                         </div>
                     </div>
@@ -185,7 +182,7 @@
   	});
   	
   	$(document).ready(function(){
-		$('.user').submit(function(e){
+		$('.register-form').submit(function(e){
 			e.preventDefault();
 			let password = $('input[name="password"]').val();
 			let password2 = $('input[name="password2"]').val();

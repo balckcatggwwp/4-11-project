@@ -9,13 +9,12 @@
 body {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   background: black;
-  color: white;
+/*   color: white; */
   font-size: 15px;
   line-height: 1.5;
 }
 
 a {
-  color: white;
   text-decoration: none;
 }
 
@@ -41,6 +40,7 @@ ul {
   justify-content: flex-end;
   padding-bottom: 50px;
   margin-bottom: 20px;
+  color: white;
 }
 
 .showcase h2,
@@ -66,8 +66,10 @@ ul {
   margin-bottom: 20px;
 }
 
-.home-cards h3 {
+.home-cards h3,
+.home-cards p {
   margin-bottom: 5px;
+  color: white;
 }
 
 .home-cards a {
