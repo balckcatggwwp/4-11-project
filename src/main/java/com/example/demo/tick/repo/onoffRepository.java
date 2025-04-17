@@ -9,4 +9,5 @@ import java.util.List;
 public interface onoffRepository extends JpaRepository<onofflineBean, Integer> {
 
 	onofflineBean  findMovienameByHallid(Integer hallid);
+	onofflineBean  findHallidByMovieid(Integer movieid);
 }

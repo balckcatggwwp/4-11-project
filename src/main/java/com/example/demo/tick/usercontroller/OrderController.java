@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -16,10 +17,13 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.example.demo.tick.bean.BookTypeBean;
 import com.example.demo.tick.bean.BookticketBean;
 import com.example.demo.tick.bean.OrderBean;
+import com.example.demo.tick.bean.ShowtimeBean;
 import com.example.demo.tick.repo.BooktickRepository;
 import com.example.demo.tick.repo.BooktickvuRepository;
 import com.example.demo.tick.service.BookvuService;
+import com.example.demo.tick.service.HallService;
 import com.example.demo.tick.service.TickorderService;
+import com.example.demo.tick.service.TimeService;
 import com.example.demo.tick.service.TypeService;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -39,7 +43,11 @@ public class OrderController {
 	private TickorderService orderService;
 	@Autowired
 	private BookvuService bookvuService;
-
+	@Autowired
+	private HallService hallService;
+	@Autowired
+	private TimeService timeService;
+	
 	@GetMapping("/orderset")
 	public String ordercar(HttpServletRequest request) {
 		HttpSession session = request.getSession();
@@ -55,7 +63,7 @@ public class OrderController {
 
 	@GetMapping("/ordercheck")
 	public String ordercheck(@RequestParam String selectedSeatsJson, HttpServletRequest request,
-			@RequestParam Integer showtimeid, @RequestParam Integer hallid, @RequestParam Integer tickettypeid,
+			@RequestParam Integer showtimeid, @RequestParam Integer tickettypeid,
 			@RequestParam Integer movieid, Model model) {
 		HttpSession session = request.getSession();
 		// 假設你在登入時將會員 ID 存放在 session 中，key 為 "memberId"
@@ -81,19 +89,26 @@ public class OrderController {
 			// 現在 selectedSeats 就是包含選取座位 ID 的 List
 			System.out.println(selectedSeats);
 			int sum = 0;
-			
-
+			Optional<ShowtimeBean> op = timeService.findtimedate(showtimeid);
+			orderBean.setShowdate(op.get().getShowdate());
+			orderBean.setShowtime(op.get().getShowtime());
 			
 			sum = typemo * selectedSeats.size();
 			orderBean.setSumpay(sum);
-			
+			String withoutBrackets = selectedSeatsJson.substring(1, selectedSeatsJson.length() - 1);
+			 String withoutQuotes = withoutBrackets.replace("\"", "");
+			orderBean.setSeat(withoutQuotes);
+			int halli = hallService.findhallbyname(movieid).getHallid();
+			String namemoString = hallService.findnamebyhallid(halli).getMoviename();
+			orderBean.setHallid(halli);
+			orderBean.setMoviename(namemoString);
 	        orderService.inser(orderBean);
 			for (String stringgs : selectedSeats) {
 				
 				BookticketBean itemBean = new BookticketBean();
 				itemBean.setMemberId(memberId);
 				itemBean.setShowtimeid(showtimeid);
-				itemBean.setHallid(hallid);
+				itemBean.setHallid(halli);
 				itemBean.setTickettypeid(tickettypeid);
 				itemBean.setMovieid(movieid);
 				itemBean.setOnemoney(typemo);

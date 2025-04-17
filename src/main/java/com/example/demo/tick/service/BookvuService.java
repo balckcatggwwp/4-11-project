@@ -51,12 +51,12 @@ public class BookvuService {
 	}
 	
 	///////////////////////////// find other
-	public List<BookticketvuBean> findother(Integer se, Integer id) {
+	public List<BookticketvuBean> findother(Integer se, Integer id,Long loid) {
 
 		if (se == 1) {
 			return booktickvuRepo.findbyTickid(id);
 		} else if (se == 3) {
-			return booktickvuRepo.findbyUserid(id);
+			return booktickvuRepo.findbyUserid(loid);
 
 		} else if (se == 5) {
 
