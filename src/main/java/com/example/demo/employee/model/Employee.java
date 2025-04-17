@@ -30,6 +30,9 @@ public class Employee {
 	@Column(name = "gender",nullable = false)
 	private String gender;
 	
+	@Column(name = "nationalId",nullable = false)
+	private String nationalId;
+	
 //	認證相關
 	@Column(name = "email",nullable = false)
 	private String email;

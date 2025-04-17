@@ -41,10 +41,11 @@ public class EmpController {
 	@PostMapping("employee/empRegister")
 	public ResponseEntity<?> register(@ModelAttribute Employee employee){
 		boolean result = employeeService.empExistCheck(employee);
-		
+		System.out.println(result);
 		if (result) {
 	        Employee insertEmployee = employeeService.insertEmployee(employee);
 	        if (insertEmployee != null) {
+	        	System.out.println("可以註冊");
 	            return ResponseEntity.ok(Map.of(
 	                "status", "success",
 	                "message", "註冊成功",

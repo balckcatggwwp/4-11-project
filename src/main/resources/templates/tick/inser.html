@@ -79,7 +79,7 @@
 					<label class="col-md-4 control-label">會員</label>
 					<div class="col-md-4 inputGroupContainer">
 						<div class="input-group">
-							<span class="input-group-addon"><i class="fa-solid fa-user"></i></span> <input name="userid"
+							<span class="input-group-addon"><i class="fa-solid fa-user"></i></span> <input name="memberId"
 								placeholder="會員" class="form-control ud" type="text">
 						</div>
 					</div>
@@ -239,8 +239,8 @@
 					success: function (respones) {
 						$('#time').append(`<option value="">場次</option>`);
 						$.each(respones, function (i, e) {
-
-							$('#time').append(`<option value="${e.showtimeid}">${e.showtime}</option>`)
+							let time = e.showtime.split('.')[0]
+							$('#time').append(`<option value="${e.showtimeid}">${time}</option>`)
 						})
 					}
 

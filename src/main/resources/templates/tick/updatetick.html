@@ -78,8 +78,8 @@
 					<label class="col-md-4 control-label">會員</label>
 					<div class="col-md-4 inputGroupContainer">
 						<div class="input-group">
-							<span class="input-group-addon"><i class="fa-solid fa-user"></i></span> <input name="userid"
-								placeholder="會員" class="form-control ud" type="text" th:value="${tickinfo.userid}">
+							<span class="input-group-addon"><i class="fa-solid fa-user"></i></span> <input name="memberId"
+								placeholder="會員" class="form-control ud" type="text" th:value="${tickinfo.memberId}">
 						</div>
 					</div>
 				</div>
@@ -91,7 +91,7 @@
 						<div class="input-group">
 							<span class="input-group-addon"><i class="fa-solid fa-calendar-days"></i></span> <input
 								type="text" id="datepicker" class="form-control" placeholder="日期"
-								th:value="${tickinfo.startdate}">
+								th:value="${tickinfo.showtimedate}">
 						</div>
 					</div>
 				</div>
@@ -240,7 +240,7 @@
 						$('#time').append(`<option value="">場次</option>`);
 						$.each(respones, function (i, e) {
 
-							$('#time').append(`<option value="${e.showtimeid}">${e.starttime}</option>`)
+							$('#time').append(`<option value="${e.showtimeid}">${e.showtime}</option>`)
 						})
 					}
 
@@ -263,7 +263,7 @@
 							//console.log(tickshow)
 
 							let selectshow = (tickshow == e.showtimeid) ? 'selected' : ''
-							let time = e.starttime.split('.')[0]
+							let time = e.showtime.split('.')[0]
 							$('#time').append(`<option value="${e.showtimeid}" ${selectshow} >${time}</option>`)
 						})
 
@@ -299,10 +299,10 @@
 						$.each(respones, function (i, e) {
 
 							let tickhall = /*[[${tickinfo.hallid}]]*/'' // 直接輸出數值
-							let selectshows = (tickhall == e.hallid) ? 'selected' : '';
+							let selectshows = (tickhall == e.theaterid) ? 'selected' : '';
 
 							//console.log(e.hallid);
-							$('#halls').append(`<option value="${e.hallid}" ${selectshows}>${e.hallid}</option>`)
+							$('#halls').append(`<option value="${e.theaterid}" ${selectshows}>${e.theaterid}</option>`)
 							$('#moviename').empty();
 
 

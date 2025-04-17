@@ -203,31 +203,4 @@ public class MemberController {
 	}
 
 	
-	
-	
-//測試相關
-	
-	@GetMapping("layout/empNavbar")
-	public String empNavbar() {
-		return "layout/empNavbar";
-	}
-	
-	@GetMapping("layout/empLayout")
-	public String empLayout() {
-		return "layout/empLayout";
-	}
-	
-	@GetMapping("layout/navbar")
-	public String navbar() {
-		return "layout/navbar";
-	}
-	
-
-	
-	
-	
-	
-	
-	
-	
 }

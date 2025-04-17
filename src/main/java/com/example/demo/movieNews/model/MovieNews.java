@@ -15,7 +15,7 @@ public class MovieNews {
     private String content;
     private String summary;
 
-    @Column(name = "image_url")
+    @Column(name = "image_url", columnDefinition = "varchar(max)")
     private String imageUrl;
 
     @Column(name = "publish_date")
@@ -29,6 +29,12 @@ public class MovieNews {
     @Column(name = "updated_at")
     @Temporal(TemporalType.TIMESTAMP)
     private Date updatedAt;
+    
+    @Column(name = "is_ad")
+    private Boolean isAd;
+    
+    @Column(name = "type")
+    private String type;
 
     private String status;
 
@@ -103,4 +109,20 @@ public class MovieNews {
     public void setStatus(String status) {
         this.status = status;
     }
+
+	public Boolean getIsAd() {
+		return isAd;
+	}
+
+	public void setIsAd(Boolean isAd) {
+		this.isAd = isAd;
+	}
+
+	public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
+	}
 } 

@@ -51,11 +51,17 @@ public class TimeController {
 	
 	
 	
+//	@GetMapping("hall")
+//	@ResponseBody
+//	public List<HallsBean> findallhall() {
+//		
+//		return hallService.findall();
+//	}
 	@GetMapping("hall")
 	@ResponseBody
-	public List<HallsBean> findallhall() {
+	public List<onofflineBean> findallname() {
 		
-		return hallService.findall();
+		return hallService.findallonline();
 	}
 	@GetMapping("name")
 	@ResponseBody
