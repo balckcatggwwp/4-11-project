@@ -97,38 +97,38 @@
   <form>
     <div class="mb-3">
       <label class="form-label">會員姓名</label>
-      <input type="text" class="form-control" name="name" value="王小明">
+      <input type="text" class="form-control" name="name" th:value="${session.memberDetail.name}">
     </div>
     <div class="mb-3">
       <label class="form-label">身分證號碼</label>
-      <input type="text" class="form-control" name="nationalId" value="A123456789" readonly>
+      <input type="text" class="form-control" name="nationalId" th:value="${session.memberDetail.nationalId}" readonly>
     </div>
     <div class="mb-3">
       <label class="form-label">生日</label>
-      <input type="date" class="form-control" name="dateOfBirth" value="2001-01-01">
+      <input type="date" class="form-control" name="dateOfBirth" th:value="${session.memberDetail.dateOfBirth}">
     </div>
     <div class="mb-3">
       <label class="form-label">性別</label><br>
       <div class="form-check form-check-inline">
-        <input class="form-check-input" type="radio" name="gender" value="male" checked>
+        <input class="form-check-input" type="radio" name="gender" value="male" th:checked="${session.memberDetail.gender == 'male'}">
         <label class="form-check-label">男生</label>
       </div>
       <div class="form-check form-check-inline">
-        <input class="form-check-input" type="radio" name="gender" value="female">
+        <input class="form-check-input" type="radio" name="gender" value="female" th:checked="${session.memberDetail.gender == 'female'}">
         <label class="form-check-label">女生</label>
       </div>
       <div class="form-check form-check-inline">
-        <input class="form-check-input" type="radio" name="gender" value="other">
+        <input class="form-check-input" type="radio" name="gender" value="other" th:checked="${session.memberDetail.gender == 'other'}">
         <label class="form-check-label">不願透露</label>
       </div>
     </div>
     <div class="mb-3">
       <label class="form-label">Email</label>
-      <input type="email" class="form-control" name="email" value="eric@example.com" readonly>
+      <input type="email" class="form-control" name="email" th:value="${session.memberDetail.email}" readonly>
     </div>
     <div class="mb-3">
       <label class="form-label">手機號碼</label>
-      <input type="text" class="form-control" name="phoneNumber" value="0912345678" readonly>
+      <input type="text" class="form-control" name="phoneNumber" th:value="${session.memberDetail.phoneNumber}" readonly>
     </div>
     <button type="submit" class="btn btn-primary">儲存</button>
   </form>
