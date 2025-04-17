@@ -65,10 +65,10 @@ public class TimeController {
 	}
 	@GetMapping("name")
 	@ResponseBody
-	public onofflineBean findname(@RequestParam Integer hallid) {
+	public onofflineBean findname(@RequestParam Integer nameid) {
 		
 		
-		return hallService.findnamebyhallid(hallid);
+		return hallService.findhallbyname(nameid);
 	}
 	@GetMapping("type")
 	@ResponseBody
@@ -81,6 +81,7 @@ public class TimeController {
 		
 		return hallService.findAll();
 	}
+
 	
 	
 }

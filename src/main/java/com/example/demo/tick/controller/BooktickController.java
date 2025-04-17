@@ -111,23 +111,23 @@ public class BooktickController {
 	@GetMapping("/booktick/other")
 	public String findother(@RequestParam Integer select,
 			@RequestParam(required = false) Integer tickid, @RequestParam(required = false) Long orderid,
-			@RequestParam(required = false) Integer memberId, @RequestParam(required = false) String startdate,
+			@RequestParam(required = false) Long memberId, @RequestParam(required = false) String startdate,
 			@RequestParam(required = false) Integer hallid, @RequestParam(required = false) String findname,
 			@RequestParam(required = false) String payout,Model model
 
 	) {
 		List<BookticketvuBean> vu = null;
 		if (select == 1) {
-			vu=bookvuService.findother(select, tickid);
+			vu=bookvuService.findother(select, tickid,null);
 			
 		} else if (select == 2) {
 			vu= bookvuService.findothers(select, null,orderid);
 		} else if (select == 3) {
-			vu= bookvuService.findother(select, memberId);
+			vu= bookvuService.findother(select, null,memberId);
 		} else if (select == 4) {
 			vu= bookvuService.findothers(select, startdate,null);
 		} else if (select == 5) { 
-			vu= bookvuService.findother(select, hallid);
+			vu= bookvuService.findother(select, hallid,null);
 		}else if (select == 6) {
 			System.out.println(findname);
 			vu= bookvuService.findothers(select, findname,null);

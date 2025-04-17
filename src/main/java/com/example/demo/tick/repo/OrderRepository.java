@@ -8,5 +8,5 @@ import com.example.demo.tick.bean.OrderBean;
 
 public interface OrderRepository extends JpaRepository<OrderBean, Long> {
 
-	List<OrderBean> findByUserid(Long userid);
+	 List<OrderBean> findByUserid(Long userid);
 }
