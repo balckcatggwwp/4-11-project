@@ -78,20 +78,15 @@
 
   <!-- 載入 footer fragment -->
   <th:block th:replace="~{fragments/footer :: footer}"></th:block>
-
+	
   <!-- Bootstrap JS -->
+  <script src="/js/jquery.js"></script>
   <script src="/js/bootstrap.bundle.min.js"></script>
   <!-- Bootstrap core JavaScript-->
-  <script src="/vendor/jquery/jquery.min.js"></script>
-  <script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-
-  <!-- Core plugin JavaScript-->
-  <script src="/vendor/jquery-easing/jquery.easing.min.js"></script>
-
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <!-- Custom scripts for all pages-->
   <script src="/js/sb-admin-2.min.js"></script>
   <!-- 其他 script -->
-  <script src="/js/jquery.js"></script>
   <script th:if="${logoutSuccess}">
     Swal.fire({
       icon: 'success',
@@ -102,22 +97,68 @@
       timerProgressBar: true
     });
   </script>
-  <script>
-	  $(document).ready(function () {
-	  if (localStorage.getItem("autoShowLogin") === "true") {
-	    $('#loginModal').modal('show');
-	    localStorage.removeItem("autoShowLogin");
-	
-	    let msg = localStorage.getItem("loginMessage");
-	    if (msg) {
-	      Swal.fire({
-	        icon: 'success',
-	        title: msg
-	      });
-	      localStorage.removeItem("loginMessage");
-	    }
-	  }
+<script th:inline="javascript">
+  const isLoggedIn = [[${session.memberDetail != null}]];
+  const modalEl = document.getElementById('loginModal');
+  const loginModal = new bootstrap.Modal(modalEl);
+
+  $(document).ready(function () {
+    if (localStorage.getItem("autoShowLogin") === "true") {
+      loginModal.show();
+      localStorage.removeItem("autoShowLogin");
+    }
+
+    $(".memberLink").on("click", function (e) {
+      if (!isLoggedIn) {
+        e.preventDefault();
+        Swal.fire({
+          title: "尚未登入",
+          text: "請先登入會員",
+          icon: "warning",
+          confirmButtonText: "前往登入"
+        }).then(() => {
+          loginModal.show();
+        });
+      }
+    });
+  });
+</script>
+<script>
+	$(document).ready(function(){
+	  $('.login-form').submit(function(e){
+	    e.preventDefault();
+	    $.ajax({
+	      url: '/member/login',
+	      type: 'POST',
+	      data: $('.login-form').serialize(), // 修正這裡
+	      success: function(response){
+	        if (response.status === 'success') {
+	          Swal.fire({
+	            icon: 'success',
+	            title: '登入成功',
+	            html: `歡迎 <b>${response.name}</b>！`,
+	            confirmButtonText: '前往首頁'
+	          }).then(() => {
+	            window.location.href = '/';
+	          });
+	        } else {
+	          Swal.fire({
+	            icon: 'error',
+	            title: '登入失敗',
+	            text: response.message || '請稍後再試'
+	          });
+	        }
+	      },
+	      error: function(xhr){
+	        Swal.fire({
+	          icon: 'error',
+	          title: '伺服器錯誤',
+	          text: '請稍後再試或聯絡客服'
+	        });
+	      }
+	    });
 	  });
-  </script>
+	});
+</script>
 </body>
 </html>

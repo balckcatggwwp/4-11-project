@@ -24,7 +24,7 @@
 <div class="d-flex">
   <!-- 左側側邊欄 -->
 <div class="flex-shrink-0 p-3 sidebar bg-dark text-white">
-    <ul class="nav flex-column">
+    <ul class="nav flex-column memberDetail">
       <!-- 區塊 1：我的帳戶 -->
       <li class="mb-1">
         <button class="btn w-100 text-start d-flex justify-content-between align-items-center"
@@ -37,7 +37,7 @@
         <div class="collapse ps-3 mt-1" id="memberDetail-collapse">
           <ul class="nav flex-column">
             <li class="nav-item">
-              <a class="nav-link" th:href="@{/memberCenter}">
+              <a class="nav-link" href="#">
               <i class="fas fa-id-card me-2"></i> 個人資料變更</a>
             </li>
             <li class="nav-item">
@@ -67,8 +67,8 @@
               <a class="nav-link" href="#">
               <i class="fas fa-utensils"></i>  餐點明細</a>
             </li>
-            <li class="nav-item">
-              <a class="nav-link" th:href="@{/detail}">
+            <li class="nav-item active">
+              <a class="nav-link" href="#">
                 <i class="fas fa-ticket-alt"></i>  訂票明細</a>
             </li>
           </ul>
@@ -93,45 +93,9 @@
 
   <!-- 右側內容區 -->
   <div class="flex-grow-1 p-4 memberDetail">
-  <h3>個人檔案</h3>
-  <form>
-    <div class="mb-3">
-      <label class="form-label">會員姓名</label>
-      <input type="text" class="form-control" name="name" th:value="${session.memberDetail.name}">
-    </div>
-    <div class="mb-3">
-      <label class="form-label">身分證號碼</label>
-      <input type="text" class="form-control" name="nationalId" th:value="${session.memberDetail.nationalId}" readonly>
-    </div>
-    <div class="mb-3">
-      <label class="form-label">生日</label>
-      <input type="date" class="form-control" name="dateOfBirth" th:value="${session.memberDetail.dateOfBirth}">
-    </div>
-    <div class="mb-3">
-      <label class="form-label">性別</label><br>
-      <div class="form-check form-check-inline">
-        <input class="form-check-input" type="radio" name="gender" value="male" th:checked="${session.memberDetail.gender == 'male'}">
-        <label class="form-check-label">男生</label>
-      </div>
-      <div class="form-check form-check-inline">
-        <input class="form-check-input" type="radio" name="gender" value="female" th:checked="${session.memberDetail.gender == 'female'}">
-        <label class="form-check-label">女生</label>
-      </div>
-      <div class="form-check form-check-inline">
-        <input class="form-check-input" type="radio" name="gender" value="other" th:checked="${session.memberDetail.gender == 'other'}">
-        <label class="form-check-label">不願透露</label>
-      </div>
-    </div>
-    <div class="mb-3">
-      <label class="form-label">Email</label>
-      <input type="email" class="form-control" name="email" th:value="${session.memberDetail.email}" readonly>
-    </div>
-    <div class="mb-3">
-      <label class="form-label">手機號碼</label>
-      <input type="text" class="form-control" name="phoneNumber" th:value="${session.memberDetail.phoneNumber}" readonly>
-    </div>
-    <button type="submit" class="btn btn-primary">儲存</button>
-  </form>
+  <!--   自己新增標題 -->
+  <h3>餐點明細</h3>
+	<!--   自己新增內容 -->
 </div>
 </div>
 
