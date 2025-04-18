@@ -11,6 +11,7 @@ import com.example.demo.tick.bean.BookticketvuBean;
 import com.example.demo.tick.repo.BookTypeRepository;
 import com.example.demo.tick.repo.BooktickRepository;
 import com.example.demo.tick.repo.BooktickvuRepository;
+import com.example.demo.tick.repo.OrderRepository;
 
 @Service
 public class BookvuService {
@@ -20,10 +21,9 @@ public class BookvuService {
 	private BooktickvuRepository booktickvuRepo;
 	@Autowired
 	private BooktickRepository booktickRepository;
-
- 
-
-
+	
+	
+	
 	
 	public List<BookticketvuBean> tickfindAll() {
 

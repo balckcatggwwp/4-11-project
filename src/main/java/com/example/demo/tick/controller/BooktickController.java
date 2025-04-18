@@ -2,6 +2,8 @@ package com.example.demo.tick.controller;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -12,8 +14,11 @@ import com.example.demo.DemoApplication;
 import com.example.demo.tick.bean.BookticketBean;
 import com.example.demo.tick.bean.BookticketvuBean;
 import com.example.demo.tick.bean.OrderBean;
+import com.example.demo.tick.bean.ShowtimeBean;
 import com.example.demo.tick.service.BookvuService;
+import com.example.demo.tick.service.HallService;
 import com.example.demo.tick.service.TickorderService;
+import com.example.demo.tick.service.TimeService;
 
 import groovyjarjarantlr4.runtime.misc.IntArray;
 
@@ -26,15 +31,17 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @Controller
 public class BooktickController {
 
-    private final DemoApplication demoApplication;
+
 	@Autowired
 	private BookvuService bookvuService;
 	@Autowired 
 	private TickorderService orderService;
+	@Autowired
+	private HallService hallService;
+	@Autowired
+	private TimeService timeService;
 
-    BooktickController(DemoApplication demoApplication) {
-        this.demoApplication = demoApplication;
-    }
+
 	
 	@GetMapping("/ticktable")
 	public String tickall(Model model) {
@@ -63,6 +70,24 @@ public class BooktickController {
 		Integer a = optional.get().getSumpay()-vuBean.getOnemoney()+updatedTick.getOnemoney();
 		oBean.setSumpay(a);
 		oBean.setOrderdate(optional.get().getOrderdate());
+		ShowtimeBean showtimeBean = timeService.findtimedate(updatedTick.getShowtimeid()).get();
+		oBean.setShowdate(showtimeBean.getShowdate());
+		oBean.setShowtime(showtimeBean.getShowtime());
+		oBean.setPayout(updatedTick.getPayout());
+		oBean.setMoviename(hallService.findnamebyhallid(updatedTick.getHallid()).getMoviename());
+//		oBean.setSeat(updatedTick.getSeatid());
+		String seatString = optional.get().getSeat();
+		List<String> seats = new ArrayList<>(Arrays.asList(seatString.split(",")));
+		for (int i = 0; i < seats.size(); i++) {
+            if (seats.get(i).equals(vuBean.getSeatid())) {
+                seats.set(i, updatedTick.getSeatid());
+                break;
+            }
+        }
+
+        String updatedSeatString = String.join(",", seats);
+        oBean.setSeat(updatedSeatString);
+		oBean.setHallid(updatedTick.getHallid());
 		orderService.update(oBean);
 		bookvuService.updatetick(updatedTick);
 		return "redirect:/ticktable"; // 更新成功後重定向到訂票列表頁面
@@ -78,6 +103,13 @@ public class BooktickController {
 		oBean.setOrderdate(formattera.format(now));
 		oBean.setOrderid(order);
 		oBean.setSumpay(updatedTick.getOnemoney());
+		oBean.setHallid(updatedTick.getHallid());
+		oBean.setSeat(updatedTick.getSeatid());
+		oBean.setMoviename(hallService.findnamebyhallid(updatedTick.getHallid()).getMoviename());
+		ShowtimeBean showtimeBean = timeService.findtimedate(updatedTick.getShowtimeid()).get();
+		oBean.setShowdate(showtimeBean.getShowdate());
+		oBean.setShowtime(showtimeBean.getShowtime());
+		oBean.setPayout(updatedTick.getPayout());
 		updatedTick.setOrderid(order);
 		orderService.inser(oBean);
 		bookvuService.updatetick(updatedTick);

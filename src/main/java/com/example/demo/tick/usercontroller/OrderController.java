@@ -205,7 +205,7 @@ public class OrderController {
 		} else {
 			System.out.println("你好爛");
 		}
-		return "redirect:/ticktable";
+		return "redirect:order/orderdetails";
 	}
 
 }
