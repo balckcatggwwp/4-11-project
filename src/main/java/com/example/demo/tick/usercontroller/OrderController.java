@@ -8,6 +8,7 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -143,36 +144,63 @@ public class OrderController {
 //		return "order/testecpay";
 		return "redirect:/";
 	}
+	
+	//oderpaycheck
+	@GetMapping("/orderpaycheck")
+	
+	public String oderpaycheck(@RequestParam Long orderid,Model model) {
+		Optional<OrderBean> op =  orderService.findbyorder(orderid);
+		if(op.get().getPayout()=="Y") {
+			return "輕勿重複繳款";
+		}
+//		System.out.println("aa");
+		model.addAttribute("ordere", orderid);
+		return "order/testecpay";
+//		return "gogo";
+	}
+	@GetMapping("/orderpaycheckform")
+	@ResponseBody
+	public OrderBean oderpaycheckform(@RequestParam Long orderid,Model model) {
+		Optional<OrderBean> op =  orderService.findbyorder(orderid);
+	
+	
+		return op.get();
+	}
+	
 
 	// 綠界回傳結果
 	@PostMapping("/pay")
-	public String paychech(@RequestParam Integer RtnCode, @RequestParam String MerchantTradeNo,
+	@Transactional
+	public String paychech(@RequestParam Integer RtnCode,
 			@RequestParam String CustomField1 // userid
-			, @RequestParam String CustomField2 // showid
-			, @RequestParam String CustomField3 // hallid
-			, @RequestParam String CustomField4 // typeid
+			
 
 	) {
+		Long orderidLong = Long.parseLong(CustomField1);
 		// TODO: process POST request
 		if (RtnCode == 1) {
-			System.out.println("交易成功");
-			System.out.println(MerchantTradeNo);
-			System.out.println(CustomField1);
-			System.out.println();
-			String useropenString = CustomField1;
-			String[] aftStrings = useropenString.split("\\s+");
-			System.out.println("userid" + aftStrings[0]);
-			System.out.println("timeid" + aftStrings[1]);
-
-			System.out.println("le" + aftStrings.length);
-
-			// 解析 CustomField2 ([A10, A9])
-			String seatString = CustomField2.substring(1, CustomField2.length() - 1); // 移除首尾的 []
-			String[] seatCodes = seatString.split(",\\s*"); // 使用逗號和零或多個空白字元分割
-			System.out.println("seat[]" + seatCodes[0]);
-			System.out.println("seat[]" + seatCodes[1]);
-			System.out.println(CustomField3);
-			System.out.println(CustomField4);
+			orderService.uppay(orderidLong);
+			bookvuService.update(orderidLong);
+			
+			
+//			System.out.println("交易成功");
+//			System.out.println(MerchantTradeNo);
+//			System.out.println(CustomField1);
+//			System.out.println();
+//			String useropenString = CustomField1;
+//			String[] aftStrings = useropenString.split("\\s+");
+//			System.out.println("userid" + aftStrings[0]);
+//			System.out.println("timeid" + aftStrings[1]);
+//
+//			System.out.println("le" + aftStrings.length);
+//
+//			// 解析 CustomField2 ([A10, A9])
+//			String seatString = CustomField2.substring(1, CustomField2.length() - 1); // 移除首尾的 []
+//			String[] seatCodes = seatString.split(",\\s*"); // 使用逗號和零或多個空白字元分割
+//			System.out.println("seat[]" + seatCodes[0]);
+//			System.out.println("seat[]" + seatCodes[1]);
+//			System.out.println(CustomField3);
+//			System.out.println(CustomField4);
 
 		} else {
 			System.out.println("你好爛");

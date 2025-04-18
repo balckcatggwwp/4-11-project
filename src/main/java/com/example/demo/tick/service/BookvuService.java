@@ -8,17 +8,23 @@ import org.springframework.stereotype.Service;
 
 import com.example.demo.tick.bean.BookticketBean;
 import com.example.demo.tick.bean.BookticketvuBean;
+import com.example.demo.tick.repo.BookTypeRepository;
 import com.example.demo.tick.repo.BooktickRepository;
 import com.example.demo.tick.repo.BooktickvuRepository;
 
 @Service
 public class BookvuService {
 
+
 	@Autowired
 	private BooktickvuRepository booktickvuRepo;
 	@Autowired
 	private BooktickRepository booktickRepository;
 
+ 
+
+
+	
 	public List<BookticketvuBean> tickfindAll() {
 
 		return booktickvuRepo.findAll();
@@ -82,5 +88,10 @@ public class BookvuService {
 		}
 		return null;
 	}
+	
+	public void update(Long orderid) {
+		 booktickRepository.updatePayoutByOrderIda(orderid, "Y");
+	}
+	
 
 }
