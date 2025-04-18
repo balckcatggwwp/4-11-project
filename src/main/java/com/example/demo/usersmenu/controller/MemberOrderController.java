@@ -1,5 +1,6 @@
 package com.example.demo.usersmenu.controller;
 
+import com.example.demo.usersmenu.model.OrderHeader;
 import com.example.demo.usersmenu.model.OrderItem;
 import com.example.demo.usersmenu.service.OrderService;
 import jakarta.servlet.http.HttpSession;
@@ -9,6 +10,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
 import java.util.List;
+import java.util.Map;
 
 @Controller
 public class MemberOrderController {
@@ -21,9 +23,8 @@ public class MemberOrderController {
         Long userId = (Long) session.getAttribute("memberId");
 
 
-        List<OrderItem> orderItems = orderService.findFoodOrdersByUserId(userId);
-        model.addAttribute("foodOrders", orderItems);
-
+        Map<OrderHeader, List<OrderItem>> orderMap = orderService.groupItemsByOrder(userId);
+        model.addAttribute("orderMap", orderMap);
         return "memberFoodOrders";
     }
 }

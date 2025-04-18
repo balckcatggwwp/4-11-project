@@ -1,5 +1,6 @@
 package com.example.demo.usersmenu.service;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -97,4 +98,18 @@ public class OrderService {
 
 		return list;
 	}
+	
+
+	public Map<OrderHeader, List<OrderItem>> groupItemsByOrder(Long userId) {
+	    LocalDateTime cutoff = LocalDate.now().minusDays(2).atStartOfDay();
+
+	    List<OrderItem> items = orderItemRepository.findByUserId(userId).stream()
+	        .filter(item -> item.getOrder().getOrderTime().isAfter(cutoff))  
+	        .collect(Collectors.toList()); 
+
+	    return items.stream()
+	        .collect(Collectors.groupingBy(OrderItem::getOrder, LinkedHashMap::new, Collectors.toList()));
+	}
+
+
 }
