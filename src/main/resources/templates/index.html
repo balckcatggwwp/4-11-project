@@ -33,11 +33,36 @@
   <!-- 主內容區與 footer 保留不變 -->
   <div class="container">
 
-    <header class="showcase">
-      <h2>光影之門售票系統</h2>
-      <p>即刻展開您的電影體驗</p>
-      <a href="#" class="btn btn-secondary">開始訂票 <i class="fas fa-chevron-right"></i></a>
-    </header>
+     <!-- Showcase -->
+    <!-- 公告圖片輪播區 -->
+      <div
+        id="adCarousel"
+        class="carousel slide"
+        data-bs-ride="carousel"
+        data-bs-interval="3000"
+      >
+        <div class="carousel-inner" id="carouselContent">
+          <!-- 這裡的內容會用 JS 動態產生 -->
+        </div>
+
+        <!-- 輪播控制按鈕 -->
+        <button
+          class="carousel-control-prev"
+          type="button"
+          data-bs-target="#adCarousel"
+          data-bs-slide="prev"
+        >
+          <span class="carousel-control-prev-icon"></span>
+        </button>
+        <button
+          class="carousel-control-next"
+          type="button"
+          data-bs-target="#adCarousel"
+          data-bs-slide="next"
+        >
+          <span class="carousel-control-next-icon"></span>
+        </button>
+      </div>
 
     <!-- 電影卡片 -->
     <section class="home-cards">
@@ -119,5 +144,6 @@
 	  }
 	  });
   </script>
+  <script src="/js/carousel.js"></script>
 </body>
 </html>

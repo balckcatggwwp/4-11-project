@@ -56,6 +56,24 @@
           </tbody>
         </table>
       </div>
+      
+      <div class="card mt-5">
+  <div class="card-header">即時客服對話</div>
+  <div class="card-body">
+    <div id="chat-box" style="height:200px; overflow-y:auto; border:1px solid #ccc; padding:10px;"></div>
+    <div class="row mt-2">
+      <div class="col-md-4">
+        <input id="from" class="form-control" placeholder="你的名稱" />
+      </div>
+      <div class="col-md-6">
+        <input id="message" class="form-control" placeholder="輸入訊息" />
+      </div>
+      <div class="col-md-2">
+        <button onclick="sendMessage()" class="btn btn-primary w-100">送出</button>
+      </div>
+    </div>
+  </div>
+</div>
 
       <!-- Modal for Add/Edit -->
       <div class="modal fade" id="newsModal" tabindex="-1" aria-hidden="true">
@@ -139,7 +157,8 @@
       <a th:href="@{'/public1'}">首頁</a>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-
+<script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/stompjs@2.3.3/lib/stomp.min.js"></script>
     <script>
       window.addEventListener("DOMContentLoaded", () => {
         const modal = new bootstrap.Modal(document.getElementById("newsModal"));
@@ -250,6 +269,36 @@
             alert("儲存失敗，請稍後再試！");
           }
         });
+        
+        
+        
+        let stompClient = null;
+
+  function connect() {
+    const socket = new SockJS('/ws');
+    stompClient = Stomp.over(socket);
+    stompClient.connect({}, () => {
+      stompClient.subscribe('/topic/messages', (msg) => {
+        const chat = JSON.parse(msg.body);
+        const chatBox = document.getElementById('chat-box');
+        chatBox.innerHTML += `<div><strong>${chat.from}:</strong> ${chat.content}</div>`;
+        chatBox.scrollTop = chatBox.scrollHeight;
+      });
+    });
+  }
+
+  window.sendMessage = function () {
+    const from = document.getElementById('from').value;
+    const content = document.getElementById('message').value;
+    if (!from || !content) return alert("請輸入名稱與訊息！");
+    stompClient.send("/app/chat", {}, JSON.stringify({ from: from, content: content }));
+    document.getElementById('message').value = '';
+  }
+
+  connect();
+        
+        
+        
 
         async function deleteNews(id) {
           if (confirm("確定要刪除這則新聞嗎？")) {
