@@ -61,6 +61,20 @@ public class OrderController {
 //		return "redirect:/";
 	}
 
+	
+//	@GetMapping("/orderto")
+//	public String ordergotopay(@RequestParam String selectedSeatsJson, HttpServletRequest request,
+//			@RequestParam Integer showtimeid, @RequestParam Integer tickettypeid,
+//			@RequestParam Integer movieid, Model model) {
+//		
+//		
+//		
+//		return "redirect:/";
+//	};
+	
+	
+	
+	
 	@GetMapping("/ordercheck")
 	public String ordercheck(@RequestParam String selectedSeatsJson, HttpServletRequest request,
 			@RequestParam Integer showtimeid, @RequestParam Integer tickettypeid,
@@ -92,7 +106,6 @@ public class OrderController {
 			Optional<ShowtimeBean> op = timeService.findtimedate(showtimeid);
 			orderBean.setShowdate(op.get().getShowdate());
 			orderBean.setShowtime(op.get().getShowtime());
-			
 			sum = typemo * selectedSeats.size();
 			orderBean.setSumpay(sum);
 			String withoutBrackets = selectedSeatsJson.substring(1, selectedSeatsJson.length() - 1);
@@ -101,6 +114,7 @@ public class OrderController {
 			int halli = hallService.findhallbyname(movieid).getHallid();
 			String namemoString = hallService.findnamebyhallid(halli).getMoviename();
 			orderBean.setHallid(halli);
+			orderBean.setPayout("N");
 			orderBean.setMoviename(namemoString);
 	        orderService.inser(orderBean);
 			for (String stringgs : selectedSeats) {
