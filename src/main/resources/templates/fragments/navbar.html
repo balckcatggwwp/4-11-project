@@ -39,8 +39,7 @@
             <ul class="dropdown-menu">
               <li><a class="dropdown-item" th:href="@{/memberCenter}">個人資料</a></li>
               <li><a class="dropdown-item" href="#">訂票明細</a></li>
-              <li><a class="dropdown-item" href="#">餐點明細</a></li>
-              <li><a class="dropdown-item" href="#">確認餐點</a></li>
+              <li><a class="dropdown-item" th:href="@{/memberFoodOrders}">餐點明細</a></li>
               <li><hr class="dropdown-divider"></li>
               <li><a class="dropdown-item" href="#">聯絡客服</a></li>
               <li><a class="dropdown-item" href="#">業務專區</a></li>
@@ -48,7 +47,7 @@
           </li>
 
           <li class="nav-item"><a class="nav-link" th:href="@{/template}">會員專區模板</a></li>
-          <li class="nav-item"><a class="nav-link" href="#">餐點訂購</a></li>
+          <li class="nav-item"><a class="nav-link" th:href="@{/usersmenu/page/1}">餐點訂購</a></li>
           <li class="nav-item"><a class="nav-link" th:href="@{/orderset}">訂票專區</a></li>
           <li class="nav-item"><a class="nav-link" href="#">最新公告</a></li>
           <li class="nav-item"><a class="nav-link" href="#">場次查詢</a></li>
