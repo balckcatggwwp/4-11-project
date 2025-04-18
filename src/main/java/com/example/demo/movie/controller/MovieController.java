@@ -42,6 +42,7 @@ public class MovieController {
 
     // 查詢所有電影
     @GetMapping
+    
     public List<MovieList> findAll() {
         return movieListService.findAll();
     }
