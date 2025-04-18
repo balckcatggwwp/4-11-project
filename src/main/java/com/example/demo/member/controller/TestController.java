@@ -50,4 +50,14 @@ public class TestController {
 	public String test123Layout() {
 		return "test123/layout";
 	}
+	
+	@GetMapping("empTemplate")
+	public String empTemplate() {
+		return "layout/empTemplate";
+	}
+	
+	@GetMapping("empTemplateMember3")
+	public String empTemplateMember3() {
+		return "member/showAllMember3";
+	}
 }
