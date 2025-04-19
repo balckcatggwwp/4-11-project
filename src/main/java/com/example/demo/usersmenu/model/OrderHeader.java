@@ -28,7 +28,7 @@ public class OrderHeader {
 	@Column(name = "order_id")
 	private Integer orderId;
 	@Column(name = "user_id")
-	private Integer userId;
+	private Long userId;
 	@Column(name = "phone")
 	private String phone;
 	@Column(name = "order_time")

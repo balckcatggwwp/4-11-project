@@ -24,7 +24,7 @@
 		}
 
 		.ud {
-
+			pointer-events: none;
 			background: #fff !important;
 		}
 
@@ -56,7 +56,7 @@
 			<fieldset>
 
 				<!-- Form Name -->
-				<legend>修改訂票</legend>
+				<legend>新增訂票</legend>
 
 				<!-- Text input-->
 
@@ -79,8 +79,8 @@
 					<label class="col-md-4 control-label">會員</label>
 					<div class="col-md-4 inputGroupContainer">
 						<div class="input-group">
-							<span class="input-group-addon"><i class="fa-solid fa-user"></i></span> <input name="memberId"
-								placeholder="會員" class="form-control ud" type="text">
+							<span class="input-group-addon"><i class="fa-solid fa-user"></i></span> <input
+								name="memberId" placeholder="會員" class="form-control" type="text">
 						</div>
 					</div>
 				</div>
@@ -108,17 +108,28 @@
 					</div>
 				</div>
 
+				<div class="form-group">
+					<label class="col-md-4 control-label">電影名稱</label>
+					<div class="col-md-4 inputGroupContainer">
+						<div class="input-group">
+							<span class="input-group-addon"><i class="fa-solid fa-film"></i></span> <select
+								name="movieid" class="form-control selectpicker" id="moviename">
+								<option value="">電影</option>
+							</select>
+						</div>
+					</div>
+				</div>
 				<!-- Text input-->
 				<div class="form-group">
 					<label class="col-md-4 control-label">廳</label>
 					<div class="col-md-4 inputGroupContainer">
 						<div class="input-group">
-							<span class="input-group-addon"><i class="fa-solid fa-house"></i></span> <select
-								class="form-control selectpicker" id="halls" name="hallid">
-								<option value="">廳</option>
+							<span class="input-group-addon"><i class="fa-solid fa-house "></i></span>
+							<input class="form-control selectpicker ud" id="halls" name="hallid" value="" placeholder="會員">
 
 
-							</select>
+
+
 						</div>
 					</div>
 				</div>
@@ -155,17 +166,6 @@
 
 				<!-- Text input-->
 
-				<div class="form-group">
-					<label class="col-md-4 control-label">電影名稱</label>
-					<div class="col-md-4 inputGroupContainer">
-						<div class="input-group">
-							<span class="input-group-addon"><i class="fa-solid fa-film"></i></span> <select
-								name="movieid" class="form-control selectpicker" id="moviename">
-								<option value=" ">電影</option>
-							</select>
-						</div>
-					</div>
-				</div>
 
 				<!-- Select Basic -->
 
@@ -175,7 +175,7 @@
 					<div class="col-md-4 inputGroupContainer">
 						<div class="input-group">
 							<span class="input-group-addon"><i class="fa-solid fa-coins"></i></span> <input
-								name="onemoney" placeholder="單價" class="form-control" type="text" id="money">
+								name="onemoney" placeholder="單價" class="form-control ud" type="text" id="money">
 						</div>
 					</div>
 				</div>
@@ -250,28 +250,28 @@
 
 			///
 			//廳
-			function name() {
-				$('#moviename').empty();
-				let hall = $("#halls").val();
-				$.ajax({
-					url: '/booktick/name',
-					data: { hallid: hall },
-					dataType: 'json',
-					type: 'GET',
-					success: function (respones) {
+			// function name() {
+			// 	$('#moviename').empty();
+			// 	let hall = $("#halls").val();
+			// 	$.ajax({
+			// 		url: '/booktick/name',
+			// 		data: { hallid: hall },
+			// 		dataType: 'json',
+			// 		type: 'GET',
+			// 		success: function (respones) {
 
 
-						$('#moviename').append(`<option value="${respones.movieid}">${respones.moviename}</option>`)
+			// 			$('#moviename').append(`<option value="${respones.movieid}">${respones.moviename}</option>`)
 
 
-					}
-				})
-			}
+			// 		}
+			// 	})
+			// }
 
-			$("#halls").on("change", function () {
-				name();
-				$('#moviename').empty();
-			})
+			// $("#halls").on("change", function () {
+			// 	name();
+			// 	$('#moviename').empty();
+			// })
 
 
 			$(document).ready(function () {
@@ -283,24 +283,9 @@
 					success: function (respones) {
 						$.each(respones, function (i, e) {
 							//console.log(e.hallid);
-							console.log(e);
-							$('#halls').append(`<option value="${e.theaterid}" >${e.theaterid}</option>`)
 
-
-
-							//console.log(hall)
-
+							$('#moviename').append(`<option value="${e.movieid}">${e.moviename}</option>`)
 						});
-						let hall = $("#halls").val();
-						/////
-
-						/////
-
-
-						/////////////////////////////////////////////
-
-
-						////////////////////////////////////////	
 					}
 				})
 			});
@@ -309,6 +294,7 @@
 			function loadseat() {
 				let selecttime = $("#time").val();
 				let selecthall = $("#halls").val();
+				console.log(selecthall);
 
 
 				$("#seat").empty();
@@ -348,9 +334,34 @@
 				})
 			};
 
-			$("#halls").on("change", function () {
-				loadseat();
+			$("#moviename").on("change", function () {
+				$('#hallid').empty();
+				let selectmovie = $(this).val();
+
+				$.ajax({
+					url: '/booktick/name',
+					data: { nameid: selectmovie },
+					dataType: 'json',
+					type: 'GET',
+					success: function (respones) {
+						console.log(respones);
+
+						$('#halls').val(respones.hallid);
+
+
+					}
+				})
+
 			});
+			$('#moviename').on("change", function () {
+
+				setTimeout(loadseat, 100);
+
+			});
+
+
+
+
 
 
 

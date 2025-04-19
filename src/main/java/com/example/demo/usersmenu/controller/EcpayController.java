@@ -31,10 +31,13 @@ public class EcpayController {
     }
 
     @PostMapping("/ecpay")
+    
     public String goEcpay(@RequestParam("phone") String phone,
                           HttpSession session,
                           Model model) {
-        Integer userId = (Integer) session.getAttribute("userId");
+    	
+        Long userId =   (Long) session.getAttribute("memberId");
+        System.out.println("🔐 當前登入 userId = " + userId);
         Map<Integer, SessionCartItem> cart = (Map<Integer, SessionCartItem>) session.getAttribute("cart");
 
         if (userId == null || cart == null || cart.isEmpty()) {
@@ -51,7 +54,7 @@ public class EcpayController {
         String merchantID = "2000132";
         String tradeNo = "ORD" + UUID.randomUUID().toString().replaceAll("-", "").substring(0, 15);
         String tradeDate = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss"));
-        String returnURL = "https://85ff-61-222-34-1.ngrok-free.app/checkout/confirm";
+        String returnURL = "https://088b-36-228-235-238.ngrok-free.app/checkout/confirm";
         String clientBackURL = "http://localhost:8080";
 
         Map<String, String> paramMap = new HashMap<>();
@@ -77,6 +80,8 @@ public class EcpayController {
         data.setCart(cart);
         data.setPhone(phone);
         TempTradeDataStore.tradeDataMap.put(tradeNo, data);
+        
+        System.out.println("📦 儲存 TempTradeData：tradeNo = " + tradeNo + ", userId = " + userId);
 
         model.addAttribute("merchantID", merchantID);
         model.addAttribute("tradeNo", tradeNo);

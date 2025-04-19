@@ -308,7 +308,7 @@ input {
 	<div th:replace="~{laout/tableremack}"></div>
 	<div id="bodddd">
 		<h1 class="mb-4">電影資料列表</h1>
-		
+
 		<div class="mb-3">
 			<a href="/showtime" class="btn btn-success" id="sessionQueryBtn">
 				查詢電影場次 </a>
@@ -362,8 +362,11 @@ input {
 									type="number" class="form-control" id="runtime" />
 							</div>
 							<div class="mb-3">
-								<label for="state" class="form-label">狀態</label> <input
-									type="text" class="form-control" id="state" />
+								<label for="state" class="form-label">狀態</label> <select
+									class="form-control" id="state">
+									<option value="上映">上映</option>
+									<option value="下架">下架</option>
+								</select>
 							</div>
 						</form>
 					</div>
@@ -480,23 +483,24 @@ input {
 									type="text" class="form-control" id="addMovieName" required />
 							</div>
 							<div class="mb-3">
-								<label for="addMovieReleased" class="form-label">上映日期</label>
-								<input type="date" class="form-control" id="addMovieReleased"
+								<label for="addMovieReleased" class="form-label">上映日期</label> <input
+									type="date" class="form-control" id="addMovieReleased" required />
+							</div>
+							<div class="mb-3">
+								<label for="addMovieRetired" class="form-label">預計下檔日期</label> <input
+									type="date" class="form-control" id="addMovieRetired" required />
+							</div>
+							<div class="mb-3">
+								<label for="addMovieRuntime" class="form-label">片長 (分鐘)</label>
+								<input type="number" class="form-control" id="addMovieRuntime"
 									required />
 							</div>
 							<div class="mb-3">
-								<label for="addMovieRetired" class="form-label">預計下檔日期</label>
-								<input type="date" class="form-control" id="addMovieRetired"
-									required />
-							</div>
-							<div class="mb-3">
-								<label for="addMovieRuntime" class="form-label">片長
-									(分鐘)</label> <input type="number" class="form-control"
-									id="addMovieRuntime" required />
-							</div>
-							<div class="mb-3">
-								<label for="addMovieState" class="form-label">狀態</label> <input
-									type="text" class="form-control" id="addMovieState" required />
+								<label for="addMovieState" class="form-label">狀態</label> <select
+									class="form-control" id="addMovieState" required>
+									<option value="上映">上映</option>
+									<option value="下架">下架</option>
+								</select>
 							</div>
 						</form>
 					</div>
@@ -546,8 +550,7 @@ input {
 
 		<button class="btn btn-success mb-4" id="addMovieBtn">新增電影</button>
 		<button type="button" class="btn btn-primary mb-4"
-			data-bs-toggle="modal" data-bs-target="#uploadModal">
-			上傳圖片</button>
+			data-bs-toggle="modal" data-bs-target="#uploadModal">上傳圖片</button>
 	</div>
 	<script src="https://code.jquery.com/jquery-3.7.1.js"></script>
 	<script src="https://cdn.datatables.net/2.2.2/js/dataTables.min.js"></script>

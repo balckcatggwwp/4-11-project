@@ -8,7 +8,6 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -30,9 +29,6 @@ public class MemberController {
 	
 	@Autowired
 	private MemberService memberService;
-	
-	@Autowired
-	private PasswordEncoder pwdEncoder;
 	
 	//Login Controller
 	@GetMapping("member/login")
@@ -113,13 +109,21 @@ public class MemberController {
 	public String insertMember() {
 		return "member/insertMember";
 	}
-	
-	//後臺顯示所有會員(DataTable)
 	@GetMapping("member/showAllMember")
-	public String showAllMember(Model model) {
+	public String showAllMember2(Model model) {
 	    List<Member> memberList = memberService.findAll();
 	    model.addAttribute("members", memberList);
 	    return "member/showAllMember";
+	}
+	
+	
+	
+	//後臺顯示所有會員(DataTable)
+	@GetMapping("member/showAllMember3")
+	public String showAllMember(Model model) {
+	    List<Member> memberList = memberService.findAll();
+	    model.addAttribute("members", memberList);
+	    return "member/showAllMember3";
 	}
 	
 	//後臺編輯單筆會員資料(透過findById)
