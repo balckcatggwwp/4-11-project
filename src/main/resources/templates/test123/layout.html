@@ -1,0 +1,39 @@
+<!-- templates/layout.html -->
+<!DOCTYPE html>
+<html lang="zh-Hant" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>後台管理系統</title>
+    <link href="/vendor/fontawesome-free/css/all.min.css" rel="stylesheet">
+    <link href="/css/sb-admin-2.min.css" rel="stylesheet">
+</head>
+<body id="page-top">
+    <div id="wrapper">
+        <!-- Sidebar -->
+        <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
+            <a class="sidebar-brand d-flex align-items-center justify-content-center" th:href="@{/}">
+                <div class="sidebar-brand-icon rotate-n-15">
+                    <i class="fas fa-film"></i>
+                </div>
+                <div class="sidebar-brand-text mx-3">光影之門</div>
+            </a>
+
+            <hr class="sidebar-divider my-0">
+            <li class="nav-item"><a class="nav-link" th:href="@{/}"><i class="fas fa-fw fa-home"></i><span>首頁</span></a></li>
+            <li class="nav-item"><a class="nav-link" th:href="@{/member}"><i class="fas fa-fw fa-user"></i><span>會員</span></a></li>
+            <li class="nav-item"><a class="nav-link" th:href="@{/order}"><i class="fas fa-fw fa-utensils"></i><span>訂餐</span></a></li>
+            <li class="nav-item"><a class="nav-link" th:href="@{/movie}"><i class="fas fa-fw fa-film"></i><span>電影</span></a></li>
+            <li class="nav-item"><a class="nav-link" th:href="@{/announcement}"><i class="fas fa-fw fa-bullhorn"></i><span>公告</span></a></li>
+
+            <hr class="sidebar-divider d-none d-md-block">
+        </ul>
+
+        <!-- Content Wrapper -->
+        <div id="content-wrapper" class="d-flex flex-column">
+            <div id="content">
+                <div th:replace="~{::main-content}"></div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

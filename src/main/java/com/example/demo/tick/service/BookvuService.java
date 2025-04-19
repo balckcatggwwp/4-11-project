@@ -1,6 +1,7 @@
 package com.example.demo.tick.service;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,17 +9,28 @@ import org.springframework.stereotype.Service;
 
 import com.example.demo.tick.bean.BookticketBean;
 import com.example.demo.tick.bean.BookticketvuBean;
+import com.example.demo.tick.repo.BookTypeRepository;
 import com.example.demo.tick.repo.BooktickRepository;
 import com.example.demo.tick.repo.BooktickvuRepository;
+import com.example.demo.tick.repo.OrderRepository;
 
 @Service
 public class BookvuService {
+
 
 	@Autowired
 	private BooktickvuRepository booktickvuRepo;
 	@Autowired
 	private BooktickRepository booktickRepository;
-
+	
+	
+	public List<Map.Entry<String, Long>> getTop3PopularMovies() {
+        return booktickRepository.getTop3MovieNamesByTicketsNative();
+    }
+	
+	
+	
+	
 	public List<BookticketvuBean> tickfindAll() {
 
 		return booktickvuRepo.findAll();
@@ -82,5 +94,10 @@ public class BookvuService {
 		}
 		return null;
 	}
+	
+	public void update(Long orderid) {
+		 booktickRepository.updatePayoutByOrderIda(orderid, "Y");
+	}
+	
 
 }

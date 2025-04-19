@@ -31,4 +31,8 @@ public class TickorderService {
 	public OrderBean update(OrderBean orderBean) {
 		return orderRepository.save(orderBean);
 	}
+	
+	public void uppay(Long orderid) {
+		orderRepository.updatePayoutByOrderId(orderid, "Y");
+	}
 }
