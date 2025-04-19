@@ -24,5 +24,8 @@ public interface OrderItemRepository extends JpaRepository<OrderItem, Integer> {
 	List<Object[]> findBottom5MenuSales();
 	
 
+	@Query("SELECT i FROM OrderItem i JOIN FETCH i.order JOIN FETCH i.menu WHERE i.order.userId = :userId")
+	List<OrderItem> findByUserId(@Param("userId") Long userId);
+
 
 }

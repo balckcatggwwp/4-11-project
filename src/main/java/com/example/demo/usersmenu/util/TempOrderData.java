@@ -5,12 +5,12 @@ import java.util.Map;
 import com.example.demo.usersmenu.model.SessionCartItem;
 
 public class TempOrderData {
-    public Integer userId;
+    public Long userId;
     public Map<Integer, SessionCartItem> cart;
     public String phone;
 
-    public Integer getUserId() { return userId; }
-    public void setUserId(Integer userId) { this.userId = userId; }
+    public Long getUserId() { return userId; }
+    public void setUserId(Long userId2) { this.userId = userId2; }
 
     public Map<Integer, SessionCartItem> getCart() { return cart; }
     public void setCart(Map<Integer, SessionCartItem> cart) { this.cart = cart; }
