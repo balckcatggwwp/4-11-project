@@ -1,12 +1,5 @@
 package com.example.demo.movieNews.controller;
 
-<<<<<<< HEAD
-import org.springframework.messaging.handler.annotation.MessageMapping;
-import org.springframework.messaging.handler.annotation.SendTo;
-import org.springframework.stereotype.Controller;
-
-import com.example.demo.movieNews.model.ChatMessage;
-=======
 import java.security.Principal;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -19,26 +12,10 @@ import org.springframework.stereotype.Controller;
 
 import com.example.demo.movieNews.model.ChatMessage;
 import com.example.demo.movieNews.model.ChatMessageRepository;
->>>>>>> master
 
 @Controller
 public class ChatController {
 
-<<<<<<< HEAD
-	@MessageMapping("/chat.sendMessage")
-    @SendTo("/topic/public")
-    public ChatMessage sendMessage(ChatMessage message) {
-        return message;
-    }
-
-    @MessageMapping("/chat.addUser")
-    @SendTo("/topic/public")
-    public ChatMessage addUser(ChatMessage message) {
-        message.setContent(message.getSender() + " 加入聊天室");
-        return message;
-    }
-}
-=======
 	  @Autowired
 	    private ChatMessageRepository chatMessageRepository;
 
@@ -71,4 +48,3 @@ public class ChatController {
 	        return message;
 	    }
 }
->>>>>>> master
