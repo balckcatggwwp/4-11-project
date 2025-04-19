@@ -20,7 +20,7 @@ public interface BooktickvuRepository extends JpaRepository<BookticketvuBean, In
     List<BookticketvuBean> findbyOrderid(@Param("id") Long id);
 
     @Query("SELECT b FROM BookticketvuBean b WHERE b.memberId = :id")
-    List<BookticketvuBean> findbyUserid(@Param("id") Integer id);
+    List<BookticketvuBean> findbyUserid(@Param("id") Long id);
 
     @Query("SELECT b FROM BookticketvuBean b WHERE b.showtimedate = :date")
     List<BookticketvuBean> findbyShowtimedate(@Param("date") String date);

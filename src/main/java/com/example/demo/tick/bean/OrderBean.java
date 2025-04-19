@@ -1,5 +1,8 @@
 package com.example.demo.tick.bean;
 
+import java.sql.Time;
+
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
@@ -18,4 +21,11 @@ public class OrderBean {
 	private Long userid;
 	private int sumpay;
 	private String orderdate;
+	private  String moviename;
+	private  int hallid;
+	private  String showtime;
+	private  String showdate;
+	private String seat;
+	
+	private String payout;
 }

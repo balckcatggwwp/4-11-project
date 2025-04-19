@@ -2,7 +2,7 @@ package com.example.demo.menu.controller;
 
 import java.io.IOException;
 import java.nio.file.*;
-
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.*;
@@ -13,6 +13,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.example.demo.menu.model.Menu;
 import com.example.demo.menu.service.MenuService;
+import com.example.demo.usersmenu.model.OrderItemRepository;
 
 import jakarta.annotation.PostConstruct;
 import jakarta.servlet.RequestDispatcher;
@@ -24,6 +25,9 @@ public class MenuController {
 
     @Autowired
     private MenuService service;
+    
+    @Autowired
+    private OrderItemRepository orderItemRepository;
 
     // ✅ 首頁導向第 1 頁（取代原本的 list）
     @GetMapping("/list")
@@ -156,5 +160,18 @@ public class MenuController {
 
         return "error";
     }
+    
+    @GetMapping("/statistics")
+    public String showMenuStatistics(Model model) {
+        List<Object[]> top5 = orderItemRepository.findTop5MenuSales();
+        List<Object[]> bottom5 = orderItemRepository.findBottom5MenuSales();
+
+        model.addAttribute("top5", top5);
+        model.addAttribute("bottom5", bottom5);
+        return "foodmenu/menu_statistics";
+    }
+
+
+
 }
 

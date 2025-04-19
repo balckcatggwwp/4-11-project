@@ -78,8 +78,9 @@
 					<label class="col-md-4 control-label">會員</label>
 					<div class="col-md-4 inputGroupContainer">
 						<div class="input-group">
-							<span class="input-group-addon"><i class="fa-solid fa-user"></i></span> <input name="memberId"
-								placeholder="會員" class="form-control ud" type="text" th:value="${tickinfo.memberId}">
+							<span class="input-group-addon"><i class="fa-solid fa-user"></i></span> <input
+								name="memberId" placeholder="會員" class="form-control ud" type="text"
+								th:value="${tickinfo.memberId}">
 						</div>
 					</div>
 				</div>
@@ -108,17 +109,29 @@
 					</div>
 				</div>
 
+				<div class="form-group">
+					<label class="col-md-4 control-label">電影名稱</label>
+					<div class="col-md-4 inputGroupContainer">
+						<div class="input-group">
+							<span class="input-group-addon"><i class="fa-solid fa-film"></i></span> <select
+								name="movieid" class="form-control selectpicker" id="moviename">
+								<option value=" ">電影</option>
+							</select>
+						</div>
+					</div>
+				</div>
 				<!-- Text input-->
 				<div class="form-group">
 					<label class="col-md-4 control-label">廳</label>
 					<div class="col-md-4 inputGroupContainer">
 						<div class="input-group">
-							<span class="input-group-addon"><i class="fa-solid fa-house"></i></span> <select
-								class="form-control selectpicker" id="halls" name="hallid">
-								<option value="">廳</option>
+							<span class="input-group-addon"><i class="fa-solid fa-house"></i></span>
+							<input class="form-control selectpicker ud" id="halls" name="hallid" value=""
+								placeholder="日期">
 
 
-							</select>
+
+							</input>
 						</div>
 					</div>
 				</div>
@@ -155,17 +168,6 @@
 
 				<!-- Text input-->
 
-				<div class="form-group">
-					<label class="col-md-4 control-label">電影名稱</label>
-					<div class="col-md-4 inputGroupContainer">
-						<div class="input-group">
-							<span class="input-group-addon"><i class="fa-solid fa-film"></i></span> <select
-								name="movieid" class="form-control selectpicker" id="moviename">
-								<option value=" ">電影</option>
-							</select>
-						</div>
-					</div>
-				</div>
 
 				<!-- Select Basic -->
 
@@ -274,17 +276,18 @@
 			///
 			//廳
 			function name() {
-				$('#moviename').empty();
-				let hall = $("#halls").val();
+				$('#hallid').empty();
+				let selectmovie = $('#moviename').val();
+
 				$.ajax({
 					url: '/booktick/name',
-					data: { hallid: hall },
+					data: { nameid: selectmovie },
 					dataType: 'json',
 					type: 'GET',
 					success: function (respones) {
+						console.log(respones);
 
-
-						$('#moviename').append(`<option value="${respones.movieid}">${respones.moviename}</option>`)
+						$('#halls').val(respones.hallid);
 
 
 					}
@@ -298,23 +301,23 @@
 					success: function (respones) {
 						$.each(respones, function (i, e) {
 
-							let tickhall = /*[[${tickinfo.hallid}]]*/'' // 直接輸出數值
-							let selectshows = (tickhall == e.theaterid) ? 'selected' : '';
+							let tickhall = /*[[${tickinfo.moviename}]]*/'' // 直接輸出數值
+							let selectshows = (tickhall === e.moviename) ? 'selected' : '';
 
-							//console.log(e.hallid);
-							$('#halls').append(`<option value="${e.theaterid}" ${selectshows}>${e.theaterid}</option>`)
-							$('#moviename').empty();
+							// //console.log(e.hallid);
+							// $('#halls').append(`<option value="${e.theaterid}" ${selectshows}>${e.theaterid}</option>`)
+							// $('#moviename').empty();
 
-
+							$('#moviename').append(`<option value="${e.movieid}" ${selectshows}>${e.moviename}</option>`)
 							//console.log(hall)
 
 						});
-						let hall = $("#halls").val();
+						// let hall = $("#halls").val();
 						/////
-
-						/////
-
 						name();
+						/////
+
+
 
 						/////////////////////////////////////////////
 
@@ -324,10 +327,10 @@
 				})
 			});
 
-			$("#halls").on("change", function () {
-				name();
+			// $("#halls").on("change", function () {
+			// 	name();
 
-			})
+			// })
 			//////
 			function loadseat() {
 				let selecttime = $("#time").val();
@@ -369,12 +372,32 @@
 					error: function () { console.log('sate') }
 				})
 			};
+			$("#moviename").on("change", function () {
+				$('#hallid').empty();
+				let selectmovie = $(this).val();
 
-			$("#halls").on("change", function () {
-				loadseat();
+				$.ajax({
+					url: '/booktick/name',
+					data: { nameid: selectmovie },
+					dataType: 'json',
+					type: 'GET',
+					success: function (respones) {
+						console.log(respones);
+
+						$('#halls').val(respones.hallid);
+
+
+					}
+				})
+
 			});
 
 
+			$('#moviename').on("change", function () {
+
+				setTimeout(loadseat, 100);
+
+			});
 
 
 			$(document).ready(function () {

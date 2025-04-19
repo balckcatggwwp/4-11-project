@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>會員專區</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="/css/memberCenter.css">
+  <link rel="stylesheet" href="/css/footer.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" />
+</head>
+<body>
+
+<!-- Bootstrap SVG icons symbols -->
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+	<symbol id="chevron-down" viewBox="0 0 16 16">
+	  <path fill="currentColor" fill-rule="evenodd"
+	    d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z" />
+	</symbol>
+</svg>
+
+<!-- 匯入 navbar -->
+<div th:replace="fragments/navbar :: navbar"></div>
+
+<div class="d-flex">
+  <!-- 左側側邊欄 -->
+<div class="flex-shrink-0 p-3 sidebar bg-dark text-white">
+    <ul class="nav flex-column">
+      <!-- 區塊 1：我的帳戶 -->
+      <li class="mb-1">
+        <button class="btn w-100 text-start d-flex justify-content-between align-items-center"
+                data-bs-toggle="collapse"
+                data-bs-target="#memberDetail-collapse"
+                aria-expanded="false">
+          <span><i class="fas fa-user me-2"></i> 我的帳戶</span>
+          <svg class="bi" width="16" height="16" style="color: white;"><use xlink:href="#chevron-down"/></svg>
+        </button>
+        <div class="collapse ps-3 mt-1" id="memberDetail-collapse">
+          <ul class="nav flex-column">
+            <li class="nav-item">
+              <a class="nav-link" th:href="@{/memberCenter}">
+              <i class="fas fa-id-card me-2"></i> 個人資料變更</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">
+                <i class="fas fa-envelope me-2"></i> 變更信箱</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">
+                <i class="fas fa-key me-2"></i> 變更密碼</a>
+            </li>
+          </ul>
+        </div>
+      </li>
+
+      <!-- 區塊 2：歷史訂單（可展開） -->
+      <li class="mb-1">
+        <button class="btn w-100 text-start d-flex justify-content-between align-items-center"
+                data-bs-toggle="collapse"
+                data-bs-target="#order-collapse"
+                aria-expanded="false">
+          <span><i class="fas fa-clock me-2"></i> 歷史訂單</span>
+          <svg class="bi" width="16" height="16" style="color: white;"><use xlink:href="#chevron-down"/></svg>
+        </button>
+        <div class="collapse ps-3 mt-1" id="order-collapse">
+          <ul class="nav flex-column">
+            <li class="nav-item">
+              <a class="nav-link" href="#">
+              <i class="fas fa-utensils"></i>  餐點明細</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" th:href="@{/detail}">
+                <i class="fas fa-ticket-alt"></i>  訂票明細</a>
+            </li>
+          </ul>
+        </div>
+      </li>
+
+      <!-- 區塊 3：我的優惠券 -->
+      <li class="nav-item mb-2">
+        <a href="#" class="nav-link">
+          <i class="fas fa-gift me-2"></i> 我的優惠券
+        </a>
+      </li>
+
+      <!-- 區塊 4：交易支付及退款查詢 -->
+      <li class="nav-item">
+        <a href="#" class="nav-link">
+          <i class="fas fa-receipt me-2"></i> 交易支付及退款查詢
+        </a>
+      </li>
+    </ul>
+  </div>
+
+  <!-- 右側內容區 -->
+  <div class="flex-grow-1 p-4 memberDetail">
+  <h3>個人檔案</h3>
+  <form>
+    <div class="mb-3">
+      <label class="form-label">會員姓名</label>
+      <input type="text" class="form-control" name="name" th:value="${session.memberDetail.name}">
+    </div>
+    <div class="mb-3">
+      <label class="form-label">身分證號碼</label>
+      <input type="text" class="form-control" name="nationalId" th:value="${session.memberDetail.nationalId}" readonly>
+    </div>
+    <div class="mb-3">
+      <label class="form-label">生日</label>
+      <input type="date" class="form-control" name="dateOfBirth" th:value="${session.memberDetail.dateOfBirth}">
+    </div>
+    <div class="mb-3">
+      <label class="form-label">性別</label><br>
+      <div class="form-check form-check-inline">
+        <input class="form-check-input" type="radio" name="gender" value="male" th:checked="${session.memberDetail.gender == 'male'}">
+        <label class="form-check-label">男生</label>
+      </div>
+      <div class="form-check form-check-inline">
+        <input class="form-check-input" type="radio" name="gender" value="female" th:checked="${session.memberDetail.gender == 'female'}">
+        <label class="form-check-label">女生</label>
+      </div>
+      <div class="form-check form-check-inline">
+        <input class="form-check-input" type="radio" name="gender" value="other" th:checked="${session.memberDetail.gender == 'other'}">
+        <label class="form-check-label">不願透露</label>
+      </div>
+    </div>
+    <div class="mb-3">
+      <label class="form-label">Email</label>
+      <input type="email" class="form-control" name="email" th:value="${session.memberDetail.email}" readonly>
+    </div>
+    <div class="mb-3">
+      <label class="form-label">手機號碼</label>
+      <input type="text" class="form-control" name="phoneNumber" th:value="${session.memberDetail.phoneNumber}" readonly>
+    </div>
+    <button type="submit" class="btn btn-primary">儲存</button>
+  </form>
+</div>
+</div>
+
+<!-- 匯入 footer -->
+<th:block th:replace="~{fragments/footer :: footer}"></th:block>
+
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
