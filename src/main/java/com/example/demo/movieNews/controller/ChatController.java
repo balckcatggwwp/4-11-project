@@ -23,17 +23,14 @@ public class ChatController {
 	    @SendTo("/topic/messages")
 	    public ChatMessage send(ChatMessage message, Principal principal, SimpMessageHeaderAccessor accessor) {
 
-	    	 // 嘗試從 payload 拿
-	        Long memberId = message.getMemberId();
-	        String memberName = message.getSender();
+	    	// 預設從 session 取得
+	        Long sessionMemberId = (Long) accessor.getSessionAttributes().get("memberId");
+	        String sessionMemberName = (String) accessor.getSessionAttributes().get("memberName");
 
-	        // 如果 payload 沒有，就從 session 拿
-	        if (memberId == null || memberName == null) {
-	            memberId = (Long) accessor.getSessionAttributes().get("memberId");
-	            memberName = (String) accessor.getSessionAttributes().get("memberName");
-	        }
+	        // 先從 payload 取，如果是 null 才 fallback
+	        Long memberId = (message.getMemberId() != null) ? message.getMemberId() : sessionMemberId;
+	        String memberName = (message.getSender() != null) ? message.getSender() : sessionMemberName;
 
-	        // 如果還是沒有，表示是非法訪問
 	        if (memberId == null || memberName == null) {
 	            System.out.println("❌ 無法識別發送者！");
 	            throw new IllegalArgumentException("memberId 為必填");

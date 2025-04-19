@@ -45,9 +45,11 @@ public class MovieNewsService {
         existing.setImageUrl(news.getImageUrl());
         existing.setType(news.getType());
         
-        if (news.getStatus() == null || news.getStatus().isBlank()) {
-            news.setStatus("active");
+        String status = news.getStatus();
+        if (status == null || status.isBlank()) {
+            status = "active";
         }
+        existing.setStatus(status);
         
         if (news.getPublishDate() != null) {
             existing.setPublishDate(news.getPublishDate());

@@ -67,10 +67,13 @@
             onchange="loadHistory(this.value)"
           >
             <option value="">請選擇會員</option>
-            <option th:each="member : ${members}" 
-          th:value="${member.id}" 
-          th:text="${member.name}">會員名稱</option>
-            
+            <option
+              th:each="member : ${members}"
+              th:value="${member.id}"
+              th:text="${member.name}"
+            >
+              會員名稱
+            </option>
           </select>
         </div>
         <div class="card-body">
@@ -139,6 +142,15 @@
                     accept="image/*"
                   />
                   <input type="hidden" id="imageUrl" />
+                </div>
+                <div class="mb-3">
+                  <label class="form-label">圖片預覽</label><br />
+                  <img
+                    id="previewImage"
+                    src=""
+                    alt="預覽圖片"
+                    style="max-width: 100%; height: auto"
+                  />
                 </div>
                 <div class="mb-3">
                   <label class="form-label">狀態</label>
@@ -246,6 +258,10 @@
           document.getElementById("imageUrl").value = news.imageUrl;
           document.getElementById("type").value = news.type;
           document.getElementById("status").value = news.status;
+          const preview = document.getElementById("previewImage");
+          if (preview && news.imageUrl) {
+            preview.src = news.imageUrl;
+          }
           modal.show();
         }
 
@@ -349,7 +365,8 @@
         }
 
         window.sendMessage = function () {
-        const selectedMemberId = document.getElementById("memberSelector").value;
+          const selectedMemberId =
+            document.getElementById("memberSelector").value;
           const from = document.getElementById("from").value;
           const content = document.getElementById("message").value;
           if (!from || !content) return alert("請輸入名稱與訊息！");
@@ -363,7 +380,7 @@
             JSON.stringify({
               sender: "客服",
               content: content,
-              memberId: selectedMemberId, 
+              memberId: selectedMemberId,
             })
           );
           document.getElementById("message").value = "";
