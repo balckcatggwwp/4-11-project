@@ -28,6 +28,8 @@ public class EmpController {
 		return "employee/empLogin";
 	}
 	
+	
+	
 	@GetMapping("employee/empIndex")
 	public String empIndex() {
 		return "employee/empIndex";

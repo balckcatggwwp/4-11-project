@@ -10,4 +10,9 @@ public class MoviePageController {
 	public String ListPage() {
 		return "/Movie";
 	}
+	
+	@GetMapping("/showtime")
+	public String ShowtimePage() {
+		return "/Showtime";
+	}
 }

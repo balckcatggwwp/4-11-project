@@ -16,9 +16,9 @@ public class TestController {
 		return "employee/empRegister2";
 	}
 	
-	@GetMapping("employee/forgot-password")
+	@GetMapping("employee/forgotPassword")
 	public String forgotPassword() {
-		return "employee/forgot-password";
+		return "employee/forgotPassword";
 	}
 	
 	@GetMapping("memberCenter")
@@ -34,5 +34,20 @@ public class TestController {
 	@GetMapping("template")
 	public String template() {
 		return "memberCenterTemplate";
+	}
+	
+	@GetMapping("navbar")
+	public String navbar() {
+		return "fragments/navbar";
+	}
+	
+	@GetMapping("test123/index")
+	public String test123Index() {
+		return "test123/index";
+	}
+	
+	@GetMapping("test123/layout")
+	public String test123Layout() {
+		return "test123/layout";
 	}
 }
