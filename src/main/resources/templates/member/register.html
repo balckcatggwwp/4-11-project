@@ -140,9 +140,10 @@
                 icon: 'success',
                 title: '註冊成功',
                 html: `歡迎 <b>${response.name}</b> 加入我們！`,
-                confirmButtonText: '前往登入'
+                confirmButtonText: '前往登入',
+                timer: 3000,
+      			timerProgressBar: true
               }).then(() => {
-                localStorage.setItem("loginMessage", "註冊成功！請登入");
 				localStorage.setItem("autoShowLogin", "true");
 				window.location.href = "/";
               });
@@ -157,20 +158,12 @@
           error: function () {
             Swal.fire({
               icon: 'error',
-              title: '伺服器錯誤',
               text: '請稍後再試或聯絡客服'
             });
           }
         });
       });
     });
-  </script>
-  <script>
-	function triggerLoginModal() {
-		localStorage.setItem("loginMessage", "註冊成功！請登入");
-		localStorage.setItem("autoShowLogin", "true");
-		window.location.href = "/";
-	}
   </script>
 </body>
 </html>
