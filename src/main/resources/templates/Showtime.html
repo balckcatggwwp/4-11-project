@@ -342,7 +342,7 @@ input {
             <hr>
 
             <div class="table-responsive">
-                <table class="table table-bordered mt-3 text-center align-middle">
+                <table id="showtimeTable" class="table table-bordered mt-3 text-center align-middle">
                     <thead class="table-secondary">
                         <tr>
                             <th>日期</th>
@@ -401,7 +401,7 @@ input {
 
 <script>
     function loadMovies(target) {
-        $.get("/movies", function (movies) {
+        $.get("/movies/available", function (movies) {
             const select = $(target);
             select.empty();
             select.append(`<option value="">全部</option>`);

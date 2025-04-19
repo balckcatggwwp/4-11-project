@@ -42,6 +42,7 @@ public class MovieController {
 
     // 查詢所有電影
     @GetMapping
+    
     public List<MovieList> findAll() {
         return movieListService.findAll();
     }
@@ -131,6 +132,12 @@ public class MovieController {
             return fileName.substring(index);  // 擷取副檔名
         }
         return "";  // 如果找不到副檔名，返回空字串
+    }
+    
+    //上架中的電影
+    @GetMapping("/available")
+    public List<MovieList> getAvailableMovies() {
+        return movieListService.getAvailableMovies();
     }
  
 }

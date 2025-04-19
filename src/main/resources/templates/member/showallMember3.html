@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="UTF-8">
+	<title>光影之門後台首頁</title>
+	<!-- 樣式 -->
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="/css/bootstrap.min.css" />
+	<link rel="stylesheet" href="https://cdn.datatables.net/2.2.2/css/dataTables.bootstrap5.css" />
+	<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" rel="stylesheet" />
+	<link rel="stylesheet" href="/css/empTemplate.css" />
+	<link rel="stylesheet" href="/css/showAllMember.css" />
+</head>
+<body>
+	<!-- 頁首 -->
+	<th:block th:replace="layout/empHeader :: header"></th:block>
+
+	<div class="container-fluid">
+		<div class="row">
+			<!-- 側邊欄 -->
+			<th:block th:replace="layout/empSideBar :: sideBar"></th:block>
+
+			<!-- 主內容 -->
+			<main class="col-md-10 ms-sm-auto px-md-4 mt-4">
+				<!-- ✅ 子頁面內容寫在這裡 -->
+				<div class="d-flex justify-content-between align-items-center mb-3">
+					<h3 class="mb-0"><i class="fas fa-users me-2"></i>會員列表</h3>
+					<button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#createMemberModal">
+						<i class="fa-solid fa-user-plus me-1"></i> 新增會員
+					</button>
+				</div>
+
+				<div class="table-responsive">
+					<table id="myTable" class="display table table-bordered">
+						<thead class="table-dark">
+							<tr>
+								<th>會員 ID</th>
+								<th>姓名</th>
+								<th>Email</th>
+								<th>身分證字號</th>
+								<th>性別</th>
+								<th>出生日期</th>
+								<th>手機號碼</th>
+								<th>已驗證</th>
+								<th>建立時間</th>
+								<th>修改</th>
+								<th>刪除</th>
+							</tr>
+						</thead>
+						<tbody th:if="${members != null and !members.isEmpty()}">
+							<tr th:each="member : ${members}">
+								<td><span th:text="${member.memberId}"></span></td>
+								<td><span th:text="${member.name}"></span></td>
+								<td><span th:text="${member.email}"></span></td>
+								<td><span th:text="${member.nationalId}"></span></td>
+								<td><span th:text="${member.gender}"></span></td>
+								<td><span th:text="${member.dateOfBirth}"></span></td>
+								<td><span th:text="${member.phoneNumber}"></span></td>
+								<td class="text-center">
+									<span th:if="${member.verification}" class="badge bg-success">是</span>
+									<span th:unless="${member.verification}" class="badge bg-secondary">否</span>
+								</td>
+								<td>
+									<span th:if="${member.createTime}"
+										th:text="${#temporals.format(member.createTime, 'yyyy-MM-dd HH:mm')}"></span>
+								</td>
+								<td>
+									<a th:href="@{/member/updateMember/{id}(id=${member.memberId})}"
+										class="btn btn-sm btn-warning" title="修改">
+										<i class="fas fa-edit"></i>
+									</a>
+								</td>
+								<td>
+									<button type="button" th:onclick="deleteMember([[${member.memberId}]])"
+										class="btn btn-sm btn-danger" title="刪除">
+										<i class="fas fa-trash-alt"></i>
+									</button>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+					<div id="message-holder" th:attr="data-message=${message}" style="display: none;"></div>
+				</div>
+			</main>
+
+			<!-- MODEL -->
+			<div class="modal fade" id="createMemberModal" tabindex="-1" aria-labelledby="createMemberModalLabel" aria-hidden="true">
+				<div class="modal-dialog modal-lg modal-dialog-centered">
+					<div class="modal-content shadow">
+						<div class="modal-header">
+							<h5 class="modal-title" id="createMemberModalLabel">
+								<i class="fa-solid fa-user-plus me-2"></i>新增會員
+							</h5>
+							<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="關閉"></button>
+						</div>
+						<div class="modal-body">
+							<form class="register-form">
+								<div class="mb-3">
+									<label class="form-label">會員姓名 (Name):</label>
+									<input type="text" name="name" class="form-control" maxlength="15" placeholder="中英文皆可(全名)" required>
+								</div>
+
+								<div class="row mb-3">
+									<div class="col-md-6">
+										<label class="form-label">身分證號碼 (NationalId):</label>
+										<input type="text" name="nationalId" class="form-control"
+											maxlength="10" pattern="[a-zA-Z]{1}[1-2,8-9]{1}\d{8}" placeholder="須按照格式(A1XXXXXXXX)" required>
+									</div>
+									<div class="col-md-6">
+										<label class="form-label">會員生日 (DateOfBirth):</label>
+										<input type="date" name="dateOfBirth" class="form-control" value="2001-01-01" required>
+									</div>
+								</div>
+
+								<div class="mb-3">
+									<label class="form-label">會員性別 (Gender):</label><br>
+									<div class="form-check form-check-inline">
+										<input class="form-check-input" type="radio" name="gender" id="male" value="male" required>
+										<label class="form-check-label" for="male">男生</label>
+									</div>
+									<div class="form-check form-check-inline">
+										<input class="form-check-input" type="radio" name="gender" id="female" value="female" required>
+										<label class="form-check-label" for="female">女生</label>
+									</div>
+									<div class="form-check form-check-inline">
+										<input class="form-check-input" type="radio" name="gender" id="other" value="other" required>
+										<label class="form-check-label" for="other">不願透露</label>
+									</div>
+								</div>
+
+								<div class="row mb-3">
+									<div class="col-md-6">
+										<label class="form-label">帳號 (Email):</label>
+										<input type="email" name="email" class="form-control" placeholder="請輸入註冊信箱" required>
+									</div>
+									<div class="col-md-6">
+										<label class="form-label">手機號碼 (PhoneNumber):</label>
+										<input type="text" name="phoneNumber" class="form-control"
+											maxlength="10" pattern="[0]{1}[9]{1}\d{8}" placeholder="09XXXXXXXX" required>
+									</div>
+								</div>
+
+								<div class="row mb-3">
+									<div class="col-md-6">
+										<label class="form-label">密碼 (Password):</label>
+										<input type="password" name="password" class="form-control" placeholder="請輸入密碼" required>
+									</div>
+									<div class="col-md-6">
+										<label class="form-label">確認密碼 (Confirm Password):</label>
+										<input type="password" name="password2" class="form-control" placeholder="確認密碼" required>
+									</div>
+								</div>
+
+								<div class="d-flex justify-content-end">
+									<button type="reset" class="btn btn-secondary me-2">取消</button>
+									<button type="submit" class="btn btn-primary">確定新增</button>
+								</div>
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+
+		</div> <!-- row -->
+	</div> <!-- container-fluid -->
+
+	<!-- 頁尾 -->
+	<th:block th:replace="layout/empFooter :: footer"></th:block>
+
+	<!-- JS -->
+	<script src="/js/jquery.js"></script>
+	<script src="/js/bootstrap.bundle.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+	<script src="https://cdn.datatables.net/2.2.2/js/dataTables.js"></script>
+	<script src="https://cdn.datatables.net/2.2.2/js/dataTables.bootstrap5.js"></script>
+	<script src="/js/empTemplate.js"></script>
+	<script src="/js/memberLists.js"></script>
+</body>
+</html>

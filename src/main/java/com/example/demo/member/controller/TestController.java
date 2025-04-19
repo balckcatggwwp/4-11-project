@@ -40,4 +40,24 @@ public class TestController {
 	public String navbar() {
 		return "fragments/navbar";
 	}
+	
+	@GetMapping("test123/index")
+	public String test123Index() {
+		return "test123/index";
+	}
+	
+	@GetMapping("test123/layout")
+	public String test123Layout() {
+		return "test123/layout";
+	}
+	
+	@GetMapping("empTemplate")
+	public String empTemplate() {
+		return "layout/empTemplate";
+	}
+	
+	@GetMapping("empTemplateMember3")
+	public String empTemplateMember3() {
+		return "member/showAllMember3";
+	}
 }

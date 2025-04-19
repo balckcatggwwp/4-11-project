@@ -54,4 +54,8 @@ public class MovieListService {
 	public MovieList save(MovieList movie) {
 	    return movieListRepository.save(movie);
 	}
+	
+	public List<MovieList> getAvailableMovies() {
+	    return movieListRepository.findByState("上映"); // 
+	}
 }

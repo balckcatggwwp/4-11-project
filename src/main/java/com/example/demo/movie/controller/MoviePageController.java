@@ -15,4 +15,8 @@ public class MoviePageController {
 	public String ShowtimePage() {
 		return "/Showtime";
 	}
+	@GetMapping("/ShowtimeSelect")
+	public String ShowtimeSelectPage() {
+		return "/ShowtimeSelect";
+	}
 }

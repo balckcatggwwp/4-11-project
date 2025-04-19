@@ -21,11 +21,11 @@
             <button type="button" class="btn-close position-absolute end-0 top-0 m-3" data-bs-dismiss="modal" aria-label="關閉"></button>
           </div>
           <div class="modal-body p-4">
-            <form th:action="@{/member/login}" method="post" class="user">
+            <form class="user login-form">
 
               <div class="form-group mb-3">
                 <label class="form-label">帳號 (Email):</label>
-                <input type="email" name="username" class="form-control form-control-user" placeholder="Enter Email Address..." required>
+                <input type="email" name="email" class="form-control form-control-user" placeholder="Enter Email Address..." required>
               </div>
 
               <div class="form-group mb-3">
