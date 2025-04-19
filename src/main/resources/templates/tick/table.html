@@ -2,306 +2,377 @@
 <html xmlns:th="http://www.thymeleaf.org/">
 
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link rel="stylesheet" href="https://cdn.datatables.net/2.2.2/css/dataTables.dataTables.min.css" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
-    integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg=="
-    crossorigin="anonymous" referrerpolicy="no-referrer" />
-  <style>
-    #bodddd {
-      width: 80%;
-      height: 100px;
-      float: right;
-      margin-right: 5%;
-      margin-left: 5%;
-    }
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<link rel="stylesheet"
+	href="https://cdn.datatables.net/2.2.2/css/dataTables.dataTables.min.css" />
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
+	integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg=="
+	crossorigin="anonymous" referrerpolicy="no-referrer" />
+<style>
+#bodddd {
+	width: 80%;
+	height: 100px;
+	float: right;
+	margin-right: 5%;
+	margin-left: 5%;
+}
 
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+}
 
+.one {
+	margin-top: 100px;
+}
 
+#new {
+	font-size: 30px;
+}
 
+#new:hover {
+	background-color: yellow;
+}
 
+body {
+	background-color: #9fa19d;
+	font-family: Arial, sans-serif;
+}
 
+a {
+	text-decoration: none;
+}
 
-    .one {
-      margin-top: 100px;
-    }
+.header {
+	font-family: "Orbitron", sans-serif;
+	font-optical-sizing: auto;
+}
 
+.header {
+	font-family: "Orbitron", sans-serif;
+	border: 2px double #ffd700;
+	font-size: 50px;
+	background: #000;
+	color: #fff;
+	text-align: center;
+	padding: 20px;
+	text-shadow: 0.1em 0.1em 0.2em #fff;
+}
 
+.h1 {
+	text-shadow: 0.1em 0.1em 0.2em gray;
+}
 
-    #new {
-      font-size: 30px;
-    }
+.myButton {
+	box-shadow: 3px 4px 0px 0px #1564ad;
+	background: linear-gradient(to bottom, #79bbff 5%, #378de5 100%);
+	background-color: #79bbff;
+	border-radius: 5px;
+	border: 1px solid #337bc4;
+	display: inline-block;
+	cursor: pointer;
+	color: #ffffff;
+	font-family: Arial;
+	font-size: 10px;
+	font-weight: bold;
+	padding: 8.5px 29px;
+	text-decoration: none;
+	text-shadow: 0px 0px 0px #528ecc;
+}
 
-    #new:hover {
-      background-color: yellow;
-    }
+.myButton:hover {
+	background: linear-gradient(to bottom, #378de5 5%, #79bbff 100%);
+	background-color: #378de5;
+}
 
-    body {
-      background-color: #9fa19d;
-      font-family: Arial, sans-serif;
-    }
+.myButton:active {
+	position: relative;
+	top: 1px;
+}
 
-    a {
-      text-decoration: none;
-    }
+#new {
+	box-shadow: 0px 10px 14px -7px #3e7327;
+	background: linear-gradient(to bottom, #77b55a 5%, #72b352 100%);
+	background-color: #77b55a;
+	border-radius: 4px;
+	border: 1px solid #4b8f29;
+	display: inline-block;
+	cursor: pointer;
+	color: #ffffff;
+	font-family: Arial;
+	font-size: 22px;
+	font-weight: bold;
+	padding: 6px 12px;
+	text-decoration: none;
+	text-shadow: 0px 1px 0px #5b8a3c;
+}
 
-    .header {
-      font-family: "Orbitron", sans-serif;
-      font-optical-sizing: auto;
-    }
+#new:hover {
+	background: linear-gradient(to bottom, #72b352 5%, #77b55a 100%);
+	background-color: #72b352;
+}
 
-    .header {
-      font-family: "Orbitron", sans-serif;
-      border: 2px double #ffd700;
-      font-size: 50px;
-      background: #000;
-      color: #fff;
-      text-align: center;
-      padding: 20px;
-      text-shadow: 0.1em 0.1em 0.2em #fff;
-    }
+#new:active {
+	position: relative;
+	top: 1px;
+}
 
-    .h1 {
-      text-shadow: 0.1em 0.1em 0.2em gray;
-    }
+#dell {
+	box-shadow: inset 0px 1px 0px 0px #f5978e;
+	background: linear-gradient(to bottom, #f24537 5%, #c62d1f 100%);
+	background-color: #f24537;
+	border-radius: 6px;
+	border: 1px solid #d02718;
+	display: inline-block;
+	cursor: pointer;
+	color: #ffffff;
+	font-family: Arial;
+	font-size: 15px;
+	font-weight: bold;
+	padding: 6px 24px;
+	text-decoration: none;
+	text-shadow: 0px 1px 0px #810e05;
+}
 
-    .myButton {
-      box-shadow: 3px 4px 0px 0px #1564ad;
-      background: linear-gradient(to bottom, #79bbff 5%, #378de5 100%);
-      background-color: #79bbff;
-      border-radius: 5px;
-      border: 1px solid #337bc4;
-      display: inline-block;
-      cursor: pointer;
-      color: #ffffff;
-      font-family: Arial;
-      font-size: 10px;
-      font-weight: bold;
-      padding: 8.5px 29px;
-      text-decoration: none;
-      text-shadow: 0px 0px 0px #528ecc;
-    }
+#dell:hover {
+	background: linear-gradient(to bottom, #c62d1f 5%, #f24537 100%);
+	background-color: #c62d1f;
+}
 
-    .myButton:hover {
-      background: linear-gradient(to bottom, #378de5 5%, #79bbff 100%);
-      background-color: #378de5;
-    }
+#dell:active {
+	position: relative;
+	top: 1px;
+}
 
-    .myButton:active {
-      position: relative;
-      top: 1px;
-    }
+#upda {
+	box-shadow: inset 0px 1px 3px 0px #91b8b3;
+	background: linear-gradient(to bottom, #768d87 5%, #6c7c7c 100%);
+	background-color: #768d87;
+	border-radius: 5px;
+	border: 1px solid #566963;
+	display: inline-block;
+	cursor: pointer;
+	color: #ffffff;
+	font-family: Arial;
+	font-size: 15px;
+	font-weight: bold;
+	padding: 6px 24px;
+	text-decoration: none;
+	text-shadow: 0px -1px 0px #2b665e;
+}
 
-    #new {
-      box-shadow: 0px 10px 14px -7px #3e7327;
-      background: linear-gradient(to bottom, #77b55a 5%, #72b352 100%);
-      background-color: #77b55a;
-      border-radius: 4px;
-      border: 1px solid #4b8f29;
-      display: inline-block;
-      cursor: pointer;
-      color: #ffffff;
-      font-family: Arial;
-      font-size: 22px;
-      font-weight: bold;
-      padding: 6px 12px;
-      text-decoration: none;
-      text-shadow: 0px 1px 0px #5b8a3c;
-    }
+#upda:hover {
+	background: linear-gradient(to bottom, #6c7c7c 5%, #768d87 100%);
+	background-color: #6c7c7c;
+}
 
-    #new:hover {
-      background: linear-gradient(to bottom, #72b352 5%, #77b55a 100%);
-      background-color: #72b352;
-    }
+#upda:active {
+	position: relative;
+	top: 1px;
+}
 
-    #new:active {
-      position: relative;
-      top: 1px;
-    }
+.form-controlaa {
+	width: 13%;
+	height: 34px;
+	padding: 0;
+	font-size: 14px;
+	line-height: 1.42857143;
+	color: #555;
+	background-color: #fff;
+	background-image: none;
+	border: 1px solid #ccc;
+	border-radius: 4px;
+	-webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+	box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+	-webkit-transition: border-color ease-in-out 0.15s, -webkit-box-shadow
+		ease-in-out 0.15s;
+	-o-transition: border-color ease-in-out 0.15s, box-shadow ease-in-out
+		0.15s;
+	transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s;
+}
 
-    #dell {
-      box-shadow: inset 0px 1px 0px 0px #f5978e;
-      background: linear-gradient(to bottom, #f24537 5%, #c62d1f 100%);
-      background-color: #f24537;
-      border-radius: 6px;
-      border: 1px solid #d02718;
-      display: inline-block;
-      cursor: pointer;
-      color: #ffffff;
-      font-family: Arial;
-      font-size: 15px;
-      font-weight: bold;
-      padding: 6px 24px;
-      text-decoration: none;
-      text-shadow: 0px 1px 0px #810e05;
-    }
+#tise {
+	font-size: 20px;
+	font-weight: 800;
+}
 
-    #dell:hover {
-      background: linear-gradient(to bottom, #c62d1f 5%, #f24537 100%);
-      background-color: #c62d1f;
-    }
+input {
+	padding: 10px;
+	border: solid 0.1px black;
+	border-radius: 35px;
+	background-color: #fff;
+	outline: none;
+}
+</style>
 
-    #dell:active {
-      position: relative;
-      top: 1px;
-    }
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link
+	href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400..900&display=swap"
+	rel="stylesheet" />
+<link rel="stylesheet"
+	href="https://code.jquery.com/ui/1.14.1/themes/base/jquery-ui.css" />
+<!--link rel="stylesheet" href="/resources/demos/style.css"-->
+<link rel="stylesheet"
+	href="https://cdn.jsdelivr.net/npm/sweetalert2@11.17.2/dist/sweetalert2.min.css" />
+<script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+<script src="https://code.jquery.com/ui/1.14.1/jquery-ui.js"></script>
 
-    #upda {
-      box-shadow: inset 0px 1px 3px 0px #91b8b3;
-      background: linear-gradient(to bottom, #768d87 5%, #6c7c7c 100%);
-      background-color: #768d87;
-      border-radius: 5px;
-      border: 1px solid #566963;
-      display: inline-block;
-      cursor: pointer;
-      color: #ffffff;
-      font-family: Arial;
-      font-size: 15px;
-      font-weight: bold;
-      padding: 6px 24px;
-      text-decoration: none;
-      text-shadow: 0px -1px 0px #2b665e;
-    }
-
-    #upda:hover {
-      background: linear-gradient(to bottom, #6c7c7c 5%, #768d87 100%);
-      background-color: #6c7c7c;
-    }
-
-    #upda:active {
-      position: relative;
-      top: 1px;
-    }
-
-    .form-controlaa {
-      width: 13%;
-      height: 34px;
-      padding: 0;
-      font-size: 14px;
-      line-height: 1.42857143;
-      color: #555;
-      background-color: #fff;
-      background-image: none;
-      border: 1px solid #ccc;
-      border-radius: 4px;
-      -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
-      box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
-      -webkit-transition: border-color ease-in-out 0.15s,
-        -webkit-box-shadow ease-in-out 0.15s;
-      -o-transition: border-color ease-in-out 0.15s,
-        box-shadow ease-in-out 0.15s;
-      transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s;
-    }
-
-    #tise {
-      font-size: 20px;
-      font-weight: 800;
-    }
-
-    input {
-      padding: 10px;
-      border: solid 0.1px black;
-      border-radius: 35px;
-      background-color: #fff;
-      outline: none;
-    }
-  </style>
-
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400..900&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="https://code.jquery.com/ui/1.14.1/themes/base/jquery-ui.css" />
-  <!--link rel="stylesheet" href="/resources/demos/style.css"-->
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.17.2/dist/sweetalert2.min.css" />
-  <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
-  <script src="https://code.jquery.com/ui/1.14.1/jquery-ui.js"></script>
-
-  <title>訂票後台</title>
+<title>訂票後台</title>
 </head>
 
 <body>
-  <div th:replace="~{laout/tableremack}"></div>
+	<div th:replace="~{laout/tableremack}"></div>
 
-  <!-- -------------------------------------------------------------------------------------------- -->
+	<!-- -------------------------------------------------------------------------------------------- -->
 
-  <div id="bodddd">
-  <div id="selectfind">
-    <form action="/booktick/other">
-      <span id="tise">選擇你要查詢的內容</span>
-      <select id="findtick" name="select" class="form-controlaa">
-        <option value="">選項</option>
-        <option value="1">訂票ID</option>
-        <option value="2">訂單編號</option>
-        <option value="3">會員ID</option>
-        <option value="4">日期</option>
-        <option value="5">廳</option>
-        <option value="6">電影名稱</option>
-        <option value="7">是否付款</option>
-      </select>
+	<div id="bodddd">
+		<div id="selectfind">
+			<form action="/booktick/other">
+				<span id="tise">選擇你要查詢的內容</span> <select id="findtick" name="select"
+					class="form-controlaa">
+					<option value="">選項</option>
+					<option value="1">訂票ID</option>
+					<option value="2">訂單編號</option>
+					<option value="3">會員ID</option>
+					<option value="4">日期</option>
+					<option value="5">廳</option>
+					<option value="6">電影名稱</option>
+					<option value="7">是否付款</option>
+				</select>
 
-      <button id="ok" type="submit" class="myButton">送出</button>
-      <a th:href="@{/ticktable}" class="myButton">查全部</a>
-      <div id="fromfind"></div>
-    </form>
-  </div>
-  
-    <table id="myTable" class="display">
-      <thead>
-        <tr>
-          <th>順序</th>
-          <th>訂單編號</th>
-          <th>會員</th>
-          <th>日期</th>
-          <th>時間</th>
-          <th>座位</th>
-          <th>廳</th>
-          <th>單價</th>
-          <th>電影名稱</th>
-          <th>票種</th>
-          <th>是否付款</th>
-          <th>修改</th>
-          <th>刪除</th>
-        </tr>
-      </thead>
-      <tbody>
-        <th:block th:each="tickinfos:${tickall}">
-          <tr>
-            <td th:text="${tickinfos.tickid}"></td>
-            <td th:text="${tickinfos.orderid}"></td>
-            <td th:text="${tickinfos.memberId}"></td>
-            <td th:text="${tickinfos.showtimedate}"></td>
-            <td th:text="${#strings.substring(tickinfos.showtime, 0, 8)}"></td>
-            <td th:text="${tickinfos.seatid}"></td>
-            <td th:text="${tickinfos.hallid}"></td>
-            <td th:text="${tickinfos.onemoney}"></td>
-            <td th:text="${tickinfos.moviename}"></td>
-            <td th:text="${tickinfos.booktype}"></td>
-            <td th:text="${tickinfos.payout}"></td>
-            <td>
-              <a th:href="@{/booktick/update(tickid=${tickinfos.tickid})}" id="upda">修改</a>
-            </td>
-            <td>
-              <a class="dellc" id="dell" th:value="${tickinfos.tickid}">刪除</a>
-            </td>
-          </tr>
-        </th:block>
-      </tbody>
-    </table>
-    <a th:href="@{/booktick/inser}" id="new">新增</a>
-    <a th:href="@{/orderset}" id="new">新增多筆</a>
-  </div>
+				<button id="ok" type="submit" class="myButton">送出</button>
+				<a th:href="@{/ticktable}" class="myButton">查全部</a>
+				<div id="fromfind"></div>
+			</form>
+		</div>
+		<canvas id="myChart" width="500" height="100"></canvas>
 
-  <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
-  <script src="https://cdn.datatables.net/2.2.2/js/dataTables.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+		<table id="myTable" class="display">
+			<thead>
+				<tr>
+					<th>順序</th>
+					<th>訂單編號</th>
+					<th>會員</th>
+					<th>日期</th>
+					<th>時間</th>
+					<th>座位</th>
+					<th>廳</th>
+					<th>單價</th>
+					<th>電影名稱</th>
+					<th>票種</th>
+					<th>是否付款</th>
+					<th>修改</th>
+					<th>刪除</th>
+				</tr>
+			</thead>
+			<tbody>
+				<th:block th:each="tickinfos:${tickall}">
+					<tr>
+						<td th:text="${tickinfos.tickid}"></td>
+						<td th:text="${tickinfos.orderid}"></td>
+						<td th:text="${tickinfos.memberId}"></td>
+						<td th:text="${tickinfos.showtimedate}"></td>
+						<td th:text="${#strings.substring(tickinfos.showtime, 0, 8)}"></td>
+						<td th:text="${tickinfos.seatid}"></td>
+						<td th:text="${tickinfos.hallid}"></td>
+						<td th:text="${tickinfos.onemoney}"></td>
+						<td th:text="${tickinfos.moviename}"></td>
+						<td th:text="${tickinfos.booktype}"></td>
+						<td th:text="${tickinfos.payout}"></td>
+						<td><a
+							th:href="@{/booktick/update(tickid=${tickinfos.tickid})}"
+							id="upda">修改</a></td>
+						<td><a class="dellc" id="dell" th:value="${tickinfos.tickid}">刪除</a>
+						</td>
+					</tr>
+				</th:block>
+			</tbody>
+		</table>
+		<a th:href="@{/booktick/inser}" id="new">新增</a> <a
+			th:href="@{/orderset}" id="new">新增多筆</a>
+	</div>
 
-  <script>
+	<script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+	<script src="https://cdn.datatables.net/2.2.2/js/dataTables.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+	<script
+		src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js"></script>
+	<script th:inline="javascript">
     $(function () {
+    var ctx = document.getElementById('myChart');
+	var ctx = document.getElementById('myChart').getContext('2d');
+	var ctx = $('#myChart');
+	var ctx = 'myChart';
+    var ctx = document.getElementById("myChart");
+     let top = /*[[${top3}]]*/'';
+    console.log("來自後端的 top3 資料:", top);
+
+    let labels = [];
+    let data = [];
+
+    if (top && top.length > 0) {
+        $.each(top, function(index, item) {
+            // 由於 item 是一個物件，我們需要遍歷它的鍵值對來獲取電影名稱和數量
+            $.each(item, function(movieName, count) {
+                labels.push(movieName); // 電影名稱作為標籤
+                data.push(count);       // 數量作為資料
+            });
+        });
+    } else {
+        labels = ["沒有資料"];
+        data = [0];
+    }
+
+    var ctx = document.getElementById('myChart').getContext('2d');
+    var chart = new Chart(ctx, {
+        type: "bar",
+        data: {
+            labels: labels,
+            datasets: [
+                {
+                    label: "電影售票數量",
+                    data: data,
+                    backgroundColor: [
+                        "rgba(255, 99, 132, 0.2)",
+                        "rgba(54, 162, 235, 0.2)",
+                        "rgba(255, 206, 86, 0.2)"
+                        // ... 更多顏色
+                    ],
+                    borderColor: [
+                        "rgba(255,99,132,1)",
+                        "rgba(54, 162, 235, 1)",
+                        "rgba(255, 206, 86, 1)"
+                        // ... 更多顏色
+                    ],
+                    borderWidth: 1
+                }
+            ]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            },
+            plugins: {
+                title: {
+                    display: true,
+                    text: '前三名最受歡迎電影',
+                    font: {
+                        size: 18
+                    }
+                },
+                legend: {
+                    display: false
+                }
+            }
+        }
+    });
+    
+    
       $("#findtick").on("change", function () {
         //console.log($('#findtick').val())
         $("#fromfind").empty();

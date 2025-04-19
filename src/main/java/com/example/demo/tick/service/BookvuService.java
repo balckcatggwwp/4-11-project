@@ -1,6 +1,7 @@
 package com.example.demo.tick.service;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +22,11 @@ public class BookvuService {
 	private BooktickvuRepository booktickvuRepo;
 	@Autowired
 	private BooktickRepository booktickRepository;
+	
+	
+	public List<Map.Entry<String, Long>> getTop3PopularMovies() {
+        return booktickRepository.getTop3MovieNamesByTicketsNative();
+    }
 	
 	
 	

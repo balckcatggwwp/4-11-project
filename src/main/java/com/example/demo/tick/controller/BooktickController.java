@@ -5,6 +5,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,6 +47,9 @@ public class BooktickController {
 	@GetMapping("/ticktable")
 	public String tickall(Model model) {
 		List<BookticketvuBean> vu = bookvuService.tickfindAll();
+		List<Map.Entry<String, Long>> top3Movies = bookvuService.getTop3PopularMovies();
+        model.addAttribute("top3", top3Movies);
+		
 		model.addAttribute("tickall", vu);
 		return "tick/table";
 	}
