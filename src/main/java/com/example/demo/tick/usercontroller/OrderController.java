@@ -7,6 +7,9 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
@@ -14,7 +17,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.thymeleaf.TemplateEngine;
+import org.thymeleaf.context.Context;
 
+import com.example.demo.member.model.Member;
+import com.example.demo.member.model.MemberService;
 import com.example.demo.tick.bean.BookTypeBean;
 import com.example.demo.tick.bean.BookticketBean;
 import com.example.demo.tick.bean.OrderBean;
@@ -29,6 +36,8 @@ import com.example.demo.tick.service.TypeService;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import jakarta.mail.MessagingException;
+import jakarta.mail.internet.MimeMessage;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 
@@ -48,6 +57,13 @@ public class OrderController {
 	private HallService hallService;
 	@Autowired
 	private TimeService timeService;
+	
+	@Autowired
+	private MemberService memberService;
+	
+	@Autowired
+	private JavaMailSender javaMailSender;
+	
 	
 	@GetMapping("/orderset")
 	public String ordercar(HttpServletRequest request) {
@@ -113,6 +129,7 @@ public class OrderController {
 			 String withoutQuotes = withoutBrackets.replace("\"", "");
 			orderBean.setSeat(withoutQuotes);
 			int halli = hallService.findhallbyname(movieid).getHallid();
+			//同廳 有兩個電影
 			String namemoString = hallService.findnamebyhallid(halli).getMoviename();
 			orderBean.setHallid(halli);
 			orderBean.setPayout("N");
@@ -179,9 +196,40 @@ public class OrderController {
 		Long orderidLong = Long.parseLong(CustomField1);
 		// TODO: process POST request
 		if (RtnCode == 1) {
+			 MimeMessage message = javaMailSender.createMimeMessage();
+			    MimeMessageHelper helper;
 			orderService.uppay(orderidLong);
 			bookvuService.update(orderidLong);
+			 
+			Optional<OrderBean> op = orderService.findbyorder(orderidLong);
+			Member aMember  = memberService.findById(op.get().getUserid());
+//			aMember.getEmail();
+//			SimpleMailMessage message = new SimpleMailMessage();
+//			message.setText(aMember.getEmail());
 			
+
+		    // 創建 Thymeleaf context
+		    Context context = new Context();
+		    context.setVariable("orderid", CustomField1);
+		    context.setVariable("seat", op.get().getSeat());
+		    context.setVariable("date",  op.get().getShowdate());
+		    context.setVariable("time",  op.get().getShowtime());
+		    context.setVariable("name",  op.get().getMoviename());
+		    TemplateEngine templateEngine = new TemplateEngine();
+		    // Process the template
+		    String emailContent = templateEngine.process("email-template", context);
+
+		    try {
+		    	helper = new MimeMessageHelper(message, true);
+		    	helper.setTo(aMember.getEmail());
+		    	helper.setSubject("光影之門付款成功");
+		    	helper.setText(emailContent, true);
+		    } catch (MessagingException e) {
+		    	// TODO Auto-generated catch block
+		    	e.printStackTrace();
+		    }
+
+		    javaMailSender.send(message);
 			
 //			System.out.println("交易成功");
 //			System.out.println(MerchantTradeNo);
@@ -205,7 +253,7 @@ public class OrderController {
 		} else {
 			System.out.println("你好爛");
 		}
-		return "order/orderdetails";
+		return "redirect:detail";
 	}
 
 }

@@ -18,6 +18,12 @@ public class TimeService {
 	public List<ShowtimeBean> findtimebydate(String date) {
 		return showtimeRepository.findShowtimeByShowdate(date);
 	}
+	public List<ShowtimeBean> findtimebynameid(Integer movieid) {
+		return showtimeRepository.findShowtimeBymovieid(movieid);
+	}
+	public List<ShowtimeBean> findnamebydate(String date) {
+		return showtimeRepository.findOneShowtimePerMovieByDate(date);
+	}
 	
 	public Optional<ShowtimeBean> findtimedate(Integer id) {
 		return showtimeRepository.findById(id);
