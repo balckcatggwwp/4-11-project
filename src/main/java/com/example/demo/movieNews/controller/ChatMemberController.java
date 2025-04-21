@@ -7,6 +7,8 @@ import org.springframework.web.bind.annotation.*;
 import com.example.demo.member.model.Member;
 import com.example.demo.member.model.MemberRepository;
 
+import jakarta.servlet.http.HttpSession;
+
 @RestController
 @RequestMapping("/api/chat")
 public class ChatMemberController {
@@ -28,5 +30,12 @@ public class ChatMemberController {
 
         return result;
     }
+    
+    @GetMapping("/session-id")
+    public String getSessionMemberId(HttpSession session) {
+        Object id = session.getAttribute("memberId");
+        return id != null ? id.toString() : "";
+    }
+    
 }
 
