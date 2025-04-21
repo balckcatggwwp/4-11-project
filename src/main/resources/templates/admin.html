@@ -55,6 +55,10 @@
             <!-- AJAX 載入 -->
           </tbody>
         </table>
+        <div
+          class="d-flex justify-content-center mt-3"
+          id="paginationContainer"
+        ></div>
       </div>
 
       <div class="card mt-5">
@@ -67,10 +71,13 @@
             onchange="loadHistory(this.value)"
           >
             <option value="">請選擇會員</option>
-            <option th:each="member : ${members}" 
-          th:value="${member.id}" 
-          th:text="${member.name}">會員名稱</option>
-            
+            <option
+              th:each="member : ${members}"
+              th:value="${member.id}"
+              th:text="${member.name}"
+            >
+              會員名稱
+            </option>
           </select>
         </div>
         <div class="card-body">
@@ -141,6 +148,15 @@
                   <input type="hidden" id="imageUrl" />
                 </div>
                 <div class="mb-3">
+                  <label class="form-label">圖片預覽</label><br />
+                  <img
+                    id="previewImage"
+                    src=""
+                    alt="預覽圖片"
+                    style="max-width: 100%; height: auto"
+                  />
+                </div>
+                <div class="mb-3">
                   <label class="form-label">狀態</label>
                   <select class="form-select" id="status">
                     <option value="active">啟用</option>
@@ -183,248 +199,9 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/stompjs@2.3.3/lib/stomp.min.js"></script>
-    <script>
-      let selectedMemberId = null;
-      async function loadHistory(memberId) {
-        selectedMemberId = memberId;
-        const res = await fetch(`/api/chat/history/${memberId}`);
-        const messages = await res.json();
-        const chatBox = document.getElementById("chat-box");
-        chatBox.innerHTML = "";
-        messages.forEach((msg) => {
-          chatBox.innerHTML += `<div>[${msg.timestamp}] <strong>${msg.sender}</strong>：${msg.content}</div>`;
-        });
-      }
 
-      window.addEventListener("DOMContentLoaded", () => {
-        loadMemberOptions();
-
-        const modal = new bootstrap.Modal(document.getElementById("newsModal"));
-        const form = document.getElementById("newsForm");
-
-        async function loadNews() {
-          const res = await fetch("/api/news/list");
-          const data = await res.json();
-          const tbody = document.getElementById("newsTableBody");
-          tbody.innerHTML = "";
-
-          data.forEach((news) => {
-            tbody.innerHTML += `
-          <tr>
-            <td>${news.id}</td>
-            <td><a href="/news-detail1?id=${news.id}" target="_blank">${
-              news.title
-            }</a></td>
-            <td>${news.status}</td>
-            <td>${new Date(news.publishDate).toLocaleString()}</td>
-            <td>
-              <button class="btn btn-sm btn-primary me-1" onclick='editNews(${JSON.stringify(
-                news
-              )})'>編輯</button>
-              <hr>
-              <button class="btn btn-sm btn-danger" onclick='deleteNews(${
-                news.id
-              })'>刪除</button>
-            </td>
-          </tr>
-        `;
-          });
-        }
-
-        function openForm() {
-          form.reset();
-          document.getElementById("newsId").value = "";
-          modal.show();
-        }
-
-        function editNews(news) {
-          document.getElementById("newsId").value = news.id;
-          document.getElementById("title").value = news.title;
-          document.getElementById("summary").value = news.summary;
-          document.getElementById("isAd").checked = !!news.isAd;
-          document.getElementById("content").value = news.content;
-          document.getElementById("imageUrl").value = news.imageUrl;
-          document.getElementById("type").value = news.type;
-          document.getElementById("status").value = news.status;
-          modal.show();
-        }
-
-        document
-          .getElementById("imageFile")
-          .addEventListener("change", async function () {
-            const file = this.files[0];
-            if (!file) return;
-
-            const formData = new FormData();
-            formData.append("file", file);
-
-            const res = await fetch("/api/news/upload", {
-              method: "POST",
-              body: formData,
-            });
-
-            if (!res.ok) {
-              alert("圖片上傳失敗！");
-              return;
-            }
-
-            const result = await res.json();
-            document.getElementById("imageUrl").value = result.url;
-            const preview = document.getElementById("previewImage");
-            if (preview) {
-              preview.src = result.url;
-            }
-          });
-
-        form.addEventListener("submit", async function (e) {
-          e.preventDefault();
-          const id = document.getElementById("newsId").value;
-          const payload = {
-            id: id || undefined,
-            title: form.title.value,
-            summary: form.summary.value,
-            content: form.content.value,
-            imageUrl: form.imageUrl.value,
-            status: form.status.value,
-            isAd: document.getElementById("isAd").checked,
-            publishDate: new Date().toISOString(),
-          };
-
-          const method = id ? "PUT" : "POST";
-          const url = "/api/news" + (id ? "/" + id : "");
-
-          const res = await fetch(url, {
-            method: method,
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(payload),
-          });
-
-          if (res.ok) {
-            modal.hide();
-            loadNews();
-            alert("儲存成功！");
-          } else {
-            alert("儲存失敗，請稍後再試！");
-          }
-        });
-
-        let stompClient = null;
-
-        function connect() {
-          if (stompClient && stompClient.connected) return;
-
-          const socket = new SockJS("/ws");
-          stompClient = Stomp.over(socket);
-          stompClient.debug = null;
-
-          stompClient.connect(
-            {},
-            () => {
-              stompClient.subscribe("/topic/messages", (msg) => {
-                const chat = JSON.parse(msg.body);
-                const chatBox = document.getElementById("chat-box");
-                chatBox.innerHTML += `<div>[${chat.timestamp}] <strong>${chat.sender}</strong>：${chat.content}</div>`;
-                chatBox.scrollTop = chatBox.scrollHeight;
-              });
-            },
-            () => {
-              console.warn("WebSocket 斷線，3秒後自動重連...");
-              setTimeout(connect, 3000);
-            }
-          );
-        }
-
-        async function loadMemberOptions() {
-          const res = await fetch("/api/chat/members");
-          const members = await res.json();
-          const selector = document.getElementById("memberSelector");
-          selector.innerHTML = `<option value="">請選擇會員</option>`; // 清空原本選項
-
-          members.forEach((m) => {
-            const option = document.createElement("option");
-            option.value = m.memberId;
-            option.textContent = `${m.name} (ID: ${m.memberId})`;
-            selector.appendChild(option);
-          });
-        }
-
-        window.sendMessage = function () {
-        const selectedMemberId = document.getElementById("memberSelector").value;
-          const from = document.getElementById("from").value;
-          const content = document.getElementById("message").value;
-          if (!from || !content) return alert("請輸入名稱與訊息！");
-          if (!stompClient || !stompClient.connected) {
-            alert("連線尚未完成，請稍候再試");
-            return;
-          }
-          stompClient.send(
-            "/app/chat",
-            {},
-            JSON.stringify({
-              sender: "客服",
-              content: content,
-              memberId: selectedMemberId, 
-            })
-          );
-          document.getElementById("message").value = "";
-        };
-
-        connect();
-
-        async function deleteNews(id) {
-          if (confirm("確定要刪除這則新聞嗎？")) {
-            const res = await fetch(`/api/news/${id}`, { method: "DELETE" });
-            if (res.ok) loadNews();
-          }
-        }
-
-        // 讓新增按鈕可以用
-        window.openForm = openForm;
-        window.editNews = editNews;
-        window.deleteNews = deleteNews;
-        document
-          .getElementById("adminSearchForm")
-          .addEventListener("submit", async function (e) {
-            e.preventDefault();
-            const keyword = document
-              .getElementById("adminSearchInput")
-              .value.trim();
-
-            const res = await fetch(
-              keyword === ""
-                ? "/api/news/list"
-                : `/api/news/search?keyword=${encodeURIComponent(keyword)}`
-            );
-
-            const data = await res.json();
-            const tbody = document.getElementById("newsTableBody");
-            tbody.innerHTML = "";
-
-            data.forEach((news) => {
-              tbody.innerHTML += `
-      <tr>
-        <td>${news.id}</td>
-        <td><a href="/news-detail1?id=${news.id}" target="_blank">${
-                news.title
-              }</a></td>
-        <td>${news.status}</td>
-        <td>${new Date(news.publishDate).toLocaleString()}</td>
-        <td>
-          <button class="btn btn-sm btn-primary me-1" onclick='editNews(${JSON.stringify(
-            news
-          )})'>編輯</button>
-          <hr>
-          <button class="btn btn-sm btn-danger" onclick='deleteNews(${
-            news.id
-          })'>刪除</button>
-        </td>
-      </tr>
-    `;
-            });
-          });
-        loadNews();
-      });
-    </script>
+    <script src="/js/admin-chat.js"></script>
+    <script src="/js/admin-news.js"></script>
     <!-- Bootstrap JS Bundle -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
   </body>

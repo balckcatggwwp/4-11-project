@@ -19,8 +19,12 @@ public class WebSocketSessionInterceptor implements HandshakeInterceptor {
         if (request instanceof ServletServerHttpRequest servletRequest) {
             HttpSession session = servletRequest.getServletRequest().getSession(false);
             if (session != null) {
-                attributes.put("memberId", session.getAttribute("memberId"));
-                attributes.put("memberName", session.getAttribute("memberName"));
+            	Object memberId = session.getAttribute("memberId");
+                Object memberName = session.getAttribute("memberName");
+                if (memberId != null && memberName != null) {
+                    attributes.put("memberId", memberId);
+                    attributes.put("memberName", memberName);
+                }
             }
         }
         return true;

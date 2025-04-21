@@ -45,9 +45,11 @@ public class MovieNewsService {
         existing.setImageUrl(news.getImageUrl());
         existing.setType(news.getType());
         
-        if (news.getStatus() == null || news.getStatus().isBlank()) {
-            news.setStatus("active");
+        String status = news.getStatus();
+        if (status == null || status.isBlank()) {
+            status = "active";
         }
+        existing.setStatus(status);
         
         if (news.getPublishDate() != null) {
             existing.setPublishDate(news.getPublishDate());
@@ -74,5 +76,9 @@ public class MovieNewsService {
 
     public MovieNews findById(Integer id) {
         return repository.findById(id).orElse(null);
+    }
+    
+    public Page<MovieNews> searchByPage(String keyword, Pageable pageable) {
+        return repository.findByTitleContainingIgnoreCaseOrSummaryContainingIgnoreCase(keyword, keyword, pageable);
     }
 } 

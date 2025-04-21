@@ -96,5 +96,10 @@ public class MovieNewsController {
     public List<MovieNews> getAds() {
         return repository.findByIsAdTrue();
     }
+    
+    @GetMapping("/search-page")
+    public Page<MovieNews> searchWithPage(@RequestParam String keyword, Pageable pageable) {
+        return service.searchByPage(keyword, pageable);
+    }
 
 }
