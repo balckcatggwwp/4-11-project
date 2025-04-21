@@ -77,4 +77,8 @@ public class MovieNewsService {
     public MovieNews findById(Integer id) {
         return repository.findById(id).orElse(null);
     }
+    
+    public Page<MovieNews> searchByPage(String keyword, Pageable pageable) {
+        return repository.findByTitleContainingIgnoreCaseOrSummaryContainingIgnoreCase(keyword, keyword, pageable);
+    }
 } 
