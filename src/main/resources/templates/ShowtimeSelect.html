@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" th:inline="javascript">
 <head>
 <meta charset="UTF-8">
 <title>光影之門場次查詢</title>
@@ -112,17 +112,13 @@ body {
 	<th:block th:replace="~{fragments/footer :: footer}"></th:block>
 
 	<!-- Bootstrap JS -->
+	<script src="/js/jquery.js"></script>
 	<script src="/js/bootstrap.bundle.min.js"></script>
-	<script src="/vendor/jquery/jquery.min.js"></script>
-	<script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 	<script src="/vendor/jquery-easing/jquery.easing.min.js"></script>
 	<script src="/js/sb-admin-2.min.js"></script>
-	<script src="/js/jquery.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-	<!-- 登出提示 -->
-	<script th:if="${logoutSuccess}">
-    Swal.fire({ icon: 'success', title: '登出成功', text: '您已成功登出！', confirmButtonText: '確認', timer: 3000, timerProgressBar: true });
-  </script>
+
 
 	<!-- 場次查詢功能 -->
 	<script>
@@ -184,17 +180,24 @@ body {
     	    }
     	  });
     	});
-
-      if (localStorage.getItem("autoShowLogin") === "true") {
-        $('#loginModal').modal('show');
-        localStorage.removeItem("autoShowLogin");
-        let msg = localStorage.getItem("loginMessage");
-        if (msg) {
-          Swal.fire({ icon: 'success', title: msg });
-          localStorage.removeItem("loginMessage");
-        }
-      }
     });
   </script>
+  <script th:if="${logoutSuccess}">
+  		Swal.fire({
+  			icon: 'success',
+  			title: '登出成功',
+  			text: '您已成功登出！',
+  			confirmButtonText: '確認',
+  			timer: 3000,
+  			timerProgressBar: true
+  		});
+  	</script>
+
+
+  	<script th:inline="javascript">
+  		window.sessionIsLoggedIn = [[${ session.memberDetail != null }]];  
+  	</script>
+  	<script src="/js/loginPage.js"></script>
+	
 </body>
 </html>

@@ -17,7 +17,7 @@ public interface MovieShowtimeRepository extends JpaRepository<MovieShowtime, In
 		          md.image AS posterUrl,
 		          CONVERT(varchar, ml.released, 23) AS releaseDate,
 		          CONCAT(ml.runtime, ' 分鐘') AS duration,
-		          ml.state AS level,
+		          md.rating AS level,
 		          st.showtime AS showTime
 		        FROM showtime st
 		        JOIN movielist ml ON st.movieid = ml.id
