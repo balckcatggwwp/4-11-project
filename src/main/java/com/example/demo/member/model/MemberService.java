@@ -5,9 +5,15 @@ import java.util.Optional;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.SimpleMailMessage;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import jakarta.mail.MessagingException;
+import jakarta.mail.internet.MimeMessage;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 
 @Service
 public class MemberService {
@@ -17,6 +23,9 @@ public class MemberService {
 	
 	@Autowired
 	private PasswordEncoder pwdEncoder;
+	
+	@Autowired
+    private JavaMailSender mailSender;
 	
 	@Transactional
 	public Member updateMember(Long id,Member updatedMember) {
@@ -44,11 +53,12 @@ public class MemberService {
 	}
 	
 	
-	public Member insertMember(Member member) {
+	public Member insertMember(Member member,String verifyCode) {
 		String originalPwd =  member.getPassword();
 		String hashedPwd = pwdEncoder.encode(originalPwd);
-		member.setPassword(hashedPwd); 
-
+		member.setPassword(hashedPwd);
+		member.setVerification(false);
+		member.setVerificationCode(verifyCode);
 		Member insertBean = memberRepository.save(member);
 		
 		
@@ -140,6 +150,38 @@ public class MemberService {
 		    } else {
 		        return false;
 		    }
+	}
+	
+	public void sendVerificationEmail(String Toemail,String verifyLink)throws MessagingException {
+		 String subject = "會員註冊驗證信 - 光影之門";
+		    String content = """
+		        親愛的會員您好：<br>
+		        請點選以下連結完成帳號啟用：<br>
+		        <a href="%s">點我驗證</a>
+		        <br><br>
+		        如果您未註冊，請忽略這封信。
+		        """.formatted(verifyLink);
+		    MimeMessage message = mailSender.createMimeMessage();
+	        MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
+	        helper.setTo(Toemail);
+	        helper.setSubject(subject);
+	        helper.setText(content, true); // 第二個參數 true 表示啟用 HTML
+	        mailSender.send(message);
+	        System.out.println("送出成功"+message);
+	}
+	
+	@Transactional
+	public String verifyMessage(String code) {
+	    Member member = memberRepository.findByVerificationCode(code);
+	    if (member == null) {
+	        return "錯誤";
+	    }
+	    if(member.isVerification()) {
+	    	return "已認證過了";
+	    }
+	    member.setVerification(true);
+	    memberRepository.save(member);
+	    	return "認證成功";
 	}
 	
 	

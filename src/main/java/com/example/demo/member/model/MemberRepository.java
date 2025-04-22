@@ -12,5 +12,5 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
 	List<Member> findByPhoneNumberContaining(String phoneNumber);
 	//Member 註冊時檢查 信箱和密碼是否已註冊
 	List<Member> findByEmailOrPhoneNumber(String email, String phoneNumber);
-	
+	Member findByVerificationCode(String code);
 }
