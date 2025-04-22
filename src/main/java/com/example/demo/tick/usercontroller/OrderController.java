@@ -110,6 +110,7 @@ public class OrderController {
 //        System.out.println("現在時間是 (預設格式): " + );
 		Long order = Long.parseLong(formatter.format(now));
 		orderBean.setOrderid(order);
+		System.out.println("aaaaaa");
 		orderBean.setOrderdate(formattera.format(now));
 		BookTypeBean aBean = typeService.findmony(tickettypeid);
 		int typemo = aBean.getMoneytype();
@@ -118,7 +119,7 @@ public class OrderController {
 			selectedSeats = objectMapper.readValue(selectedSeatsJson, new TypeReference<List<String>>() {
 			});
 			// 現在 selectedSeats 就是包含選取座位 ID 的 List
-			System.out.println(selectedSeats);
+			
 			int sum = 0;
 			Optional<ShowtimeBean> op = timeService.findtimedate(showtimeid);
 			orderBean.setShowdate(op.get().getShowdate());
@@ -128,7 +129,8 @@ public class OrderController {
 			String withoutBrackets = selectedSeatsJson.substring(1, selectedSeatsJson.length() - 1);
 			 String withoutQuotes = withoutBrackets.replace("\"", "");
 			orderBean.setSeat(withoutQuotes);
-			int halli = hallService.findhallbyname(movieid).getHallid();
+			int halli = hallService.findhallbyname2(movieid).get().getHallid();
+			System.out.println("廳"+halli);
 			//同廳 有兩個電影
 			String namemoString = hallService.findnamebyhallid(halli).getMoviename();
 			orderBean.setHallid(halli);

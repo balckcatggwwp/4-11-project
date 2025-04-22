@@ -1,5 +1,5 @@
 document.addEventListener("DOMContentLoaded", function () {
-  const isLoggedIn = window.sessionIsLoggedIn || false; // 用 Thymeleaf 賦值
+  const isLoggedIn = document.body.dataset.loggedin === 'true';
   const modalEl = document.getElementById('loginModal');
   const loginModal = bootstrap.Modal.getOrCreateInstance(modalEl);
 
