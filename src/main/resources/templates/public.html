@@ -13,7 +13,6 @@
         max-height: 200px;
         object-fit: cover;
       }
-
       .carousel-img {
         height: 300px;
         object-fit: cover;
@@ -36,10 +35,9 @@
         </form>
       </div>
     </nav>
+
     <div id="adCarousel" class="carousel slide mb-5" data-bs-ride="carousel">
-      <div class="carousel-inner" id="adCarouselInner">
-        <!-- JavaScript 會動態產生 -->
-      </div>
+      <div class="carousel-inner" id="adCarouselInner"></div>
       <button
         class="carousel-control-prev"
         type="button"
@@ -57,67 +55,182 @@
         <span class="carousel-control-next-icon"></span>
       </button>
     </div>
-    <div class="container mt-4" id="newsContainer">
-      <div class="row" id="newsList">
-        <!-- 動態載入新聞卡片 -->
+
+    <div class="container">
+      <div class="row mb-4" id="newsList"></div>
+
+      <div class="d-flex justify-content-center mb-3">
+        <button class="btn btn-outline-primary me-2 filter-btn" data-type="all">
+          全部
+        </button>
+        <button
+          class="btn btn-outline-success me-2 filter-btn"
+          data-type="活動"
+        >
+          活動
+        </button>
+        <button
+          class="btn btn-outline-warning me-2 filter-btn"
+          data-type="系統"
+        >
+          系統
+        </button>
+        <button class="btn btn-outline-danger filter-btn" data-type="重要">
+          重要
+        </button>
       </div>
+
+      <h4 class="mt-3">全部公告列表</h4>
+      <ul class="list-group" id="newsListAll"></ul>
+      <nav class="mt-3">
+        <ul class="pagination justify-content-center" id="pagination"></ul>
+      </nav>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-      async function fetchAds() {
-        try {
-          const response = await fetch("/api/news/ads");
-          const ads = await response.json();
-          const inner = document.getElementById("adCarouselInner");
-          inner.innerHTML = "";
+      let activeNews = [];
+      let filteredNews = [];
+      let currentPage = 1;
+      const itemsPerPage = 5;
 
-          ads.forEach((ad, index) => {
-            const item = document.createElement("div");
-            item.className = "carousel-item" + (index === 0 ? " active" : "");
-            item.innerHTML = `
-        <a href="/news-detail1?id=${ad.id}" target="_blank">
-    <img src="${ad.imageUrl}" class="d-block w-100 carousel-img" alt="${ad.title}">
-  </a>
-      `;
-            inner.appendChild(item);
-          });
-        } catch (err) {
-          console.error("載入廣告失敗：", err);
+      async function fetchAds() {
+        const res = await fetch("/api/news/ads");
+        const ads = await res.json();
+        const inner = document.getElementById("adCarouselInner");
+        inner.innerHTML = "";
+        ads.forEach((ad, i) => {
+          const item = document.createElement("div");
+          item.className = "carousel-item" + (i === 0 ? " active" : "");
+          item.innerHTML = `<a href="/news-detail1?id=${ad.id}" target="_blank">
+            <img src="${ad.imageUrl}" class="d-block w-100 carousel-img" alt="${ad.title}">
+          </a>`;
+          inner.appendChild(item);
+        });
+      }
+
+      function getBadgeClass(type) {
+        switch (type) {
+          case "活動":
+            return "success";
+          case "系統":
+            return "warning";
+          case "重要":
+            return "danger";
+          default:
+            return "secondary";
         }
       }
 
-      fetchAds();
+      function formatDate(isoString) {
+        const date = new Date(isoString);
+        return date.toLocaleDateString("zh-TW", {
+          year: "numeric",
+          month: "2-digit",
+          day: "2-digit",
+        });
+      }
 
-      async function fetchNews(keyword = "") {
-        const response = await fetch(
-          `/api/news${keyword ? "/search?keyword=" + keyword : "/list"}`
-        );
-        const newsList = await response.json();
-        const activeNews = newsList.filter((news) => news.status === "active");
-
+      function renderNewsCards(newsArray) {
         const container = document.getElementById("newsList");
         container.innerHTML = "";
-
-        activeNews.forEach((news) => {
+        newsArray.slice(0, 6).forEach((news) => {
           container.innerHTML += `
-          <div class="col-md-4 mb-4">
-            <div class="card news-card h-100">
-              <img src="${
-                news.imageUrl ||
-                "https://via.placeholder.com/400x200?text=No+Image"
-              }" class="card-img-top" alt="圖片">
-              <div class="card-body">
-                <h5 class="card-title">${news.title}</h5>
-                <p class="card-text text-truncate">${news.summary || ""}</p>
-                <a href="/news-detail1?id=${
-                  news.id
-                }" class="btn btn-primary">閱讀更多</a>
+            <div class="col-md-4 mb-4">
+              <div class="card news-card h-100">
+                <img src="${
+                  news.imageUrl ||
+                  "https://via.placeholder.com/400x200?text=No+Image"
+                }" class="card-img-top" alt="圖片">
+                <div class="card-body">
+                  <h5 class="card-title">${news.title}</h5>
+                  <p class="card-text text-truncate">${news.summary || ""}</p>
+                  <a href="/news-detail1?id=${
+                    news.id
+                  }" class="btn btn-primary">閱讀更多</a>
+                </div>
               </div>
             </div>
-          </div>
-        `;
+          `;
         });
+      }
+
+      function renderNewsList(newsArray, page = 1) {
+        const listContainer = document.getElementById("newsListAll");
+        const pagination = document.getElementById("pagination");
+        listContainer.innerHTML = "";
+        pagination.innerHTML = "";
+
+        const totalPages = Math.ceil(newsArray.length / itemsPerPage);
+        const start = (page - 1) * itemsPerPage;
+        const end = start + itemsPerPage;
+        const pageItems = newsArray.slice(start, end);
+
+        pageItems.forEach((news) => {
+          listContainer.innerHTML += `
+            <li class="list-group-item d-flex align-items-center">
+  <div class="me-3" style="min-width: 100px;">${
+    formatDate(news.publishDate) || "未提供日期"
+  }</div>
+  <div class="me-3">
+    <span class="badge bg-${getBadgeClass(news.type)}">${news.type}</span>
+  </div>
+  <div class="flex-grow-1">
+    <a href="/news-detail1?id=${news.id}" class="text-decoration-none">${
+            news.title
+          }</a>
+  </div>
+</li>
+          `;
+        });
+
+        const prevDisabled = page === 1 ? "disabled" : "";
+        const nextDisabled = page === totalPages ? "disabled" : "";
+
+        pagination.innerHTML += `
+          <li class="page-item ${prevDisabled}">
+            <button class="page-link" onclick="changePage(${
+              page - 1
+            })">上一頁</button>
+          </li>
+        `;
+
+        for (let i = 1; i <= totalPages; i++) {
+          pagination.innerHTML += `
+            <li class="page-item ${i === page ? "active" : ""}">
+              <button class="page-link" onclick="changePage(${i})">${i}</button>
+            </li>
+          `;
+        }
+
+        pagination.innerHTML += `
+          <li class="page-item ${nextDisabled}">
+            <button class="page-link" onclick="changePage(${
+              page + 1
+            })">下一頁</button>
+          </li>
+        `;
+      }
+
+      function changePage(page) {
+        const totalPages = Math.ceil(filteredNews.length / itemsPerPage);
+        if (page < 1 || page > totalPages) return;
+        currentPage = page;
+        renderNewsList(filteredNews, currentPage);
+      }
+
+      async function fetchNews(keyword = "") {
+        const res = await fetch(
+          `/api/news${keyword ? "/search?keyword=" + keyword : "/list"}`
+        );
+        const newsList = await res.json();
+        activeNews = newsList
+          .filter((news) => news.status === "active")
+          .sort((a, b) => new Date(b.publishDate) - new Date(a.publishDate));
+        renderNewsCards(activeNews);
+        filteredNews = activeNews;
+        currentPage = 1;
+        renderNewsList(filteredNews, currentPage);
       }
 
       document
@@ -128,6 +241,19 @@
           fetchNews(keyword);
         });
 
+      document.querySelectorAll(".filter-btn").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          const type = btn.dataset.type;
+          filteredNews =
+            type === "all"
+              ? activeNews
+              : activeNews.filter((news) => news.type === type);
+          currentPage = 1;
+          renderNewsList(filteredNews, currentPage);
+        });
+      });
+
+      fetchAds();
       fetchNews();
     </script>
   </body>
