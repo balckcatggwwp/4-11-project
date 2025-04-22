@@ -76,6 +76,8 @@ public class EmpController {
 	    Map<String, Object> response = new HashMap<>();
 	    Employee LoginBean = employeeService.login(email, password);
 	    if (LoginBean != null) {
+	    	
+	    	
 	    	httpSession.setAttribute("empDetail", LoginBean);
 	    	httpSession.setAttribute("empName", LoginBean.getName());
 	    	httpSession.setAttribute("empEmail", LoginBean.getEmail());
@@ -88,7 +90,7 @@ public class EmpController {
 	    return response;
 	}
 	
-	@GetMapping("employee/empLogout")
+	@GetMapping("/employee/empLogout")
 	public String empLogout(HttpSession httpSession) {
 		httpSession.removeAttribute("empDetail");
     	httpSession.removeAttribute("empName");
