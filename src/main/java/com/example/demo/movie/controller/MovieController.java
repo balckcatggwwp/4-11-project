@@ -150,5 +150,13 @@ public class MovieController {
     public List<Map<String, Object>> getMovie() {
         return movieListRepository.findNowShowingMovies();
     }
- 
+    //電影詳細資訊
+    @GetMapping("/MovieInfo/{id}")
+    public ResponseEntity<Map<String, Object>> getMovieInfoMap(@PathVariable Integer id) {
+        Map<String, Object> movieInfo = movieListService.getMovieInfo(id);
+        if (movieInfo != null) {
+            return ResponseEntity.ok(movieInfo); // 確保回傳 JSON 格式
+        }
+        return ResponseEntity.notFound().build();
+    }
 }

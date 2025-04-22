@@ -1,6 +1,7 @@
 package com.example.demo.movie.service;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +16,7 @@ public class MovieListService {
 
 	@Autowired
 	private MovieListRepository movieListRepository;
-	
+
 	@Autowired
 	private MovieDetailRepository movieDetailRepository;
 
@@ -40,22 +41,27 @@ public class MovieListService {
 			return movieListRepository.save(movie); // 儲存更新後的電影
 		}
 		return null;
-		
+
 	}
+
 	public boolean deleteById(Integer id) {
-        if (movieListRepository.existsById(id)) {
-        	movieDetailRepository.deleteById(id);
-            movieListRepository.deleteById(id);
-            return true;  // 刪除成功
-        }
-        return false;  // 如果找不到電影，返回false
-    }
-	
-	public MovieList save(MovieList movie) {
-	    return movieListRepository.save(movie);
+		if (movieListRepository.existsById(id)) {
+			movieDetailRepository.deleteById(id);
+			movieListRepository.deleteById(id);
+			return true; // 刪除成功
+		}
+		return false; // 如果找不到電影，返回false
 	}
-	
+
+	public MovieList save(MovieList movie) {
+		return movieListRepository.save(movie);
+	}
+
 	public List<MovieList> getAvailableMovies() {
-	    return movieListRepository.findByState("上映"); // 
+		return movieListRepository.findByState("上映");
+	}
+
+	public Map<String, Object> getMovieInfo(Integer id) {
+		return movieListRepository.findMovieInfo(id);
 	}
 }

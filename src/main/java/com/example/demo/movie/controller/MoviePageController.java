@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 
 @Controller
 public class MoviePageController {
-
+	
 	@GetMapping("/MovieList")
 	public String ListPage() {
 		return "/Movie";
@@ -27,9 +27,9 @@ public class MoviePageController {
 	}
 	
 	@GetMapping("/MovieInfo/{id}")
-	public String getMovieDetails(@PathVariable String id, Model model) {
-	    Integer ID = Integer.parseInt(id);
-	    
-	    return "/moviedetails"; // 返回顯示電影詳情的頁面
+	public String getMovieDetails(@PathVariable Integer id, Model model) {
+	    model.addAttribute("movieid", id);
+	    return  "moviedetails";
+	     // 返回顯示電影詳情的頁面
 	}
 }
