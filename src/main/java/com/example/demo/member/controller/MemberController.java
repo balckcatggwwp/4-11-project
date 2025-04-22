@@ -205,13 +205,4 @@ public class MemberController {
 	        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("刪除失敗");
 	    }
 	}
-
-	
-	
-//	會員專區 餐點明細
-	@GetMapping("/foodmenu/memberFoodOrders")
-	public String memberFoodOrders() {
-		return "foodmenu/memberFoodOrders";
-		
-	}
 }
