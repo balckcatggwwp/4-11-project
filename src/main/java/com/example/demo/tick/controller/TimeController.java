@@ -90,7 +90,7 @@ public class TimeController {
 	}
 	@GetMapping("namega")
 	@ResponseBody
-	public Optional<onofflineBean> findnamega(@RequestParam Integer nameid) {
+	public Optional<Integer> findnamega(@RequestParam Integer nameid) {
 		
 		
 		

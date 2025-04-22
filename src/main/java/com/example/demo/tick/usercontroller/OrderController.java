@@ -19,13 +19,16 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
+import org.thymeleaf.spring6.SpringTemplateEngine;
 
 import com.example.demo.member.model.Member;
 import com.example.demo.member.model.MemberService;
+import com.example.demo.movie.service.MovieListService;
 import com.example.demo.tick.bean.BookTypeBean;
 import com.example.demo.tick.bean.BookticketBean;
 import com.example.demo.tick.bean.OrderBean;
 import com.example.demo.tick.bean.ShowtimeBean;
+import com.example.demo.tick.bean.onofflineBean;
 import com.example.demo.tick.repo.BooktickRepository;
 import com.example.demo.tick.repo.BooktickvuRepository;
 import com.example.demo.tick.service.BookvuService;
@@ -63,8 +66,10 @@ public class OrderController {
 	
 	@Autowired
 	private JavaMailSender javaMailSender;
-	
-	
+	@Autowired
+	private MovieListService movieListService;
+	@Autowired
+    private SpringTemplateEngine templateEngine;
 	@GetMapping("/orderset")
 	public String ordercar(HttpServletRequest request) {
 		HttpSession session = request.getSession();
@@ -110,7 +115,6 @@ public class OrderController {
 //        System.out.println("現在時間是 (預設格式): " + );
 		Long order = Long.parseLong(formatter.format(now));
 		orderBean.setOrderid(order);
-		System.out.println("aaaaaa");
 		orderBean.setOrderdate(formattera.format(now));
 		BookTypeBean aBean = typeService.findmony(tickettypeid);
 		int typemo = aBean.getMoneytype();
@@ -129,11 +133,13 @@ public class OrderController {
 			String withoutBrackets = selectedSeatsJson.substring(1, selectedSeatsJson.length() - 1);
 			 String withoutQuotes = withoutBrackets.replace("\"", "");
 			orderBean.setSeat(withoutQuotes);
-			int halli = hallService.findhallbyname2(movieid).get().getHallid();
-			System.out.println("廳"+halli);
+			Optional<Integer> op2 = hallService.findhallbyname2(movieid);
+			
+			System.out.println(op2.get());
 			//同廳 有兩個電影
-			String namemoString = hallService.findnamebyhallid(halli).getMoviename();
-			orderBean.setHallid(halli);
+			String namemoString = movieListService.findById(movieid).get().getName();
+//			String namemoString = hallService.findnamebyhallid(op2.get()).getMoviename();
+			orderBean.setHallid(op2.get());
 			orderBean.setPayout("N");
 			orderBean.setMoviename(namemoString);
 	        orderService.inser(orderBean);
@@ -142,7 +148,7 @@ public class OrderController {
 				BookticketBean itemBean = new BookticketBean();
 				itemBean.setMemberId(memberId);
 				itemBean.setShowtimeid(showtimeid);
-				itemBean.setHallid(halli);
+				itemBean.setHallid(op2.get());
 				itemBean.setTickettypeid(tickettypeid);
 				itemBean.setMovieid(movieid);
 				itemBean.setOnemoney(typemo);
@@ -217,7 +223,7 @@ public class OrderController {
 		    context.setVariable("date",  op.get().getShowdate());
 		    context.setVariable("time",  op.get().getShowtime());
 		    context.setVariable("name",  op.get().getMoviename());
-		    TemplateEngine templateEngine = new TemplateEngine();
+//		    TemplateEngine templateEngine = new TemplateEngine();
 		    // Process the template
 		    String emailContent = templateEngine.process("email-template", context);
 

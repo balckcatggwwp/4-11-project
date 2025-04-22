@@ -231,7 +231,7 @@ $(function () {
 	//     $("#time, #halls").on('change', loadseat);
 	// });
 
-	// $('#moviename').on('change', function () { loadseat(); })
+	 $('#moviename').on('change', function () {seatlist.splice(0, seatlist.length); })
 
 	$('#time').on('change', function () {
 		loadseat();
