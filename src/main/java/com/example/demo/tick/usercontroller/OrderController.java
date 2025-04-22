@@ -232,6 +232,7 @@ public class OrderController {
 		    	helper.setTo(aMember.getEmail());
 		    	helper.setSubject("光影之門付款成功");
 		    	helper.setText(emailContent, true);
+		    	helper.setFrom("光影之門付款資訊<movieprojecteeit94@gmail.com>");
 		    } catch (MessagingException e) {
 		    	// TODO Auto-generated catch block
 		    	e.printStackTrace();
