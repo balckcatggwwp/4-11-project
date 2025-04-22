@@ -206,12 +206,4 @@ public class MemberController {
 	    }
 	}
 
-	
-	
-//	會員專區 餐點明細
-	@GetMapping("/foodmenu/memberFoodOrders")
-	public String memberFoodOrders() {
-		return "foodmenu/memberFoodOrders";
-		
-	}
 }
