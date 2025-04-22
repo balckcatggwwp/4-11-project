@@ -8,7 +8,7 @@ import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-@Entity @Table(name = "Showtime")
+@Entity @Table(name = "viewdata")
 @Setter
 @Getter
 @NoArgsConstructor
@@ -20,4 +20,9 @@ public class ShowtimeBean {
 	private String showdate;
 	@Column(name = "showtime")
 	private String showtime; 
+	@Column(name="movieName")
+	private String movieName;
+	@Column(name="movieid")
+	private String movieid;
+	
 }

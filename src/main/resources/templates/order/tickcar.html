@@ -13,15 +13,15 @@
 
 <body>
     <!-- <input name="orderid" placeholder="訂單編號" class="form-control ud" type="text"> -->
-    <form action="ordercheck" method="get" id="yourFormId">
+    <form action="ordercheck" method="get" id="yourFormId" onsubmit="return validateForm();">
         <!-- 用session自己帶 -->
         <!-- <input name="userid" placeholder="會員" class="form-control ud" type="text"> -->
         <input type="text" id="datepicker" class="form-control" placeholder="日期" required readonly>
+        <select class="form-control selectpicker" id="moviename" name="movieid" required>
+            <option value="">選日期在選電影</option>
+        </select>
         <select name="showtimeid" id="time" required>
             <option value="">場次</option>
-        </select>
-        <select class="form-control selectpicker" id="moviename" name="movieid" required>
-            <option value="">電影</option>
         </select>
         <select name="tickettypeid" class="form-control selectpicker" id="type" required>
             <option value="">票種</option>

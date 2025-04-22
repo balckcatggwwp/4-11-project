@@ -292,7 +292,7 @@ input {
 			</tbody>
 		</table>
 		<a th:href="@{/booktick/inser}" id="new">新增</a> <a
-			th:href="@{/orderset}" id="new">新增多筆</a>
+			onclick="exportTableToCSV()" id="new">匯出CSV檔</a>
 	</div>
 
 	<script src="https://code.jquery.com/jquery-3.7.1.js"></script>
@@ -300,6 +300,7 @@ input {
 	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 	<script
 		src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js"></script>
+	<script src="/tickjs/csvexpro.js"></script>
 	<script th:inline="javascript">
     $(function () {
     var ctx = document.getElementById('myChart');
@@ -307,70 +308,75 @@ input {
 	var ctx = $('#myChart');
 	var ctx = 'myChart';
     var ctx = document.getElementById("myChart");
-     let top = /*[[${top3}]]*/'';
-    console.log("來自後端的 top3 資料:", top);
+    let top = /*[[${top3}]]*/'';
+console.log("來自後端的 top3 資料:", top);
 
-    let labels = [];
-    let data = [];
+let labels = [];
+let data = [];
+let backgroundColors = [
+    "rgba(255, 99, 132, 0.2)",
+    "rgba(54, 162, 235, 0.2)",
+    "rgba(255, 206, 86, 0.2)"
+];
+let borderColors = [
+    "rgba(255,99,132,1)",
+    "rgba(54, 162, 235, 1)",
+    "rgba(255, 206, 86, 1)"
+];
 
-    if (top && top.length > 0) {
-        $.each(top, function(index, item) {
-            // 由於 item 是一個物件，我們需要遍歷它的鍵值對來獲取電影名稱和數量
-            $.each(item, function(movieName, count) {
-                labels.push(movieName); // 電影名稱作為標籤
-                data.push(count);       // 數量作為資料
-            });
+if (top && top.length > 0) {
+    $.each(top, function(index, item) {
+        $.each(item, function(movieName, count) {
+            labels.push(movieName);
+            data.push(count);
         });
-    } else {
-        labels = ["沒有資料"];
-        data = [0];
-    }
+    });
 
-    var ctx = document.getElementById('myChart').getContext('2d');
-    var chart = new Chart(ctx, {
-        type: "bar",
-        data: {
-            labels: labels,
-            datasets: [
-                {
-                    label: "電影售票數量",
-                    data: data,
-                    backgroundColor: [
-                        "rgba(255, 99, 132, 0.2)",
-                        "rgba(54, 162, 235, 0.2)",
-                        "rgba(255, 206, 86, 0.2)"
-                        // ... 更多顏色
-                    ],
-                    borderColor: [
-                        "rgba(255,99,132,1)",
-                        "rgba(54, 162, 235, 1)",
-                        "rgba(255, 206, 86, 1)"
-                        // ... 更多顏色
-                    ],
-                    borderWidth: 1
-                }
-            ]
+    // 強制補上第三個空的資料，如果原始資料少於三個
+    while (labels.length < 3) {
+        labels.push(" "); // 使用空白字串作為標籤
+        data.push(0);     // 數值設為 0
+    }
+} else {
+    labels = ["沒有資料", " ", " "]; // 確保有三個標籤
+    data = [0, 0, 0];
+}
+
+var ctx = document.getElementById('myChart').getContext('2d');
+var chart = new Chart(ctx, {
+    type: "bar",
+    data: {
+        labels: labels,
+        datasets: [
+            {
+                label: "電影售票數量",
+                data: data,
+                backgroundColor: backgroundColors.slice(0, labels.length), // 確保顏色陣列長度與標籤數量一致
+                borderColor: borderColors.slice(0, labels.length),       // 確保邊框顏色陣列長度與標籤數量一致
+                borderWidth: 1
+            }
+        ]
+    },
+    options: {
+        scales: {
+            y: {
+                beginAtZero: true
+            }
         },
-        options: {
-            scales: {
-                y: {
-                    beginAtZero: true
+        plugins: {
+            title: {
+                display: true,
+                text: '前三名最受歡迎電影',
+                font: {
+                    size: 18
                 }
             },
-            plugins: {
-                title: {
-                    display: true,
-                    text: '前三名最受歡迎電影',
-                    font: {
-                        size: 18
-                    }
-                },
-                legend: {
-                    display: false
-                }
+            legend: {
+                display: false
             }
         }
-    });
+    }
+});
     
     
       $("#findtick").on("change", function () {
@@ -464,8 +470,15 @@ input {
 
           {
             info: false,
-            lengthChange: false,
-
+            lengthChange: true,
+			language:{
+			"lengthMenu":"顯示 _MENU_ 筆",
+			"search":"搜尋",
+			},
+			columnDefs:[{
+			targets:"_all",
+			className:'dt-body-center'
+			}],
           }
 
         );

@@ -3,22 +3,29 @@
 <head>
     <meta charset="UTF-8">
     <title>會員訂單明細</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css">
-    <style>
-        body {
-            background-color: #121212;
-            color: white;
-        }
-        table.dataTable thead {
-            background-color: #212529;
-            color: white;
-        }
-    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" />
+	<link rel="stylesheet" href="/css/memberCenter.css">
+  	<link rel="stylesheet" href="/css/footer.css">
 </head>
-<body>
-    <div class="container mt-5">
-        <h2 class="mb-4">🍱 餐點訂單明細</h2>
+<body th:data-loggedin="${session.memberDetail != null}">
+<!-- Bootstrap SVG icons symbols -->
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+	<symbol id="chevron-down" viewBox="0 0 16 16">
+	  <path fill="currentColor" fill-rule="evenodd"
+	    d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z" />
+	</symbol>
+</svg>
+<!-- 匯入 navbar -->
+<div th:replace="fragments/navbar :: navbar"></div>
+<div class="d-flex">
+  <!-- 左側側邊欄 -->
+  <div th:replace="fragments/memberDetailsideBar :: memberDetailsideBar"></div>
+
+  <!-- 右側內容區 -->
+  <div class="flex-grow-1 p-4 memberDetail">
+        <h3 class="mb-4">🍱 餐點訂單明細</h3>
         <table id="orderTable" class="table table-dark table-hover table-bordered align-middle">
             <thead class="text-center">
                 <tr>
@@ -44,11 +51,14 @@
         </th:block>
     </th:block>
 </tbody>
-
-    </div>
-
+</table>
+</div>
+</div>
+<!-- 匯入 footer -->
+<th:block th:replace="~{fragments/footer :: footer}"></th:block>
     <!-- DataTables JS & jQuery -->
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>    
     <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
     <script>
