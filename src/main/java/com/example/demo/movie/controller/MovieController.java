@@ -4,6 +4,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +24,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.example.demo.movie.model.MovieDetail;
 import com.example.demo.movie.model.MovieList;
 import com.example.demo.movie.repo.MovieDetailRepository;
+import com.example.demo.movie.repo.MovieListRepository;
 import com.example.demo.movie.service.MovieDetailService;
 import com.example.demo.movie.service.MovieListService;
 
@@ -31,6 +33,9 @@ import com.example.demo.movie.service.MovieListService;
 @RequestMapping("/movies")  // 路徑設置為 /movies 
 public class MovieController {
 
+	@Autowired
+	private MovieListRepository movieListRepository;
+	
     @Autowired
     private MovieListService movieListService;
     
@@ -138,6 +143,12 @@ public class MovieController {
     @GetMapping("/available")
     public List<MovieList> getAvailableMovies() {
         return movieListService.getAvailableMovies();
+    }
+    
+    //上映電影資訊回傳
+    @GetMapping("/showing")
+    public List<Map<String, Object>> getMovie() {
+        return movieListRepository.findNowShowingMovies();
     }
  
 }
