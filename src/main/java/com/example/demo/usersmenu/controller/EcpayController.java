@@ -55,7 +55,7 @@ public class EcpayController {
         String tradeNo = "ORD" + UUID.randomUUID().toString().replaceAll("-", "").substring(0, 15);
         String tradeDate = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss"));
         String returnURL = "https://2858-36-228-235-238.ngrok-free.app/checkout/confirm";
-        String clientBackURL = "http://localhost:8080";
+        String clientBackURL = "http://localhost:8080/ecpay/success";
 
         Map<String, String> paramMap = new HashMap<>();
         paramMap.put("MerchantID", merchantID);
@@ -95,13 +95,16 @@ public class EcpayController {
     }
 
     @PostMapping("/confirm")
-    public String confirmPayment(@RequestParam("MerchantTradeNo") String tradeNo) {
+    public String confirmPayment(@RequestParam("MerchantTradeNo") String tradeNo,
+                                 HttpSession session) {
         System.out.println("✅ 進入 confirmPayment() tradeNo=" + tradeNo);
 
         TempOrderData data = TempTradeDataStore.tradeDataMap.get(tradeNo);
         if (data != null && data.getUserId() != null && data.getCart() != null && !data.getCart().isEmpty()) {
             orderService.processOrder(data.getUserId(), data.getCart(), data.getPhone());
             TempTradeDataStore.tradeDataMap.remove(tradeNo);
+            session.removeAttribute("cart");
+            System.out.println("🧹 清空 session 購物車 cart");
             System.out.println("✅ 成功儲存訂單，phone=" + data.getPhone());
         } else {
             System.out.println("⚠️ 找不到對應資料，無法儲存訂單");
@@ -109,4 +112,12 @@ public class EcpayController {
 
         return "redirect:/success.html";
     }
+
+    @GetMapping("/backToShop")
+    public String backToShop(HttpSession session) {
+        session.removeAttribute("cart");
+        return "redirect:/usersmenu/list"; 
+    }
+
+    
 }
