@@ -21,7 +21,7 @@ public class ChatHistoryController {
     private ChatMessageRepository chatMessageRepository;
 
     @GetMapping("/history/{memberId}")
-    public List<ChatMessage> getHistory(@PathVariable Long memberId) {
+    public List<ChatMessage> getHistory(@PathVariable("memberId") Long memberId) {
         return chatMessageRepository.findByMemberIdOrderByTimestampAsc(memberId);
     }
     
