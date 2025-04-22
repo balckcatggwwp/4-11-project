@@ -33,11 +33,29 @@ public class TimeController {
 	@Autowired
 	private TypeService typeService;
 	
+	
+	///改成找movieid
 	@PostMapping("time/{startdate}")
 	@ResponseBody
 	public List<ShowtimeBean> findtimebydate(@PathVariable String startdate) {
 		 
 		List<ShowtimeBean> list = timeService.findtimebydate(startdate);
+		
+		return list;
+	}
+	@PostMapping("timename/{startdate}")
+	@ResponseBody
+	public List<ShowtimeBean> findnamebydate(@PathVariable String startdate) {
+		
+		List<ShowtimeBean> list = timeService.findnamebydate(startdate);
+		
+		return list;
+	}
+	@PostMapping("timena/{nameid}")
+	@ResponseBody
+	public List<ShowtimeBean> findtimebynameid(@PathVariable Integer nameid) {
+		
+		List<ShowtimeBean> list = timeService.findtimebynameid(nameid);
 		
 		return list;
 	}
@@ -69,6 +87,14 @@ public class TimeController {
 		
 		
 		return hallService.findhallbyname(nameid);
+	}
+	@GetMapping("namega")
+	@ResponseBody
+	public Optional<onofflineBean> findnamega(@RequestParam Integer nameid) {
+		
+		
+		
+		return hallService.findhallbyname2(nameid);
 	}
 	@GetMapping("type")
 	@ResponseBody

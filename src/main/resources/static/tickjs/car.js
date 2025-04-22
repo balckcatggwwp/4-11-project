@@ -78,53 +78,62 @@ $(function () {
 
 	$("#gogo").click(function (event) {
 		event.preventDefault();
+
 		if (seatlist.length === 0) {
-			alert("沒有選座位")
-		} else {
-
-
-			Swal.fire({
-				title: "你確定要加入購物車?",
-				text: "此商品即將加入購物車！",
-				icon: "info",
-				showCancelButton: true,
-				confirmButtonColor: "#3085d6",
-				cancelButtonColor: "#d33",
-				confirmButtonText: "加入購物車",
-			}).then((result) => {
-				if (result.isConfirmed) {
-					Swal.fire({
-						title: "加入成功!",
-						text: "以已加到購物車!!",
-						icon: "success",
-					});
-					// console.log(idtick)
-					setTimeout(function () {
-						$('#yourFormId').submit();
-					}, 2000);
-				}
-			});
+			alert("沒有選座位");
+			return;
 		}
+
+		const form = document.getElementById("yourFormId");
+
+		if (!form.checkValidity()) {
+			form.reportValidity(); // 顯示瀏覽器內建驗證提示
+			return;
+		}
+
+		Swal.fire({
+			title: "你確定要加入購物車?",
+			text: "此商品即將加入購物車！",
+			icon: "info",
+			showCancelButton: true,
+			confirmButtonColor: "#3085d6",
+			cancelButtonColor: "#d33",
+			confirmButtonText: "加入購物車",
+		}).then((result) => {
+			if (result.isConfirmed) {
+				Swal.fire({
+					title: "加入成功!",
+					text: "已加到購物車!!",
+					icon: "success",
+				});
+
+				setTimeout(function () {
+					form.submit(); // 這時候才安全地提交
+				}, 2000);
+			}
+		});
 	});
 	function loadseat() {
 		let nameid = $('#moviename').val()
-		console.log(nameid);
 		let hallidd
 		$.ajax({
 
-			url: '/booktick/name',
+			url: '/booktick/namega',
 			data: { nameid: nameid },
 			dataType: 'json',
 			type: 'GET',
 			success: function (respones) {
+				console.log("aaaa");
+				console.log(respones)
 
 				// $('#halls').append(`<option value="${e.theaterid}">${e.theaterid}</option>`)
-				hallidd = respones.hallid
-
+				hallidd = respones
+				console.log("廳" + hallidd)
 
 
 				let selecttime = $("#time").val(); // 確保 ID 為 time 的元素存在且有值
 				let selecthall = hallidd; // 確保 ID 為 halls 的元素存在且有值
+				console.log(selecttime);
 
 
 				const seatingChart = $('#seating-chart'); // 獲取座位區容器
@@ -190,7 +199,7 @@ $(function () {
 
 					},
 					error: function (jqXHR, textStatus, errorThrown) { // 添加更詳細的錯誤處理
-						if (selecthall == null) {
+						if (selecthall == null || selecttime == null) {
 
 						} else {
 
@@ -222,13 +231,7 @@ $(function () {
 	//     $("#time, #halls").on('change', loadseat);
 	// });
 
-	$('#moviename').on('change', function () {
-		loadseat();
-
-	}
-
-
-	)
+	// $('#moviename').on('change', function () { loadseat(); })
 
 	$('#time').on('change', function () {
 		loadseat();
@@ -246,18 +249,19 @@ $(function () {
 	$("#datepicker").on("change", function () {
 		let selectdate = $("#datepicker").val();
 		// console.log(selectdate)
-		$("#time").empty();
+		$("#moviename").empty();
 		$.ajax({
-			url: '/booktick/time/' + selectdate,
+			url: '/booktick/timename/' + selectdate,
 
 			dataType: 'json',
 			type: 'post',
 			contentType: 'application/json',
 			success: function (respones) {
-				$('#time').append(`<option value="">場次</option>`);
+				$('#moviename').append(`<option value="">電影</option>`);
 				$.each(respones, function (i, e) {
-					let time = e.showtime.split('.')[0]
-					$('#time').append(`<option value="${e.showtimeid}">${time}</option>`)
+
+					// let time = e.showtime.split('.')[0]
+					$('#moviename').append(`<option value="${e.movieid}" >${e.movieName}</option>`)
 				})
 
 			}
@@ -272,61 +276,69 @@ $(function () {
 
 	///
 	//廳
-	// function name() {
-	// 	$('#halls').empty();
-	// 	let hall = $("#moviename").val();
+	function name() {
+		$('#time').empty();
+		let nameid = $("#moviename").val();
+
+		$.ajax({
+			url: '/booktick/timena/' + nameid,
+			// data: { hallid: hall },
+			dataType: 'json',
+			type: 'post',
+			success: function (respones) {
+
+				// console.log(respones)
+				// $('#halls').append(`<option value="${e.theaterid}">${e.theaterid}</option>`)
+				$('#time').append(`<option value="">場次</option>`);
+				$.each(respones, function (i, e) {
+
+					let time = e.showtime.split('.')[0]
+					// $('#time').append(`<option value="${e.showtimeid}">${time}</option>`)
+					// $('#moviename').append(`<option value="${e.movieid}" >${e.movieName}</option>`)
+					$('#time').append(`<option value="${e.showtimeid}">${time}</option>`)
+				})
+
+
+			}
+		})
+	}
+
+	$("#moviename").on("change", function () {
+		name();
+		// $('#halls').empty();
+	})
+
+
+	// $(document).ready(function () {
+
 	// 	$.ajax({
-	// 		url: '/booktick/name',
-	// 		data: { hallid: hall },
+	// 		url: '/booktick/hall',
 	// 		dataType: 'json',
 	// 		type: 'GET',
 	// 		success: function (respones) {
+	// 			$.each(respones, function (i, e) {
+	// 				// console.log(e);
+	// 				$('#moviename').append(`<option value="${e.movieid}" >${e.moviename}</option>`)
 
-	// 			console.log(respones)
-	// 			$('#halls').append(`<option value="${e.theaterid}">${e.theaterid}</option>`)
 
 
 
+	// 			});
+
+	// 			console.log(this)
+	// 			let hall = $("#halls").val();
+	// 			/////
+
+	// 			/////
+
+
+	// 			/////////////////////////////////////////////
+
+
+	// 			////////////////////////////////////////	
 	// 		}
 	// 	})
-	// }
-
-	// $("#moviename").on("change", function () {
-	// 	// name();
-	// 	$('#halls').empty();
-	// })
-
-
-	$(document).ready(function () {
-
-		$.ajax({
-			url: '/booktick/hall',
-			dataType: 'json',
-			type: 'GET',
-			success: function (respones) {
-				$.each(respones, function (i, e) {
-					// console.log(e);
-					$('#moviename').append(`<option value="${e.movieid}" >${e.moviename}</option>`)
-
-
-
-
-				});
-
-				console.log(this)
-				let hall = $("#halls").val();
-				/////
-
-				/////
-
-
-				/////////////////////////////////////////////
-
-
-				////////////////////////////////////////	
-			}
-		})
-	});
+	// });
 
 	//////
 
