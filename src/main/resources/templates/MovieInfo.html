@@ -31,7 +31,7 @@ body {
 </style>
 </head>
 
-<body>
+<body th:data-loggedin="${session.memberDetail != null}">
 	<!-- 載入 Bootstrap navbar fragment -->
 	<th:block th:replace="~{fragments/navbar :: navbar}"></th:block>
 	<!-- 主內容區與 footer 保留不變 -->

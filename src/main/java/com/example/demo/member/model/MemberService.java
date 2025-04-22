@@ -50,6 +50,10 @@ public class MemberService {
 		member.setPassword(hashedPwd); 
 
 		Member insertBean = memberRepository.save(member);
+		
+		
+		
+		
 		return insertBean;
 	}
 	

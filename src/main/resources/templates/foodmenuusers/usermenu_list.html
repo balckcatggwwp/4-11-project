@@ -1,23 +1,36 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <title>菜單</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+<html xmlns:th="http://www.thymeleaf.org" th:inline="javascript">
+  <head>
+    <meta charset="UTF-8" />
+    <title>光影之門首頁</title>
+
+    <!-- Bootstrap CSS -->
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+    />
+
+    <!-- FontAwesome -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
+    />
+    <link href="/css/sb-admin-2.min.css" rel="stylesheet" />
+    <!-- 你的自定義樣式 -->
     <link rel="stylesheet" href="/css/index2.css" />
-    <link rel="stylesheet" href="/css/footer.css">
+    <link rel="stylesheet" href="/css/footer.css" />
+
     <style>
-    	 body {
-	      padding-top: 80px; /* 避開 fixed-top navbar */
-	    }
-	    
-	    .navbar .nav-link {
-		  font-size: 16px;
-		  font-weight: 600;
-		}
-    	
-        .card-img-top {
+      body {
+        padding-top: 80px;
+        /* 避開 fixed-top navbar */
+      }
+
+      .navbar .nav-link {
+        font-size: 16px;
+        font-weight: 600;
+      }
+      .card-img-top {
             height: 160px;
             object-fit: cover;
         }
@@ -59,33 +72,31 @@
             font-size: 12px;
         }
     </style>
-</head>
-<body class="bg-light">
-	<th:block th:replace="~{fragments/navbar :: navbar}"></th:block>
-    <!-- 購物車圖示固定在畫面右上角 -->
-    <a href="/cart.html" class="cart-icon btn btn-light position-fixed">
-        🛒
-        <span id="cartCount" class="cart-count">0</span>
-    </a>
+  </head>
+
+  <body th:data-loggedin="${session.memberDetail != null}">
+    <!-- 載入 Bootstrap navbar fragment -->
+    <th:block th:replace="~{fragments/navbar :: navbar}"></th:block>
+    <!-- 主內容區與 footer 保留不變 -->
     <div class="container mt-5">
-        <h2 class="mb-4">菜單</h2>
-
-        <div class="row row-cols-1 row-cols-md-3 g-4">
-            <div class="col" th:each="menu : ${menus}">
-                <div class="card h-100">
-                    <img th:src="@{${menu.imageUrl}}" class="card-img-top" alt="商品圖片">
-                    <button class="btn btn-success add-btn" th:onclick="'addToCart(' + ${menu.menuId} + ')'">+</button>
-                    <div class="card-body">
-                        <h5 class="card-title" th:text="${menu.menuName}">商品名稱</h5>
-                        <p class="card-text">價格：<span th:text="${menu.unitPrice}"></span></p>
-                        <p class="card-text" th:text="${menu.description}">商品描述</p>
-                        <p class="card-text">分類：<span th:text="${menu.category}"></span></p>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- 分頁按鈕 -->
+      <!-- Showcase -->
+      <h2 class="mb-4">菜單</h2>
+      
+	  <div class="row row-cols-1 row-cols-md-3 g-4">
+           <div class="col" th:each="menu : ${menus}">
+               <div class="card h-100">
+                   <img th:src="@{${menu.imageUrl}}" class="card-img-top" alt="商品圖片">
+                   <button class="btn btn-success add-btn" th:onclick="'addToCart(' + ${menu.menuId} + ')'">+</button>
+                   <div class="card-body">
+                       <h5 class="card-title" th:text="${menu.menuName}">商品名稱</h5>
+                       <p class="card-text">價格：<span th:text="${menu.unitPrice}"></span></p>
+                       <p class="card-text" th:text="${menu.description}">商品描述</p>
+                       <p class="card-text">分類：<span th:text="${menu.category}"></span></p>
+                   </div>
+               </div>
+           </div>
+       </div>
+       <!-- 分頁按鈕 -->
         <nav aria-label="Page navigation" class="mt-4">
             <ul class="pagination justify-content-center">
                 <li th:each="i : ${#numbers.sequence(1, totalPages)}" class="page-item" 
@@ -94,11 +105,80 @@
                 </li>
             </ul>
         </nav>
+      <div th:if="${session.memberName != null}">
+        <div
+          class="modal fade"
+          id="chatModal"
+          tabindex="-1"
+          aria-labelledby="chatModalLabel"
+          aria-hidden="true"
+        >
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title">即時客服對話</h5>
+                <button
+                  type="button"
+                  class="btn-close"
+                  data-bs-dismiss="modal"
+                ></button>
+              </div>
+              <div class="modal-body">
+                <div
+                  id="chat-box"
+                  style="
+                    height: 200px;
+                    overflow-y: auto;
+                    border: 1px solid #ccc;
+                    padding: 10px;
+                  "
+                ></div>
+
+                <input
+                  id="from"
+                  class="form-control mt-2"
+                  readonly
+                  th:value="${session.memberName}"
+                />
+                <input
+                  id="message"
+                  class="form-control mt-2"
+                  placeholder="輸入訊息"
+                />
+                <button onclick="sendMessage()" class="btn btn-primary mt-2">
+                  送出
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
-	<th:block th:replace="~{fragments/footer :: footer}"></th:block>
-    <!-- JS & SweetAlert2 -->
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <th:block th:replace="~{fragments/loginPage :: login}"></th:block>
+
+    <!-- 載入 footer fragment -->
+    <th:block th:replace="~{fragments/footer :: footer}"></th:block>
+
+    <!-- Bootstrap JS -->
+    
+    <script src="/js/jquery.js"></script>
+    <script src="/js/bootstrap.bundle.min.js"></script>
+    <!-- Bootstrap core JavaScript-->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <!-- Custom scripts for all pages-->
+    <script src="/js/sb-admin-2.min.js"></script>
+    <!-- 其他 script -->
+    <script th:if="${logoutSuccess}">
+      Swal.fire({
+        icon: "success",
+        title: "登出成功",
+        text: "您已成功登出！",
+        confirmButtonText: "確認",
+        timer: 3000,
+        timerProgressBar: true,
+      });
+    </script>
+    <script src="/js/loginPage.js"></script>
     <script>
       function addToCart(menuId) {
         $.post("/cart/add", { menuId: menuId, quantity: 1 }, function(res) {
@@ -124,6 +204,5 @@
         updateCartCount();
       });
     </script>
-</body>
+  </body>
 </html>
-
