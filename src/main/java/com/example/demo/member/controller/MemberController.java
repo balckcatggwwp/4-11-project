@@ -224,26 +224,39 @@ public class MemberController {
 	
 	@GetMapping("/verify")
 	public String verifyAccount(@RequestParam("code") String code, Model model) {
-	    String result = memberService.verifyMessage(code);
+	    boolean verified = memberService.verifyMessage(code);
 
-	    switch (result) {
-	        case "認證成功" -> {
-	            model.addAttribute("message", "帳號已成功啟用，請登入！");
-	            return "member/verifySuccess";
-	        }
-	        case "已認證過了" -> {
-	            model.addAttribute("message", "您已經完成過認證，請直接登入。");
-	            return "member/verifySuccess";
-	        }
-	        case "錯誤" -> {
-	            model.addAttribute("message", "驗證失敗，連結可能已過期或無效！");
-	            return "member/verifyFail";
-	        }
-	        default -> {
-	            model.addAttribute("message", "發生未知錯誤！");
-	            return "member/verifyFail";
-	        }
+	    if (verified) {
+	        model.addAttribute("message", "帳號已成功啟用，請登入！");
+	        return "member/verifySuccess";
+	    } else {
+	        model.addAttribute("message", "驗證失敗，連結可能已過期或無效！");
+	        return "member/verifyFail";
 	    }
+	}
+	
+	@PostMapping("email/change")
+	@ResponseBody
+	public ResponseEntity<String> changeEmail(@RequestParam String newEmail, HttpSession session) throws MessagingException {
+	    Member member = (Member) session.getAttribute("memberDetail");
+	    // 驗證是否重複或非法，可選擇加上
+	    if (newEmail.equals(member.getEmail())) {
+	        return ResponseEntity.badRequest().body("新信箱與舊信箱相同");
+	    }else {
+	    	memberService.EmailChange(member, newEmail);
+	    	return ResponseEntity.ok("認證信已寄出，請至原信箱確認變更操作");	    	
+	    }
+	}
+	
+	@GetMapping("/member/email/confirm")
+	public String confirmEmailChange(@RequestParam("code") String code, Model model) {
+	   boolean newEmailStatus= memberService.newEmailConfirm(model,code);
+	   if(newEmailStatus) {
+		   model.addAttribute("message", "信箱變更成功，請使用新信箱登入");		   
+	   }else {
+		   model.addAttribute("message", "驗證失敗，連結無效或已過期");		
+	   }
+	   return "member/verifySuccess";
 	}
 
 

@@ -9,6 +9,7 @@ import org.springframework.mail.SimpleMailMessage;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.ui.Model;
 
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
@@ -171,18 +172,54 @@ public class MemberService {
 	}
 	
 	@Transactional
-	public String verifyMessage(String code) {
+	public boolean verifyMessage(String code) {
 	    Member member = memberRepository.findByVerificationCode(code);
-	    if (member == null) {
-	        return "錯誤";
-	    }
-	    if(member.isVerification()) {
-	    	return "已認證過了";
+	    if (member == null || member.isVerification()) {
+	        return false;
 	    }
 	    member.setVerification(true);
+	    member.setVerificationCode(null); // 清除驗證碼
 	    memberRepository.save(member);
-	    	return "認證成功";
+	    return true;
 	}
+	@Transactional
+	public void EmailChange(Member member,String newEmail) throws MessagingException {
+		String token = UUID.randomUUID().toString();
+	    member.setNewEmail(newEmail);
+	    member.setVerificationCode(token);	    
+	    memberRepository.save(member);
+	    
+	    
+	    
+	    String verifyLink = "http://localhost:8080/member/email/confirm?code=" + token;
+	    String subject = "會員變更信箱 - 光影之門";
+	    String content = """
+	        親愛的會員您好：<br>
+	        請點選以下連結完成新信箱：<br>
+	        <a href="%s">點我驗證</a>
+	        """.formatted(verifyLink);
+	    MimeMessage message = mailSender.createMimeMessage();
+        MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
+        helper.setTo(member.getEmail());
+        helper.setSubject(subject);
+        helper.setText(content, true); // 第二個參數 true 表示啟用 HTML
+	    
+	}
+	@Transactional
+	public boolean newEmailConfirm(Model model,String code) {
+		 Member member = memberRepository.findByVerificationCode(code);
+		    if (member == null || member.getNewEmail() == null) {
+		        return false;
+		    }else {
+		    	// 執行變更信箱
+		    	member.setEmail(member.getNewEmail());
+		    	member.setNewEmail(null);
+		    	member.setVerificationCode(null);
+		    	memberRepository.save(member);
+		    	return true;
+		    }
+	}
+
 	
 	
 }
