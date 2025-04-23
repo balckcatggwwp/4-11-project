@@ -17,6 +17,6 @@ public interface onoffRepository extends JpaRepository<onofflineBean, Integer> {
 	
 	
 	@Query("SELECT DISTINCT s.hallid FROM onofflineBean s WHERE s.movieid = :movieid")
-	Optional<onofflineBean> findDistinctHallidsByMovieid(@Param("movieid") int movieid);
+	Optional<Integer> findDistinctHallidsByMovieid(@Param("movieid") int movieid);
 
 }

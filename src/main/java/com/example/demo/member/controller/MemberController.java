@@ -4,6 +4,7 @@ package com.example.demo.member.controller;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -22,20 +24,22 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.example.demo.member.model.Member;
 import com.example.demo.member.model.MemberService;
 
+import jakarta.mail.MessagingException;
 import jakarta.servlet.http.HttpSession;
 
 @Controller
+@RequestMapping("/member")
 public class MemberController {
 	
 	@Autowired
 	private MemberService memberService;
 	
 	//Login Controller
-	@GetMapping("member/login")
+	@GetMapping("/login")
 	public String loginPage() {
 		return "member/login";
 	}
-	@PostMapping("/member/login")
+	@PostMapping("/login")
 	@ResponseBody
 	public Map<String, Object> login(@RequestParam("email") String email,
 	                                 @RequestParam("password") String password,
@@ -56,7 +60,7 @@ public class MemberController {
 	    return response;
 	}
 
-	@GetMapping("member/logout")
+	@GetMapping("/logout")
 	public String logout(HttpSession httpSession,RedirectAttributes redirectAttributes) {
 		httpSession.removeAttribute("memberDetail");
 	    httpSession.invalidate(); // 清除所有session
@@ -65,18 +69,29 @@ public class MemberController {
 
 	}
 	
-	@GetMapping("member/register")
+	@GetMapping("/register")
 	public String register() {
 		return "member/register";
 	}
 	
 //前台會員註冊
-	@PostMapping("member/register")
+	@PostMapping("/register")
 	public ResponseEntity<?> register(@ModelAttribute Member member){
 		boolean result = memberService.memberExistCheck(member);
 		
 		if (result) {
-	        Member insertMember = memberService.insertMember(member);
+			String verifyCode = UUID.randomUUID().toString();
+	        Member insertMember = memberService.insertMember(member,verifyCode);
+	        String Toemail = insertMember.getEmail();
+	        String siteURL = "http://localhost:8080";
+	        String verifyLink = siteURL + "/member/verify?code=" + verifyCode;
+	        System.out.println(Toemail+" "+verifyLink);
+	        try {
+				memberService.sendVerificationEmail(Toemail,verifyLink);
+			} catch (MessagingException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			};
 	        if (insertMember != null) {
 	            return ResponseEntity.ok(Map.of(
 	                "status", "success",
@@ -99,13 +114,13 @@ public class MemberController {
 //	後臺編輯會員資訊
 	
 	//會員後臺首頁
-	@GetMapping("member/MemberManager")
+	@GetMapping("/MemberManager")
 	public String MemberManager() {
 		return "member/MemberManager";
 	}
 	
 	//後臺新增會員
-	@GetMapping("member/insertMember")
+	@GetMapping("/insertMember")
 	public String insertMember() {
 		return "member/insertMember";
 	}
@@ -119,7 +134,7 @@ public class MemberController {
 	
 	
 	//後臺顯示所有會員(DataTable)
-	@GetMapping("member/showAllMember3")
+	@GetMapping("/showAllMember3")
 	public String showAllMember(Model model) {
 	    List<Member> memberList = memberService.findAll();
 	    model.addAttribute("members", memberList);
@@ -127,7 +142,7 @@ public class MemberController {
 	}
 	
 	//後臺編輯單筆會員資料(透過findById)
-	@GetMapping("member/updateMember/{id}")
+	@GetMapping("/updateMember/{id}")
 	public String updateMember(@PathVariable("id") Long id, Model model, RedirectAttributes redirectAttributes) {
 		Member member = memberService.findById(id);
 		if (member!=null) {
@@ -144,7 +159,7 @@ public class MemberController {
 	
 	
 	//後臺編輯單筆會員資料 儲存修改的資料
-	@PostMapping("member/updateMember")
+	@PostMapping("/updateMember")
 	public String updateMember(
 			@ModelAttribute Member form,Model model){
 		Long id = form.getMemberId();
@@ -159,13 +174,13 @@ public class MemberController {
 	
 	//後臺透過指定欄位進行模糊搜尋，回傳List
 	//	欄位搜尋
-	@GetMapping("member/columnSearch")
+	@GetMapping("/columnSearch")
 	public String columnSearch() {
 		return "member/columnSearch";
 	}
 	
 	
-	@PostMapping("member/columnSearch")
+	@PostMapping("/columnSearch")
 	public String showMember(String columnInfo, String columnName ,Model model) {
 		System.out.println(columnInfo +" "+columnName);
 		List<Member> members;
@@ -195,7 +210,7 @@ public class MemberController {
 		
 	}
 	
-	@DeleteMapping("/member/deleteMember/{id}")
+	@DeleteMapping("/deleteMember/{id}")
 	@ResponseBody
 	public ResponseEntity<String> deleteMember(@PathVariable Long id) {
 	    boolean success = memberService.deleteMemberById(id);
@@ -207,11 +222,42 @@ public class MemberController {
 	}
 
 	
-	
-//	會員專區 餐點明細
-	@GetMapping("/foodmenu/memberFoodOrders")
-	public String memberFoodOrders() {
-		return "foodmenu/memberFoodOrders";
-		
+	@GetMapping("/verify")
+	public String verifyAccount(@RequestParam("code") String code, Model model) {
+	    boolean verified = memberService.verifyMessage(code);
+
+	    if (verified) {
+	        model.addAttribute("message", "帳號已成功啟用，請登入！");
+	        return "member/verifySuccess";
+	    } else {
+	        model.addAttribute("message", "驗證失敗，連結可能已過期或無效！");
+	        return "member/verifyFail";
+	    }
 	}
+	
+	@PostMapping("email/change")
+	@ResponseBody
+	public ResponseEntity<String> changeEmail(@RequestParam String newEmail, HttpSession session) throws MessagingException {
+	    Member member = (Member) session.getAttribute("memberDetail");
+	    // 驗證是否重複或非法，可選擇加上
+	    if (newEmail.equals(member.getEmail())) {
+	        return ResponseEntity.badRequest().body("新信箱與舊信箱相同");
+	    }else {
+	    	memberService.EmailChange(member, newEmail);
+	    	return ResponseEntity.ok("認證信已寄出，請至原信箱確認變更操作");	    	
+	    }
+	}
+	
+	@GetMapping("/member/email/confirm")
+	public String confirmEmailChange(@RequestParam("code") String code, Model model) {
+	   boolean newEmailStatus= memberService.newEmailConfirm(model,code);
+	   if(newEmailStatus) {
+		   model.addAttribute("message", "信箱變更成功，請使用新信箱登入");		   
+	   }else {
+		   model.addAttribute("message", "驗證失敗，連結無效或已過期");		
+	   }
+	   return "member/verifySuccess";
+	}
+
+
 }

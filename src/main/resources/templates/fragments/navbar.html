@@ -84,12 +84,12 @@
 									<li>
 										<a
 											class="dropdown-item memberLink"
-											th:href="@{/foodmenu/memberFoodOrders}"
+											href="/foodmenu/memberFoodOrders"
 											>餐點明細</a
 										>
 									</li>
 									<li>
-										<a class="dropdown-item memberLink" href="#">確認餐點</a>
+										<a class="dropdown-item memberLink" href="">確認餐點</a>
 									</li>
 
 									<li>
@@ -137,43 +137,41 @@
 								>
 							</li>
 						</ul>
-
+						<div th:switch="${session.memberDetail != null}">
 						<!-- 右邊功能 icon -->
-						<ul class="navbar-nav ms-auto">
-							<li class="nav-item">
-								<a class="nav-link" href="#"><i class="fas fa-search"></i></a>
-							</li>
-							<li class="nav-item">
-								<a class="nav-link" href="#"
-									><i class="fas fa-shopping-cart"></i
-								></a>
-							</li>
-
-							<!-- 登入區塊 -->
-							<li class="nav-item user-menu">
-								<span th:switch="${session.memberId != null}">
-									<span th:case="false">
-										<a class="nav-link" th:href="@{/member/login}"
-											>登入/註冊 <i class="fa-solid fa-user"></i
-										></a>
-										<button
-											type="button"
-											class="btn btn-primary ms-2"
-											data-bs-toggle="modal"
-											data-bs-target="#loginModal"
-										>
-											登入
-										</button>
-									</span>
-									<span th:case="true">
-										<a class="nav-link" th:href="@{/member/logout}">
-											歡迎, <span th:text="${session.memberName}">使用者</span>
-											<i class="fa-solid fa-user-check"></i>
-										</a>
-									</span>
-								</span>
-							</li>
-						</ul>
+						    <div th:case="false">
+							<ul class="navbar-nav ms-auto">
+								<li class="nav-item">
+									<a class="nav-link memberLink" href="#"
+										><i class="fas fa-shopping-cart"></i
+									></a>
+								</li>
+								<li class="nav-item user-menu">	
+								<button
+									type="button"
+									class="btn btn-primary ms-2 nav-link"
+									data-bs-toggle="modal"
+									data-bs-target="#loginModal"
+								>登入/註冊<i class="fa-solid fa-user"></i>
+								</button>
+								</li>
+							</ul>
+							</div>
+							<div th:case="true">
+							<ul class="navbar-nav ms-auto">
+								<li class="nav-item">
+										<a class="nav-link memberLink" href="/cart.html"><i class="fas fa-shopping-cart">
+								</i></a>
+								</li>
+								<li>
+								<a class="nav-link" th:href="@{/member/logout}">
+								歡迎, <span th:text="${session.memberName}">使用者</span>
+								<i class="fa-solid fa-user-check"></i>
+								</a>
+								</li>
+							</ul>
+							</div>
+						</div>				
 					</div>
 				</div>
 			</div>

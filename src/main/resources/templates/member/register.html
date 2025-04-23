@@ -98,7 +98,7 @@
 
               <hr>
               <div class="text-center">
-                <a class="small" a href="#" onclick="triggerLoginModal()">已經有帳號？前往首頁並登入</a>
+                <a class="small" a href="#" onclick="redirectWithLoginModal()">已經有帳號？前往首頁並登入</a>
               </div>
 
             </div>
@@ -165,5 +165,11 @@
       });
     });
   </script>
+  <script>
+  function redirectWithLoginModal() {
+    localStorage.setItem("autoShowLogin", "true");
+    window.location.href = "/";
+  }
+</script>
 </body>
 </html>

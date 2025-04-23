@@ -18,13 +18,17 @@ public class MemberOrderController {
     @Autowired
     private OrderService orderService;
 
-    @GetMapping("/memberFoodOrders")
+    @GetMapping("/foodmenu/memberFoodOrders")
     public String showFoodOrders(HttpSession session, Model model) {
         Long userId = (Long) session.getAttribute("memberId");
 
 
         Map<OrderHeader, List<OrderItem>> orderMap = orderService.groupItemsByOrder(userId);
         model.addAttribute("orderMap", orderMap);
-        return "memberFoodOrders";
+
+        System.out.print(orderMap);
+
+        return "foodmenu/memberFoodOrders";
     }
+
 }
