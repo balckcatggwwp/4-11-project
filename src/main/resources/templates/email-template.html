@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>確認付款</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: rgb(204, 204, 204);
+        }
+
+        #confirm {
+            text-align: center;
+            width: 500px;
+            height: auto;
+            /* 讓高度根據內容自動調整 */
+            margin-left: 375px;
+            margin-top: 50px;
+        }
+
+        #head {
+            background-color: black;
+            color: gold;
+        }
+
+        h1 {
+            padding-top: 10px;
+            padding-bottom: 10px;
+        }
+
+        figure {
+            background-color: white;
+            border-radius: 10px;
+            /* text-align: left; */
+            /* 調整 figure 內的預設文字對齊為靠左 */
+            border: 1px solid black;
+            padding: 20px;
+            /* 增加一些內邊距，讓內容更舒適 */
+            box-shadow: 5px 5px 5px black;
+        }
+
+        .detil {
+            font-size: 20px;
+            display: flex;
+            /* 將 p 標籤設定為 flex 容器 */
+            justify-content: space-between;
+            /* 子元素之間平均分配空間 */
+            margin-bottom: 10px;
+            /* 增加一些底部間距，讓每個 detil 段落分開 */
+        }
+
+        .detil span {
+            text-align: right;
+            /* 確保 span 內的文字靠右對齊 */
+        }
+    </style>
+</head>
+
+<body>
+    <!-- <h1>你好，<span th:text="${userName}">User</span>！</h1>
+<p>您的訂單 <span th:text="${orderNumber}">12345</span> 已成功下訂。</p> -->
+    <div id="confirm">
+        <figure>
+            <div id="head">
+                <h1>已經確認付款</h1>
+            </div>
+
+            <p class="detil">您的訂單 <span th:text="${orderid}"></span></p>
+            <p class="detil">你的座位是: <span th:text="${seat}"></span></p>
+            <p class="detil">觀看日期: <span th:text="${date}"></span></p>
+            <p class="detil">場次: <span th:text="${#strings.substring(time, 0, 8)}"></span></p>
+            <p class="detil">電影名稱: <span th:text="${name}"></span></p>
+        </figure>
+    </div>
+</body>
+
+</html>
