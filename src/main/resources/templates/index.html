@@ -69,7 +69,7 @@
         </button>
       </div>
 
-      <!-- 電影卡片 -->
+      <!-- 最新上映 -->
       <section class="home-cards">
         <div>
           <img src="/imgs/bear2.jpg" alt="" />
@@ -99,7 +99,7 @@
         </div>
       </section>
 
-      <!-- 餐點卡片 -->
+      <!-- 即將上映 -->
       <section class="home-cards">
         <div>
           <img src="/imgs/CinemaParadise.jpg" alt="" />
@@ -207,9 +207,12 @@
     <th:block th:replace="~{fragments/loginPage :: login}"></th:block>
 
     <!-- 載入 footer fragment -->
+
+    <!-- 載入 footer fragment -->
     <th:block th:replace="~{fragments/footer :: footer}"></th:block>
 
     <!-- Bootstrap JS -->
+    
     
     <script src="/js/jquery.js"></script>
     <script src="/js/bootstrap.bundle.min.js"></script>
@@ -228,9 +231,9 @@
         timerProgressBar: true,
       });
     </script>
-    <script src="/js/loginPage.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/stompjs@2.3.3/lib/stomp.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/stompjs@2.3.3/lib/stomp.min.js"></script>
+    <script src="/js/loginPage.js"></script>
     <script src="/js/carousel.js"></script>
     <script src="/js/chat.js"></script>
   </body>
