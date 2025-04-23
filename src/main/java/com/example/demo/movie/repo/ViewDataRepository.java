@@ -21,4 +21,6 @@ public interface ViewDataRepository extends JpaRepository<ViewData, Integer> {
 		    @Param("movieId") Integer movieId,
 		    @Param("theaterId") Integer theaterId
 		);
+	
+	
 }
