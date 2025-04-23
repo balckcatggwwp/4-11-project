@@ -64,4 +64,14 @@ public class MovieListService {
 	public Map<String, Object> getMovieInfo(Integer id) {
 		return movieListRepository.findMovieInfo(id);
 	}
+	
+	//最新上映的4部電影
+	public List<Map<String, Object>> getLatestList() {
+		return movieListRepository.findLatestList();
+	}
+	
+	//快上映的4部電影
+		public List<Map<String, Object>> getSoonList() {
+			return movieListRepository.findSoonList();
+		}
 }

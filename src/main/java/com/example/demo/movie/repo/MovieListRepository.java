@@ -23,6 +23,23 @@ public interface MovieListRepository extends JpaRepository<MovieList, Integer> {
 		    """, nativeQuery = true)
 		    List<Map<String, Object>> findNowShowingMovies();
 	 
+	 @Query(value = """
+		        SELECT TOP (4) m.id, m.name, d.description, d.image
+		        FROM movielist m
+		        JOIN moviedetail d ON m.id = d.id
+		        WHERE m.state = '上映'
+		        ORDER BY released DESC
+		    """, nativeQuery = true)
+		    List<Map<String, Object>> findLatestList();
+	 @Query(value = """
+		        SELECT TOP (4) m.id, m.name, d.description, d.image
+		        FROM movielist m
+		        JOIN moviedetail d ON m.id = d.id
+		        WHERE m.state = '待上映'
+		        ORDER BY released DESC
+		    """, nativeQuery = true)
+		    List<Map<String, Object>> findSoonList();
+	 
 	  @Query(value = """
 		        SELECT 
 		            m.name AS name,
