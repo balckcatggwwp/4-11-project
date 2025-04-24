@@ -159,4 +159,14 @@ public class MovieController {
         }
         return ResponseEntity.notFound().build();
     }
+  //最新上映電影資訊回傳
+    @GetMapping("/latest")
+    public List<Map<String, Object>> getLatestMovie() {
+        return movieListRepository.findLatestList();
+    }
+  //即將上映電影資訊回傳
+    @GetMapping("/soon")
+    public List<Map<String, Object>> getSoonMovie() {
+        return movieListRepository.findSoonList();
+    }
 }
