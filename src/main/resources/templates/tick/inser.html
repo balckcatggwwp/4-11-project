@@ -80,7 +80,7 @@
 					<div class="col-md-4 inputGroupContainer">
 						<div class="input-group">
 							<span class="input-group-addon"><i class="fa-solid fa-user"></i></span> <input
-								name="memberId" placeholder="會員" class="form-control" type="text">
+								name="memberId" placeholder="會員" class="form-control" type="text" id="member">
 						</div>
 					</div>
 				</div>
@@ -125,7 +125,8 @@
 					<div class="col-md-4 inputGroupContainer">
 						<div class="input-group">
 							<span class="input-group-addon"><i class="fa-solid fa-house "></i></span>
-							<input class="form-control selectpicker ud" id="halls" name="hallid" value="" placeholder="會員">
+							<input class="form-control selectpicker ud" id="halls" name="hallid" value=""
+								placeholder="廳">
 
 
 
@@ -209,6 +210,14 @@
 
 			</fieldset>
 		</form>
+		<div class="form-group">
+			<label class="col-md-4 control-label"></label>
+			<div class="col-md-4">
+				<button class="btn btn-warning" id="oneta">
+					一鍵輸入
+				</button>
+			</div>
+		</div>
 	</div>
 	<!-- /.container -->
 	<!-- <script src="https://code.jquery.com/jquery-3.7.1.js"></script> -->
@@ -220,6 +229,24 @@
 	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.17.2/dist/sweetalert2.all.min.js"></script>
 	<script th:inline="javascript">
 		$(function () {
+			////////////一鍵輸入
+			$("#oneta").on("click", function () {
+				$('#member').val(2)
+				// $('#datepicker').val('2025-04-20')
+				// $('#time').val(1)
+				// $('#moviename').val(7)
+				// $('#halls').val(7)
+				// $('#seat').val('A1')
+				$('#type').val(1)
+				$('#money').val(200)
+				$('select[name="payout"]').val('N')
+
+			})
+
+
+
+
+
 			$("#datepicker").datepicker({ dateFormat: 'yy-mm-dd' });
 			$("#from-datepicker").on("change", function () {
 				var fromdate = $(this).val();
