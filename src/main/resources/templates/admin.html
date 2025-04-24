@@ -23,14 +23,42 @@
       <nav class="navbar navbar-dark bg-dark mb-4">
         <div class="container-fluid">
           <a class="navbar-brand" href="/admin1">電影公告後台</a>
-          <form class="d-flex ms-auto" id="adminSearchForm">
-            <input
-              class="form-control me-2"
-              type="search"
-              placeholder="搜尋標題"
-              id="adminSearchInput"
-            />
-            <button class="btn btn-outline-light" type="submit">搜尋</button>
+          <form
+            class="row g-2 align-items-center ms-auto"
+            id="adminSearchForm"
+            style="max-width: 700px"
+          >
+            <div class="col">
+              <input
+                class="form-control"
+                type="search"
+                placeholder="搜尋標題"
+                id="adminSearchInput"
+              />
+            </div>
+            <div class="col-auto">
+              <button class="btn btn-outline-light" type="submit">搜尋</button>
+            </div>
+            <div class="col-auto">
+              <select id="filterType" class="form-select">
+                <option value="">全部</option>
+                <option value="重要">重要</option>
+                <option value="系統">系統</option>
+                <option value="活動">活動</option>
+              </select>
+            </div>
+            <div class="col-auto">
+              <div class="form-check">
+                <input
+                  class="form-check-input"
+                  type="checkbox"
+                  id="filterAdOnly"
+                />
+                <label class="form-check-label text-white" for="filterAdOnly"
+                  >顯示輪播公告</label
+                >
+              </div>
+            </div>
           </form>
         </div>
       </nav>

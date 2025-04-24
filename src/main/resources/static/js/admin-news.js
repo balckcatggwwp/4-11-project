@@ -10,6 +10,8 @@ window.addEventListener("DOMContentLoaded", () => {
 
   async function loadNews(page = 0) {
     currentPage = page;
+    const selectedType = document.getElementById("filterType").value.trim();
+    const adOnly = document.getElementById("filterAdOnly").checked;
     let res;
     if (currentKeyword) {
       res = await fetch(
@@ -17,6 +19,16 @@ window.addEventListener("DOMContentLoaded", () => {
           currentKeyword
         )}&page=${page}&size=${pageSize}&sort=publishDate,desc`
       );
+    } else if (adOnly) {
+      const adRes = await fetch(`/api/news/ads`);
+      const content = await adRes.json();
+      res = { json: async () => ({ content, totalPages: 1 }) };
+    } else if (selectedType) {
+      const typeRes = await fetch(
+        `/api/news/type?type=${encodeURIComponent(selectedType)}`
+      );
+      const content = await typeRes.json();
+      res = { json: async () => ({ content, totalPages: 1 }) }; // 模擬 Page 格式
     } else {
       res = await fetch(
         `/api/news?page=${page}&size=${pageSize}&sort=publishDate,desc`
@@ -150,6 +162,7 @@ window.addEventListener("DOMContentLoaded", () => {
       content: form.content.value,
       imageUrl: form.imageUrl.value,
       status: form.status.value,
+      type: form.type.value,
       isAd: document.getElementById("isAd").checked,
       publishDate: new Date().toISOString(),
     };
@@ -190,6 +203,16 @@ window.addEventListener("DOMContentLoaded", () => {
       currentKeyword = document.getElementById("adminSearchInput").value.trim();
       loadNews(0); // 正確觸發搜尋+分頁渲染
     });
+
+  document.getElementById("filterType").addEventListener("change", () => {
+    currentKeyword = "";
+    loadNews(0);
+  });
+
+  document.getElementById("filterAdOnly").addEventListener("change", () => {
+    currentKeyword = "";
+    loadNews(0);
+  });
 
   loadNews();
 });
