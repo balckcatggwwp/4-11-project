@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import com.example.demo.DemoApplication;
+import com.example.demo.movie.service.MovieListService;
 import com.example.demo.tick.bean.BookticketBean;
 import com.example.demo.tick.bean.BookticketvuBean;
 import com.example.demo.tick.bean.OrderBean;
@@ -41,7 +42,8 @@ public class BooktickController {
 	private HallService hallService;
 	@Autowired
 	private TimeService timeService;
-
+	@Autowired
+	private MovieListService movieListService;
 
 	
 	@GetMapping("/ticktable")
@@ -78,7 +80,7 @@ public class BooktickController {
 		oBean.setShowdate(showtimeBean.getShowdate());
 		oBean.setShowtime(showtimeBean.getShowtime());
 		oBean.setPayout(updatedTick.getPayout());
-		oBean.setMoviename(hallService.findnamebyhallid(updatedTick.getHallid()).getMoviename());
+		oBean.setMoviename(movieListService.findById(updatedTick.getMovieid()).get().getName());
 //		oBean.setSeat(updatedTick.getSeatid());
 		String seatString = optional.get().getSeat();
 		List<String> seats = new ArrayList<>(Arrays.asList(seatString.split(",")));
@@ -109,7 +111,7 @@ public class BooktickController {
 		oBean.setSumpay(updatedTick.getOnemoney());
 		oBean.setHallid(updatedTick.getHallid());
 		oBean.setSeat(updatedTick.getSeatid());
-		oBean.setMoviename(hallService.findnamebyhallid(updatedTick.getHallid()).getMoviename());
+		oBean.setMoviename(movieListService.findById(updatedTick.getMovieid()).get().getName());
 		ShowtimeBean showtimeBean = timeService.findtimedate(updatedTick.getShowtimeid()).get();
 		oBean.setShowdate(showtimeBean.getShowdate());
 		oBean.setShowtime(showtimeBean.getShowtime());

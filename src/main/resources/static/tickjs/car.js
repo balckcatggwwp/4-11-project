@@ -231,7 +231,7 @@ $(function () {
 	//     $("#time, #halls").on('change', loadseat);
 	// });
 
-	 $('#moviename').on('change', function () {seatlist.splice(0, seatlist.length); })
+	$('#moviename').on('change', function () { seatlist.splice(0, seatlist.length); })
 
 	$('#time').on('change', function () {
 		loadseat();
@@ -276,7 +276,7 @@ $(function () {
 
 	///
 	//廳
-	function name() {
+	function time() {
 		$('#time').empty();
 		let nameid = $("#moviename").val();
 
@@ -304,7 +304,7 @@ $(function () {
 	}
 
 	$("#moviename").on("change", function () {
-		name();
+		time();
 		// $('#halls').empty();
 	})
 

@@ -96,18 +96,6 @@
 						</div>
 					</div>
 				</div>
-				<div class="form-group">
-					<label class="col-md-4 control-label">場次</label>
-					<div class="col-md-4 inputGroupContainer">
-						<div class="input-group">
-							<span class="input-group-addon"><i class="fa-solid fa-clock"></i></span> <select
-								name="showtimeid" class="form-control selectpicker" id="time">
-								<option value=" ">場次</option>
-
-							</select>
-						</div>
-					</div>
-				</div>
 
 				<div class="form-group">
 					<label class="col-md-4 control-label">電影名稱</label>
@@ -116,6 +104,18 @@
 							<span class="input-group-addon"><i class="fa-solid fa-film"></i></span> <select
 								name="movieid" class="form-control selectpicker" id="moviename">
 								<option value=" ">電影</option>
+							</select>
+						</div>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-md-4 control-label">場次</label>
+					<div class="col-md-4 inputGroupContainer">
+						<div class="input-group">
+							<span class="input-group-addon"><i class="fa-solid fa-clock"></i></span> <select
+								name="showtimeid" class="form-control selectpicker" id="time">
+								<option value=" ">場次</option>
+
 							</select>
 						</div>
 					</div>
@@ -227,47 +227,53 @@
 				var fromdate = $(this).val();
 				alert(fromdate);
 			});
-			//點選日期改時間
+			//點選電影改時間
 			$("#datepicker").on("change", function () {
 				let selectdate = $("#datepicker").val();
-				console.log(selectdate)
-				$("#time").empty();
+				// console.log(selectdate)
+				$("#moviename").empty();
 				$.ajax({
-					url: '/booktick/time/' + selectdate,
+					url: '/booktick/timename/' + selectdate,
 
 					dataType: 'json',
 					type: 'post',
 					contentType: 'application/json',
 					success: function (respones) {
-						$('#time').append(`<option value="">場次</option>`);
+						$('#moviename').append(`<option value="">電影</option>`);
 						$.each(respones, function (i, e) {
 
-							$('#time').append(`<option value="${e.showtimeid}">${e.showtime}</option>`)
+							// let time = e.showtime.split('.')[0]
+							$('#moviename').append(`<option value="${e.movieid}" >${e.movieName}</option>`)
 						})
+
 					}
 
 				})
 			});
 			//ready畫面加載預設時間
 			$(document).ready(function () {
+
 				let selectdate = $("#datepicker").val();
-				$("#time").empty();
+				// console.log(selectdate)
+				$("#moviename").empty();
 				$.ajax({
-					url: '/booktick/time/' + selectdate,
+					url: '/booktick/timename/' + selectdate,
 
 					dataType: 'json',
 					type: 'post',
 					contentType: 'application/json',
 					success: function (respones) {
-						$('#time').append(`<option value="">場次</option>`);
+						$('#moviename').append(`<option value="">電影</option>`);
 						$.each(respones, function (i, e) {
-							let tickshow =/*[[${tickinfo.showtimeid}]]*/''
-							//console.log(tickshow)
+							let tickhall = /*[[${tickinfo.moviename}]]*/'' // 直接輸出數值
+							let selectshows = (tickhall === e.movieName) ? 'selected' : '';
 
-							let selectshow = (tickshow == e.showtimeid) ? 'selected' : ''
-							let time = e.showtime.split('.')[0]
-							$('#time').append(`<option value="${e.showtimeid}" ${selectshow} >${time}</option>`)
+
+							// let time = e.showtime.split('.')[0]
+							$('#moviename').append(`<option value="${e.movieid}" ${selectshows}>${e.movieName}</option>`)
 						})
+						name();
+						timese();
 
 					}
 
@@ -280,58 +286,72 @@
 				let selectmovie = $('#moviename').val();
 
 				$.ajax({
-					url: '/booktick/name',
+					url: '/booktick/namega',
 					data: { nameid: selectmovie },
 					dataType: 'json',
 					type: 'GET',
 					success: function (respones) {
 						console.log(respones);
 
-						$('#halls').val(respones.hallid);
+						$('#halls').val(respones);
 
 
 					}
 				})
 			}
-			$(document).ready(function () {
+			function time() {
+				$('#time').empty();
+				let nameid = $("#moviename").val();
+
 				$.ajax({
-					url: '/booktick/hall',
+					url: '/booktick/timena/' + nameid,
+					// data: { hallid: hall },
 					dataType: 'json',
-					type: 'GET',
+					type: 'post',
 					success: function (respones) {
+
+
+						$('#time').append(`<option value="">場次</option>`);
 						$.each(respones, function (i, e) {
 
-							let tickhall = /*[[${tickinfo.moviename}]]*/'' // 直接輸出數值
-							let selectshows = (tickhall === e.moviename) ? 'selected' : '';
+							let time = e.showtime.split('.')[0]
 
-							// //console.log(e.hallid);
-							// $('#halls').append(`<option value="${e.theaterid}" ${selectshows}>${e.theaterid}</option>`)
-							// $('#moviename').empty();
-
-							$('#moviename').append(`<option value="${e.movieid}" ${selectshows}>${e.moviename}</option>`)
-							//console.log(hall)
-
-						});
-						// let hall = $("#halls").val();
-						/////
-						name();
-						/////
+							$('#time').append(`<option value="${e.showtimeid}">${time}</option>`)
+						})
 
 
-
-						/////////////////////////////////////////////
-
-
-						////////////////////////////////////////	
 					}
 				})
-			});
+			}
 
-			// $("#halls").on("change", function () {
-			// 	name();
+			function timese() {
+				$('#time').empty();
+				let nameid = $("#moviename").val();
 
-			// })
-			//////
+				$.ajax({
+					url: '/booktick/timena/' + nameid,
+					dataType: 'json',
+					type: 'post',
+					success: function (respones) {
+
+
+						$('#time').append(`<option value="">場次</option>`);
+						$.each(respones, function (i, e) {
+
+							let time = e.showtime.split('.')[0]
+							let timeid = /*[[${tickinfo.showtimeid}]]*/'' // 直接輸出數值
+							console.log(e);
+
+							let selectshows = (timeid === e.showtimeid) ? 'selected' : '';
+							$('#time').append(`<option value="${e.showtimeid}" ${selectshows}>${time}</option>`)
+						})
+
+
+					}
+				})
+			}
+
+
 			function loadseat() {
 				let selecttime = $("#time").val();
 				let selecthall = $("#halls").val();
@@ -394,16 +414,18 @@
 
 
 			$('#moviename').on("change", function () {
+				time();
 
-				setTimeout(loadseat, 100);
 
 			});
-
+			$("#time").on("change", function () {
+				setTimeout(loadseat, 100);
+			})
 
 			$(document).ready(function () {
 				let selecthall = $("#halls").val();
 				if (!selecthall || selecthall.trim() === "") {
-					setTimeout(loadseat, 500);
+					setTimeout(loadseat, 100);
 				} else {
 
 					loadseat();
@@ -449,12 +471,10 @@
 						$.each(respones, function (i, e) {
 							let ticktyp =/*[[${tickinfo.tickettypeid}]]*/'';
 
-							//console.log(ticktyp)
+
 							let se = e.tickettypeid
 							let selectty = (ticktyp == se) ? 'selected' : '';
-							//console.log(ticktyp)
-							//console.log(se)
-							//console.log(selectty)
+
 							$('#type').append(`<option value="${e.tickettypeid}" ${selectty}>${e.tickettype}</option>`)
 							money.push(e.moneytype)
 							moneyse();
