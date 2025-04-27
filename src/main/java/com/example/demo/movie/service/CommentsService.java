@@ -19,10 +19,11 @@ public class CommentsService {
         return commentsRepository.findByMovieIdOrderByCreatedAtDesc(movieId);
     }
 
-    public void saveComment(Integer movieId, Integer memberId, String content) {
+    public void saveComment(Integer movieId, Integer memberId, String memberName, String content) {
         Comments comment = new Comments();
         comment.setMovieId(movieId);
         comment.setMemberId(memberId);
+        comment.setMemberName(memberName);
         comment.setContent(content);
         comment.setCreatedAt(LocalDateTime.now());
         commentsRepository.save(comment);

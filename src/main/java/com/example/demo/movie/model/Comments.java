@@ -22,6 +22,9 @@ public class Comments {
     
     @Column(name = "memberid")
     private Integer memberId;
+    
+    @Column(name = "membername")
+    private String memberName;
 
     @Column(name = "content")
     private String content;
@@ -73,6 +76,15 @@ public class Comments {
 		this.createdAt = createdAt;
 	}
 
+	public String getMemberName() {
+		return memberName;
+	}
+
+	public void setMemberName(String memberName) {
+		this.memberName = memberName;
+	}
+
+	
 	
     
 }
