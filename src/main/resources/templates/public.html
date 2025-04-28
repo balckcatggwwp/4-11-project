@@ -36,25 +36,7 @@
       </div>
     </nav>
 
-    <div id="adCarousel" class="carousel slide mb-5" data-bs-ride="carousel">
-      <div class="carousel-inner" id="adCarouselInner"></div>
-      <button
-        class="carousel-control-prev"
-        type="button"
-        data-bs-target="#adCarousel"
-        data-bs-slide="prev"
-      >
-        <span class="carousel-control-prev-icon"></span>
-      </button>
-      <button
-        class="carousel-control-next"
-        type="button"
-        data-bs-target="#adCarousel"
-        data-bs-slide="next"
-      >
-        <span class="carousel-control-next-icon"></span>
-      </button>
-    </div>
+    
 
     <div class="container">
       <div class="row mb-4" id="newsList"></div>
@@ -94,20 +76,7 @@
       let currentPage = 1;
       const itemsPerPage = 5;
 
-      async function fetchAds() {
-        const res = await fetch("/api/news/ads");
-        const ads = await res.json();
-        const inner = document.getElementById("adCarouselInner");
-        inner.innerHTML = "";
-        ads.forEach((ad, i) => {
-          const item = document.createElement("div");
-          item.className = "carousel-item" + (i === 0 ? " active" : "");
-          item.innerHTML = `<a href="/news-detail1?id=${ad.id}" target="_blank">
-            <img src="${ad.imageUrl}" class="d-block w-100 carousel-img" alt="${ad.title}">
-          </a>`;
-          inner.appendChild(item);
-        });
-      }
+    
 
       function getBadgeClass(type) {
         switch (type) {
@@ -253,7 +222,7 @@
         });
       });
 
-      fetchAds();
+      
       fetchNews();
     </script>
   </body>
