@@ -167,7 +167,7 @@ public class OrderController {
 //	    model.addAttribute("seat", selectedSeats);
 //	    model.addAttribute("order", itemBean);
 //		return "order/testecpay";
-		return "redirect:/";
+		return "redirect:/detail";
 	}
 	
 	//oderpaycheck
