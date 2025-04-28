@@ -9,7 +9,7 @@
 <body class="bg-gradient-primary">
 
 <!-- 用 data-* 屬性存放 Thymeleaf 的 model 值 -->
-<div id="verify-message" th:attr="data-msg=${message}"></div>
+<div id="verify-message" th:attr="data-msg=${message}" ></div>
 
 <script>
   const message = document.getElementById('verify-message').dataset.msg;

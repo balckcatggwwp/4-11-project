@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <title>驗證失敗</title>
+</head>
+<body style="text-align:center; margin-top:50px;">
+    <h2 th:text="${message}">驗證失敗，連結可能已過期或無效！</h2>
+    <a href="#" class="btn btn-warning" style="margin-top:20px;" onclick="redirectWithLoginModal()">返回登入頁</a>
+	<script>
+	  function redirectWithLoginModal() {
+	    localStorage.setItem("autoShowLogin", "true");
+	    window.location.href = "/";
+	  }
+	</script>
+</body>
+</html>

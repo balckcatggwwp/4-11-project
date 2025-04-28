@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="zh-TW" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>帳號啟用成功</title>
+</head>
+<body style="text-align: center; margin-top: 50px;">
+	<h2 th:text="${message}">帳號已成功啟用，請登入！</h2>
+	<a href="#" class="btn btn-primary" style="margin-top: 20px;">前往登入</a>
+	<script>
+ 	function redirectWithLoginModal() {
+    	localStorage.setItem("autoShowLogin", "true");
+	}
+	</script>
+</body>
+</html>

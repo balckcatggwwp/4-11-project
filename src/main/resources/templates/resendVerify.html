@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <title>重新發送驗證信</title>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+    <div style="text-align: center; margin-top: 50px;">
+        <h2>請完成信箱驗證</h2>
+        <p>我們已寄出驗證信至：<strong th:text=\"${memberEmail}\"></strong></p>
+        <button id="resendBtn" class="btn btn-primary">重新發送驗證信</button>
+        <p id="countdown" style="margin-top: 20px; color: gray;"></p>
+    </div>
+
+    <script>
+        let waitTime = 30;
+        let resendBtn = $('#resendBtn');
+        let countdownText = $('#countdown');
+
+        function startCountdown() {
+            resendBtn.prop('disabled', true);
+            countdownText.text('請等待 ' + waitTime + ' 秒後可重新發送');
+            let interval = setInterval(function () {
+                waitTime--;
+                if (waitTime <= 0) {
+                    clearInterval(interval);
+                    resendBtn.prop('disabled', false);
+                    countdownText.text('');
+                } else {
+                    countdownText.text('請等待 ' + waitTime + ' 秒後可重新發送');
+                }
+            }, 1000);
+        }
+
+        resendBtn.click(function () {
+            $.post('/member/resendVerify/send', function (response) {
+                if (response.status === 'success') {
+                    Swal.fire('寄送成功', response.message, 'success');
+                    waitTime = 30;
+                    startCountdown();
+                } else if (response.status === 'already_verified') {
+                    Swal.fire('已啟用', response.message, 'info').then(() => {
+                        window.location.href = '/login';
+                    });
+                } else {
+                    Swal.fire('錯誤', response.message, 'error');
+                }
+            });
+        });
+
+        // 頁面一載入就開始倒數
+        $(document).ready(function () {
+            startCountdown();
+        });
+    </script>
+</body>
+</html>

@@ -19,15 +19,15 @@
         <div class="collapse ps-3 mt-1" id="memberDetail-collapse">
           <ul class="nav flex-column">
             <li class="nav-item">
-              <a class="nav-link" th:href="@{/memberCenter}">
+              <a class="nav-link" th:href="@{/member/memberCenter}">
               <i class="fas fa-id-card me-2"></i> 個人資料變更</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="#">
+              <a class="nav-link" th:href="@{/member/changeEmailPage}">
                 <i class="fas fa-envelope me-2"></i> 變更信箱</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="#">
+              <a class="nav-link" th:href="@{/member/changePasswordPage}">
                 <i class="fas fa-key me-2"></i> 變更密碼</a>
             </li>
           </ul>
