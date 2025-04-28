@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="UTF-8">
-<title>memberDetial模板</title>
+<title>memberDetial</title>
 </head>
 <body>
 	<div th:fragment="memberDetailsideBar" class="flex-shrink-0 p-3 sidebar bg-dark text-white">
@@ -19,7 +19,7 @@
         <div class="collapse ps-3 mt-1" id="memberDetail-collapse">
           <ul class="nav flex-column">
             <li class="nav-item">
-              <a class="nav-link" th:href="@{/memberCenter}">
+              <a class="nav-link" th:href="@{/member/memberDetail}">
               <i class="fas fa-id-card me-2"></i> 個人資料變更</a>
             </li>
             <li class="nav-item">

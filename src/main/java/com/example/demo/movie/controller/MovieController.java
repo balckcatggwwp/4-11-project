@@ -4,6 +4,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +24,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.example.demo.movie.model.MovieDetail;
 import com.example.demo.movie.model.MovieList;
 import com.example.demo.movie.repo.MovieDetailRepository;
+import com.example.demo.movie.repo.MovieListRepository;
 import com.example.demo.movie.service.MovieDetailService;
 import com.example.demo.movie.service.MovieListService;
 
@@ -31,6 +33,9 @@ import com.example.demo.movie.service.MovieListService;
 @RequestMapping("/movies")  // 路徑設置為 /movies 
 public class MovieController {
 
+	@Autowired
+	private MovieListRepository movieListRepository;
+	
     @Autowired
     private MovieListService movieListService;
     
@@ -139,5 +144,29 @@ public class MovieController {
     public List<MovieList> getAvailableMovies() {
         return movieListService.getAvailableMovies();
     }
- 
+    
+    //上映電影資訊回傳
+    @GetMapping("/showing")
+    public List<Map<String, Object>> getMovie() {
+        return movieListRepository.findNowShowingMovies();
+    }
+    //電影詳細資訊
+    @GetMapping("/MovieInfo/{id}")
+    public ResponseEntity<Map<String, Object>> getMovieInfoMap(@PathVariable Integer id) {
+        Map<String, Object> movieInfo = movieListService.getMovieInfo(id);
+        if (movieInfo != null) {
+            return ResponseEntity.ok(movieInfo); // 確保回傳 JSON 格式
+        }
+        return ResponseEntity.notFound().build();
+    }
+  //最新上映電影資訊回傳
+    @GetMapping("/latest")
+    public List<Map<String, Object>> getLatestMovie() {
+        return movieListRepository.findLatestList();
+    }
+  //即將上映電影資訊回傳
+    @GetMapping("/soon")
+    public List<Map<String, Object>> getSoonMovie() {
+        return movieListRepository.findSoonList();
+    }
 }

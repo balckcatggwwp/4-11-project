@@ -48,12 +48,14 @@ public class Member {
 	@Column(name = "password",nullable = false, length = 255)
 	private String password;
 	
+	@Column(name = "newEmail")
+	private String newEmail= null;
+	
 	@Column(name = "verification")
 	private boolean verification = false;
 	
 	@Column(name = "verificationCode")
 	private String verificationCode = null;
-//	日期相關
 	
 	@CreationTimestamp
     @Column(name = "createTime", nullable = false, updatable = false)
@@ -62,8 +64,7 @@ public class Member {
 	@Column(name = "dateOfBirth", nullable = false)
     private String dateOfBirth;
 	
-//	對應關係
-//	private String ticketId;
+	
 	
 	
 }

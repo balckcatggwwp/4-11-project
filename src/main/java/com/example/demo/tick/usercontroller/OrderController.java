@@ -19,13 +19,16 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
+import org.thymeleaf.spring6.SpringTemplateEngine;
 
 import com.example.demo.member.model.Member;
 import com.example.demo.member.model.MemberService;
+import com.example.demo.movie.service.MovieListService;
 import com.example.demo.tick.bean.BookTypeBean;
 import com.example.demo.tick.bean.BookticketBean;
 import com.example.demo.tick.bean.OrderBean;
 import com.example.demo.tick.bean.ShowtimeBean;
+import com.example.demo.tick.bean.onofflineBean;
 import com.example.demo.tick.repo.BooktickRepository;
 import com.example.demo.tick.repo.BooktickvuRepository;
 import com.example.demo.tick.service.BookvuService;
@@ -63,8 +66,10 @@ public class OrderController {
 	
 	@Autowired
 	private JavaMailSender javaMailSender;
-	
-	
+	@Autowired
+	private MovieListService movieListService;
+	@Autowired
+    private SpringTemplateEngine templateEngine;
 	@GetMapping("/orderset")
 	public String ordercar(HttpServletRequest request) {
 		HttpSession session = request.getSession();
@@ -118,7 +123,7 @@ public class OrderController {
 			selectedSeats = objectMapper.readValue(selectedSeatsJson, new TypeReference<List<String>>() {
 			});
 			// 現在 selectedSeats 就是包含選取座位 ID 的 List
-			System.out.println(selectedSeats);
+			
 			int sum = 0;
 			Optional<ShowtimeBean> op = timeService.findtimedate(showtimeid);
 			orderBean.setShowdate(op.get().getShowdate());
@@ -128,10 +133,13 @@ public class OrderController {
 			String withoutBrackets = selectedSeatsJson.substring(1, selectedSeatsJson.length() - 1);
 			 String withoutQuotes = withoutBrackets.replace("\"", "");
 			orderBean.setSeat(withoutQuotes);
-			int halli = hallService.findhallbyname(movieid).getHallid();
+			Optional<Integer> op2 = hallService.findhallbyname2(movieid);
+			
+			System.out.println(op2.get());
 			//同廳 有兩個電影
-			String namemoString = hallService.findnamebyhallid(halli).getMoviename();
-			orderBean.setHallid(halli);
+			String namemoString = movieListService.findById(movieid).get().getName();
+//			String namemoString = hallService.findnamebyhallid(op2.get()).getMoviename();
+			orderBean.setHallid(op2.get());
 			orderBean.setPayout("N");
 			orderBean.setMoviename(namemoString);
 	        orderService.inser(orderBean);
@@ -140,7 +148,7 @@ public class OrderController {
 				BookticketBean itemBean = new BookticketBean();
 				itemBean.setMemberId(memberId);
 				itemBean.setShowtimeid(showtimeid);
-				itemBean.setHallid(halli);
+				itemBean.setHallid(op2.get());
 				itemBean.setTickettypeid(tickettypeid);
 				itemBean.setMovieid(movieid);
 				itemBean.setOnemoney(typemo);
@@ -159,7 +167,7 @@ public class OrderController {
 //	    model.addAttribute("seat", selectedSeats);
 //	    model.addAttribute("order", itemBean);
 //		return "order/testecpay";
-		return "redirect:/";
+		return "redirect:/detail";
 	}
 	
 	//oderpaycheck
@@ -215,7 +223,7 @@ public class OrderController {
 		    context.setVariable("date",  op.get().getShowdate());
 		    context.setVariable("time",  op.get().getShowtime());
 		    context.setVariable("name",  op.get().getMoviename());
-		    TemplateEngine templateEngine = new TemplateEngine();
+//		    TemplateEngine templateEngine = new TemplateEngine();
 		    // Process the template
 		    String emailContent = templateEngine.process("email-template", context);
 
@@ -224,6 +232,7 @@ public class OrderController {
 		    	helper.setTo(aMember.getEmail());
 		    	helper.setSubject("光影之門付款成功");
 		    	helper.setText(emailContent, true);
+		    	helper.setFrom("光影之門付款資訊<movieprojecteeit94@gmail.com>");
 		    } catch (MessagingException e) {
 		    	// TODO Auto-generated catch block
 		    	e.printStackTrace();
