@@ -154,6 +154,7 @@ public class BooktickController {
 			@RequestParam(required = false) String payout,Model model
 
 	) {
+		System.out.println(startdate);
 		List<BookticketvuBean> vu = null;
 		if (select == 1) {
 			vu=bookvuService.findother(select, tickid,null);
