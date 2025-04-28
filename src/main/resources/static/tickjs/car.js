@@ -235,6 +235,7 @@ $(function () {
 
 	$('#time').on('change', function () {
 		loadseat();
+		seatlist.splice(0, seatlist.length);
 	})
 
 })
@@ -247,6 +248,7 @@ $(function () {
 	});
 	//點選日期改時間
 	$("#datepicker").on("change", function () {
+		seatlist.splice(0, seatlist.length);
 		let selectdate = $("#datepicker").val();
 		// console.log(selectdate)
 		$("#moviename").empty();
