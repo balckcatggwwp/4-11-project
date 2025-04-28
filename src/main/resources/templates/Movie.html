@@ -421,6 +421,8 @@ input {
 						</form>
 					</div>
 					<div class="modal-footer">
+						<button type="button" class="btn btn-info"
+							id="fillDetailExampleBtn">一鍵新增</button>
 						<button type="button" class="btn btn-secondary"
 							data-bs-dismiss="modal">取消</button>
 						<button type="button" class="btn btn-primary" id="submitDetailBtn">
@@ -507,6 +509,7 @@ input {
 						</form>
 					</div>
 					<div class="modal-footer">
+						<button type="button" class="btn btn-info" id="fillExampleBtn">一鍵新增</button>
 						<button type="button" class="btn btn-secondary"
 							data-bs-dismiss="modal">取消</button>
 						<button type="button" class="btn btn-primary"
@@ -563,6 +566,7 @@ input {
 		src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 	<script
 		src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+
 
 	<script>
 			$(document).ready(function () {
@@ -825,6 +829,27 @@ input {
 						},
 					});
 				});
+				//一鍵新增電影
+				$(document).ready(function () {
+					  $('#fillExampleBtn').click(function () {
+					    $('#addMovieName').val('侏羅紀世界：統霸天下');
+					    $('#addMovieReleased').val('2022-06-10');
+					    $('#addMovieRetired').val('2025-06-10');
+					    $('#addMovieRuntime').val(147);
+					    $('#addMovieState').val('待上映');
+					  });
+					});
+				//一鍵新增電影資訊
+				$(document).ready(function () {
+					  $('#fillDetailExampleBtn').click(function () {
+					    $('#rating').val('PG-13');
+					    $('#genre').val('冒險');
+					    $('#director').val('Colin Trevorrow');
+					    $('#actor').val('Chris Pratt, Bryce Dallas Howard');
+					    $('#description').val('侏羅紀時代來臨，人類與恐龍共存的挑戰開始。');
+					    $('#image').val('侏羅紀世界：統霸天下cover.jpg');
+					  });
+					});
 			});
 		</script>
 </body>
