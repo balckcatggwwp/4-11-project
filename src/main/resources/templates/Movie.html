@@ -1,336 +1,65 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="zh-TW" xmlns:th="http://www.thymeleaf.org">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<!-- DataTables CSS -->
-<link rel="stylesheet"
-	href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css" />
-<!-- Bootstrap CSS -->
-<link
-	href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
-	rel="stylesheet" />
-<style>
-#bodddd {
-	width: 90%;
-	height: 100px;
-	float: right;
-	padding: 20px;
-}
+<meta charset="UTF-8">
+<meta http-equiv="Cache-Control"
+	content="no-store, no-cache, must-revalidate, max-age=0">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
+<title>電影管理 - 光影之門</title>
+ <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css?family=Nunito"
+	rel="stylesheet">
+<link href="/css/sb-admin-2.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
+ <link href="https://cdn.datatables.net/2.2.2/css/dataTables.bootstrap5.min.css" rel="stylesheet">
 
-* {
-	margin: 0;
-	padding: 0;
-	box-sizing: border-box;
-}
 
-li {
-	list-style: none;
-	display: flex;
-	align-items: center;
-	gap: 10px;
-	font-size: 18px;
-	color: #ffd700;
-	background-color: #222;
-	width: 80%;
-	height: 60px;
-	margin: 5px 0;
-	margin-left: 10%;
-	border-radius: 5px;
-	cursor: pointer;
-	transition: all 0.3s ease;
-	justify-content: center;
-}
-
-li:hover {
-	background-color: #ffcc00;
-	color: #000;
-	transform: scale(1.1);
-}
-
-li i {
-	font-size: 24px;
-	transition: all 0.3s ease;
-}
-
-li:active {
-	position: relative;
-	top: 2px;
-	background-color: #b22222;
-	color: #fff;
-}
-
-figure {
-	float: left;
-	background-color: #000;
-	padding: 20px 0;
-	font-size: 100px;
-	color: #ffd700;
-	width: 10%;
-	height: 1000px;
-	text-align: center;
-}
-
-.one {
-	margin-top: 100px;
-}
-
-ul {
-	display: flex;
-	flex-direction: column;
-	gap: 10px;
-	padding-left: 0;
-}
-
-li a {
-	display: block;
-	width: 100%;
-	padding: 10px;
-	text-decoration: none;
-	color: black;
-}
-
-li a:active {
-	position: relative;
-	top: 2px;
-	background-color: transparent;
-	color: white;
-}
-
-.clock {
-	color: #ffd700;
-	font-size: 20%;
-	letter-spacing: 7px;
-	padding-top: 10px;
-}
-
-#new {
-	font-size: 30px;
-}
-
-#new:hover {
-	background-color: yellow;
-}
-
-body {
-	background-color: #9fa19d;
-	font-family: Arial, sans-serif;
-}
-
-a {
-	text-decoration: none;
-}
-
-.header {
-	font-family: "Orbitron", sans-serif;
-	font-optical-sizing: auto;
-}
-
-.header {
-	font-family: "Orbitron", sans-serif;
-	border: 2px double #ffd700;
-	font-size: 50px;
-	background: #000;
-	color: #fff;
-	text-align: center;
-	padding: 20px;
-	text-shadow: 0.1em 0.1em 0.2em #fff;
-}
-
-.h1 {
-	text-shadow: 0.1em 0.1em 0.2em gray;
-}
-
-.myButton {
-	box-shadow: 3px 4px 0px 0px #1564ad;
-	background: linear-gradient(to bottom, #79bbff 5%, #378de5 100%);
-	background-color: #79bbff;
-	border-radius: 5px;
-	border: 1px solid #337bc4;
-	display: inline-block;
-	cursor: pointer;
-	color: #ffffff;
-	font-family: Arial;
-	font-size: 10px;
-	font-weight: bold;
-	padding: 8.5px 29px;
-	text-decoration: none;
-	text-shadow: 0px 0px 0px #528ecc;
-}
-
-.myButton:hover {
-	background: linear-gradient(to bottom, #378de5 5%, #79bbff 100%);
-	background-color: #378de5;
-}
-
-.myButton:active {
-	position: relative;
-	top: 1px;
-}
-
-#new {
-	box-shadow: 0px 10px 14px -7px #3e7327;
-	background: linear-gradient(to bottom, #77b55a 5%, #72b352 100%);
-	background-color: #77b55a;
-	border-radius: 4px;
-	border: 1px solid #4b8f29;
-	display: inline-block;
-	cursor: pointer;
-	color: #ffffff;
-	font-family: Arial;
-	font-size: 22px;
-	font-weight: bold;
-	padding: 6px 12px;
-	text-decoration: none;
-	text-shadow: 0px 1px 0px #5b8a3c;
-}
-
-#new:hover {
-	background: linear-gradient(to bottom, #72b352 5%, #77b55a 100%);
-	background-color: #72b352;
-}
-
-#new:active {
-	position: relative;
-	top: 1px;
-}
-
-#dell {
-	box-shadow: inset 0px 1px 0px 0px #f5978e;
-	background: linear-gradient(to bottom, #f24537 5%, #c62d1f 100%);
-	background-color: #f24537;
-	border-radius: 6px;
-	border: 1px solid #d02718;
-	display: inline-block;
-	cursor: pointer;
-	color: #ffffff;
-	font-family: Arial;
-	font-size: 15px;
-	font-weight: bold;
-	padding: 6px 24px;
-	text-decoration: none;
-	text-shadow: 0px 1px 0px #810e05;
-}
-
-#dell:hover {
-	background: linear-gradient(to bottom, #c62d1f 5%, #f24537 100%);
-	background-color: #c62d1f;
-}
-
-#dell:active {
-	position: relative;
-	top: 1px;
-}
-
-#upda {
-	box-shadow: inset 0px 1px 3px 0px #91b8b3;
-	background: linear-gradient(to bottom, #768d87 5%, #6c7c7c 100%);
-	background-color: #768d87;
-	border-radius: 5px;
-	border: 1px solid #566963;
-	display: inline-block;
-	cursor: pointer;
-	color: #ffffff;
-	font-family: Arial;
-	font-size: 15px;
-	font-weight: bold;
-	padding: 6px 24px;
-	text-decoration: none;
-	text-shadow: 0px -1px 0px #2b665e;
-}
-
-#upda:hover {
-	background: linear-gradient(to bottom, #6c7c7c 5%, #768d87 100%);
-	background-color: #6c7c7c;
-}
-
-#upda:active {
-	position: relative;
-	top: 1px;
-}
-
-.form-controlaa {
-	width: 13%;
-	height: 34px;
-	padding: 0;
-	font-size: 14px;
-	line-height: 1.42857143;
-	color: #555;
-	background-color: #fff;
-	background-image: none;
-	border: 1px solid #ccc;
-	border-radius: 4px;
-	-webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
-	box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
-	-webkit-transition: border-color ease-in-out 0.15s, -webkit-box-shadow
-		ease-in-out 0.15s;
-	-o-transition: border-color ease-in-out 0.15s, box-shadow ease-in-out
-		0.15s;
-	transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s;
-}
-
-#tise {
-	font-size: 20px;
-	font-weight: 800;
-}
-
-input {
-	padding: 10px;
-	border: solid 0.1px black;
-	border-radius: 35px;
-	background-color: #fff;
-	outline: none;
-}
-</style>
-
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link
-	href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400..900&display=swap"
-	rel="stylesheet" />
-<link rel="stylesheet"
-	href="https://code.jquery.com/ui/1.14.1/themes/base/jquery-ui.css" />
-<!--link rel="stylesheet" href="/resources/demos/style.css"-->
-<link rel="stylesheet"
-	href="https://cdn.jsdelivr.net/npm/sweetalert2@11.17.2/dist/sweetalert2.min.css" />
-<script src="https://code.jquery.com/jquery-3.7.1.js"></script>
-<script src="https://code.jquery.com/ui/1.14.1/jquery-ui.js"></script>
-<link rel="stylesheet"
-	href="https://cdn.datatables.net/2.2.2/css/dataTables.dataTables.min.css" />
-<link rel="stylesheet"
-	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
-	integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg=="
-	crossorigin="anonymous" referrerpolicy="no-referrer" />
-
-<title>電影資料列表</title>
 </head>
+<body id="page-top">
+	<div id="wrapper">
+		<th:block th:replace="fragments/empSidebar :: sidebar"></th:block>
+		<div id="content-wrapper" class="d-flex flex-column">
+			<div id="content">
+				<th:block th:replace="fragments/empTopbar :: topbar"></th:block>
 
-<body>
-	<div th:replace="~{laout/tableremack}"></div>
-	<div id="bodddd">
-		<h1 class="mb-4">電影資料列表</h1>
+				<div class="container-fluid mt-4">
+					<div
+						class="d-sm-flex align-items-center justify-content-between mb-4">
+						<h1 class="h3 mb-0 text-gray-800">員工後台系統-電影資料列表</h1>
+						<div class="d-flex">
+							<a href="/showtime" class="btn btn-success mr-2" id="sessionQueryBtn">查詢電影場次</a>
+							<button class="btn btn-success mr-2" id="addMovieBtn">新增電影</button>
+							<button type="button" class="btn btn-primary mr-2"
+								data-bs-toggle="modal" data-bs-target="#uploadModal">上傳圖片</button>
+						</div>
+					</div>
 
-		<div class="mb-3">
-			<a href="/showtime" class="btn btn-success" id="sessionQueryBtn">
-				查詢電影場次 </a>
+					<div class="card mb-4">
+						<div class="card-body">
+							<table id="movieTable" class="table table-bordered" width="100%">
+								<thead>
+									<tr>
+										<th>編號</th>
+										<th>電影名稱</th>
+										<th>上映日期</th>
+										<th>預計下檔日期</th>
+										<th>片長 (分鐘)</th>
+										<th>狀態</th>
+										<th>操作</th>
+									</tr>
+								</thead>
+								<tbody></tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+			</div>
+			<th:block th:replace="fragments/empFooter :: footer"></th:block>
 		</div>
-
-		<table id="movieTable" class="display table table-bordered"
-			width="100%">
-			<thead>
-				<tr>
-					<th>編號</th>
-					<th>電影名稱</th>
-					<th>上映日期</th>
-					<th>預計下檔日期</th>
-					<th>片長 (分鐘)</th>
-					<th>狀態</th>
-					<th>操作</th>
-				</tr>
-			</thead>
-			<tbody>
-				<!-- AJAX 載入 -->
-			</tbody>
-		</table>
+	</div>
+	<a class="scroll-to-top rounded" href="#page-top"><i
+		class="fas fa-angle-up"></i></a>
 
 		<!-- 編輯電影 Modal -->
 		<div class="modal fade" id="editModal" tabindex="-1"
@@ -366,6 +95,7 @@ input {
 									class="form-control" id="state">
 									<option value="上映">上映</option>
 									<option value="下架">下架</option>
+									<option value="待上映">待上映</option>
 								</select>
 							</div>
 						</form>
@@ -420,6 +150,8 @@ input {
 						</form>
 					</div>
 					<div class="modal-footer">
+					<button type="button" class="btn btn-info"
+							id="fillDetailExampleBtn">一鍵新增</button>
 						<button type="button" class="btn btn-secondary"
 							data-bs-dismiss="modal">取消</button>
 						<button type="button" class="btn btn-primary" id="submitDetailBtn">
@@ -500,11 +232,13 @@ input {
 									class="form-control" id="addMovieState" required>
 									<option value="上映">上映</option>
 									<option value="下架">下架</option>
+									<option value="待上映">待上映</option>
 								</select>
 							</div>
 						</form>
 					</div>
 					<div class="modal-footer">
+					<button type="button" class="btn btn-info" id="fillExampleBtn">一鍵新增</button>
 						<button type="button" class="btn btn-secondary"
 							data-bs-dismiss="modal">取消</button>
 						<button type="button" class="btn btn-primary"
@@ -547,283 +281,225 @@ input {
 				</div>
 			</div>
 		</div>
-
-		<button class="btn btn-success mb-4" id="addMovieBtn">新增電影</button>
-		<button type="button" class="btn btn-primary mb-4"
-			data-bs-toggle="modal" data-bs-target="#uploadModal">上傳圖片</button>
-	</div>
+	<!-- Scripts -->
 	<script src="https://code.jquery.com/jquery-3.7.1.js"></script>
-	<script src="https://cdn.datatables.net/2.2.2/js/dataTables.min.js"></script>
-	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
-	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 	<script
 		src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-	<script
-		src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+	<script src="https://cdn.datatables.net/2.2.2/js/dataTables.min.js"></script>
+  <script src="https://cdn.datatables.net/2.2.2/js/dataTables.bootstrap5.min.js"></script>
 
+	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+	<script src="/js/sb-admin-2.min.js"></script>
 	<script>
-			$(document).ready(function () {
-				var editModal = new bootstrap.Modal(
-					document.getElementById("editModal")
-				);
-				var editDetailModal = new bootstrap.Modal(
-					document.getElementById("editDetailModal")
-				);
-				var detailModal = new bootstrap.Modal(
-					document.getElementById("detailModal")
-				);
+  document.addEventListener('DOMContentLoaded', function () {
+    const editModal = new bootstrap.Modal(document.getElementById("editModal"));
+    const editDetailModal = new bootstrap.Modal(document.getElementById("editDetailModal"));
+    const detailModal = new bootstrap.Modal(document.getElementById("detailModal"));
+    const addMovieModal = new bootstrap.Modal(document.getElementById("addMovieModal"));
+    const uploadModal = new bootstrap.Modal(document.getElementById("uploadModal"));
 
-				var table = $("#movieTable").DataTable({
-					info: false,
-					lengthChange: false,
-					ajax: {
-						url: "/movies",
-						type: "GET",
-						dataSrc: function (json) {
-							return json.map(function (movie) {
-								return {
-									id: movie.id,
-									name: movie.name,
-									released: movie.released,
-									retired: movie.retired,
-									runtime: movie.runtime,
-									state: movie.state,
-									actions: `
-                                        <button class="btn btn-warning btn-sm editBtn" data-id="${movie.id}">編輯</button>
-                                        <button class="btn btn-info btn-sm detailBtn" data-id="${movie.id}">詳細訊息</button>
-                                        <button class="btn btn-primary btn-sm editDetailBtn" data-id="${movie.id}">編輯詳細訊息</button>
-                                        <button class="btn btn-danger btn-sm deleteBtn" data-id="${movie.id}">刪除</button>
-                                    `,
-								};
-							});
-						},
-					},
-					columns: [
-						{ data: "id" },
-						{ data: "name" },
-						{ data: "released" },
-						{ data: "retired" },
-						{ data: "runtime" },
-						{ data: "state" },
-						{ data: "actions", orderable: false },
-					],
-					columnDefs: [
-						{
-							targets: [2, 3],
-							render: function (data) {
-								return new Date(data).toLocaleDateString("zh-TW");
-							},
-						},
-					],
-				});
+    const table = $("#movieTable").DataTable({
+      info: true,
+      lengthChange: true,
+      ajax: {
+        url: "/movies",
+        type: "GET",
+        dataSrc: json => json.map(movie => ({
+          id: movie.id,
+          name: movie.name,
+          released: movie.released,
+          retired: movie.retired,
+          runtime: movie.runtime,
+          state: movie.state,
+          actions: `
+            <button class="btn btn-warning btn-sm editBtn text-white" data-id="${movie.id}">編輯</button>
+            <button class="btn btn-info btn-sm detailBtn text-white" data-id="${movie.id}">詳細訊息</button>
+            <button class="btn btn-primary btn-sm editDetailBtn text-white" data-id="${movie.id}">編輯詳細訊息</button>
+            <button class="btn btn-danger btn-sm deleteBtn text-white" data-id="${movie.id}">刪除</button>
+          `
+        }))
+      },
+      columns: [
+        { data: "id" },
+        { data: "name" },
+        { data: "released" },
+        { data: "retired" },
+        { data: "runtime" },
+        { data: "state" },
+        { data: "actions", orderable: false }
+      ],
+      language: {
+        url: 'https://cdn.datatables.net/plug-ins/1.13.6/i18n/zh-HANT.json'
+      },
+      columnDefs: [
+        {
+          targets: [2, 3],
+          render: data => new Date(data).toLocaleDateString("zh-TW")
+        }
+      ]
+    });
 
-				// 編輯電影資料
-				$("#movieTable").on("click", ".editBtn", function () {
-					var movieId = $(this).data("id");
-					$.ajax({
-						url: "/movies/" + movieId,
-						type: "GET",
-						success: function (movie) {
-							$("#movieId").val(movie.id);
-							$("#name").val(movie.name);
-							$("#released").val(movie.released);
-							$("#retired").val(movie.retired);
-							$("#runtime").val(movie.runtime);
-							$("#state").val(movie.state);
-							editModal.show();
-						},
-						error: function () {
-							alert("載入電影資料失敗");
-						},
-					});
-				});
+    $("#movieTable").on("click", ".editBtn", function () {
+      const movieId = $(this).data("id");
+      $.get(`/movies/${movieId}`, movie => {
+        $("#movieId").val(movie.id);
+        $("#name").val(movie.name);
+        $("#released").val(movie.released);
+        $("#retired").val(movie.retired);
+        $("#runtime").val(movie.runtime);
+        $("#state").val(movie.state);
+        editModal.show();
+      });
+    });
 
-				// 儲存編輯電影資料
-				$("#submitBtn").click(function () {
-					var movieId = $("#movieId").val();
-					var movieData = {
-						name: $("#name").val(),
-						released: $("#released").val(),
-						retired: $("#retired").val(),
-						runtime: $("#runtime").val(),
-						state: $("#state").val(),
-					};
+    $("#submitBtn").click(() => {
+      const movieId = $("#movieId").val();
+      const movieData = {
+        name: $("#name").val(),
+        released: $("#released").val(),
+        retired: $("#retired").val(),
+        runtime: $("#runtime").val(),
+        state: $("#state").val()
+      };
+      $.ajax({
+        url: `/movies/${movieId}`,
+        type: "PUT",
+        contentType: "application/json",
+        data: JSON.stringify(movieData),
+        success: () => { table.ajax.reload(); editModal.hide(); },
+        error: () => alert("更新失敗")
+      });
+    });
 
-					$.ajax({
-						url: "/movies/" + movieId,
-						type: "PUT",
-						contentType: "application/json",
-						data: JSON.stringify(movieData),
-						success: function () {
-							table.ajax.reload();
-							editModal.hide();
-						},
-						error: function () {
-							alert("更新電影資料失敗");
-						},
-					});
-				});
-				// 刪除電影資料
-				$("#movieTable").on("click", ".deleteBtn", function () {
-					var movieId = $(this).data("id");
-					// 確認刪除
-					if (confirm("確定要刪除這部電影嗎？")) {
-						$.ajax({
-							url: "/movies/" + movieId,
-							type: "DELETE",
-							success: function () {
-								table.ajax.reload(); // 重新載入表格資料
-							},
-							error: function () {
-								alert("刪除電影資料失敗");
-							},
-						});
-					}
-				});
+    $("#movieTable").on("click", ".deleteBtn", function () {
+      const movieId = $(this).data("id");
+      Swal.fire({
+        title: '確定刪除？', icon: 'warning', showCancelButton: true
+      }).then(result => {
+        if (result.isConfirmed) {
+          $.ajax({
+            url: `/movies/${movieId}`,
+            type: "DELETE",
+            success: () => { table.ajax.reload(); Swal.fire('刪除成功', '', 'success'); },
+            error: () => Swal.fire('刪除失敗', '', 'error')
+          });
+        }
+      });
+    });
 
-				// 編輯詳細訊息
-				$("#movieTable").on("click", ".editDetailBtn", function () {
-					var movieId = $(this).data("id");
-					$.ajax({
-						url: "/movies/" + movieId + "/details",
-						type: "GET",
-						success: function (movieDetail) {
-							$("#movieDetailId").val(movieDetail.id);
-							$("#rating").val(movieDetail.rating);
-							$("#genre").val(movieDetail.genre);
-							$("#director").val(movieDetail.director);
-							$("#actor").val(movieDetail.actor);
-							$("#description").val(movieDetail.description);
-							$("#image").val(movieDetail.image);
-							editDetailModal.show();
-						},
-						error: function () {
-							alert("載入電影詳細資料失敗");
-						},
-					});
-				});
+    $("#movieTable").on("click", ".editDetailBtn", function () {
+      const movieId = $(this).data("id");
+      $.get(`/movies/${movieId}/details`, detail => {
+        $("#movieDetailId").val(detail.id);
+        $("#rating").val(detail.rating);
+        $("#genre").val(detail.genre);
+        $("#director").val(detail.director);
+        $("#actor").val(detail.actor);
+        $("#description").val(detail.description);
+        $("#image").val(detail.image);
+        editDetailModal.show();
+      });
+    });
 
-				// 儲存編輯詳細訊息
-				$("#submitDetailBtn").click(function () {
-					var movieId = $("#movieDetailId").val();
-					var movieDetailData = {
-						rating: $("#rating").val(),
-						genre: $("#genre").val(),
-						director: $("#director").val(),
-						actor: $("#actor").val(),
-						description: $("#description").val(),
-						image: $("#image").val(),
-					};
+    $("#submitDetailBtn").click(() => {
+      const movieId = $("#movieDetailId").val();
+      const data = {
+        rating: $("#rating").val(),
+        genre: $("#genre").val(),
+        director: $("#director").val(),
+        actor: $("#actor").val(),
+        description: $("#description").val(),
+        image: $("#image").val()
+      };
+      $.ajax({
+        url: `/movies/${movieId}/detail`,
+        type: "PUT",
+        contentType: "application/json",
+        data: JSON.stringify(data),
+        success: () => { table.ajax.reload(); editDetailModal.hide(); },
+        error: () => alert("更新詳細失敗")
+      });
+    });
 
-					$.ajax({
-						url: "/movies/" + movieId + "/detail",
-						type: "PUT",
-						contentType: "application/json",
-						data: JSON.stringify(movieDetailData),
-						success: function () {
-							table.ajax.reload();
-							editDetailModal.hide();
-						},
-						error: function () {
-							alert("更新電影詳細資料失敗");
-						},
-					});
-				});
+    $("#addMovieBtn").click(() => {
+      $("#addMovieForm")[0].reset();
+      addMovieModal.show();
+    });
 
-				$(document).ready(function () {
-					var addMovieModal = new bootstrap.Modal(
-						document.getElementById("addMovieModal")
-					);
+    $("#submitAddMovieBtn").click(() => {
+      const data = {
+        name: $("#addMovieName").val(),
+        released: $("#addMovieReleased").val(),
+        retired: $("#addMovieRetired").val(),
+        runtime: $("#addMovieRuntime").val(),
+        state: $("#addMovieState").val()
+      };
+      $.ajax({
+        url: "/movies",
+        type: "POST",
+        contentType: "application/json",
+        data: JSON.stringify(data),
+        success: () => { table.ajax.reload(); addMovieModal.hide(); alert("請前往編輯詳細訊息"); },
+        error: () => alert("新增失敗")
+      });
+    });
 
-					// 點擊新增電影按鈕，顯示新增電影的表單
-					$("#addMovieBtn").click(function () {
-						// 重設表單的內容
-						$("#addMovieForm")[0].reset();
-						addMovieModal.show();
-					});
+    $("#uploadImageBtn").click(() => {
+      const name = $("#imageName").val();
+      const file = $("#imageFile")[0].files[0];
+      if (!name || !file) return alert("請填寫名稱與圖片");
 
-					// 儲存新增電影資料
-					$("#submitAddMovieBtn").click(function () {
-						var movieData = {
-							name: $("#addMovieName").val(),
-							released: $("#addMovieReleased").val(),
-							retired: $("#addMovieRetired").val(),
-							runtime: $("#addMovieRuntime").val(),
-							state: $("#addMovieState").val(),
-						};
+      const formData = new FormData();
+      formData.append("image", file);
+      formData.append("imageName", name);
 
-						$.ajax({
-							url: "/movies",
-							type: "POST",
-							contentType: "application/json",
-							data: JSON.stringify(movieData),
-							success: function (movie) {
-								// 更新表格資料
-								table.ajax.reload();
-								addMovieModal.hide();
-								alert("請前往編輯詳細訊息");
-							},
-							error: function () {
-								alert("新增電影資料失敗");
-							},
-						});
-					});
-				});
+      $.ajax({
+        url: "/movies/uploadImage",
+        type: "POST",
+        data: formData,
+        contentType: false,
+        processData: false,
+        success: () => { uploadModal.hide(); alert("上傳成功") },
+        error: () => alert("上傳失敗")
+      });
+    });
 
-				$("#uploadImageBtn").click(function () {
-					var imageName = $("#imageName").val(); // 取得使用者輸入的圖片名稱
-					var imageFile = $("#imageFile")[0].files[0]; // 取得上傳的圖片檔案
-
-					if (!imageName || !imageFile) {
-						alert("請填寫圖片名稱並選擇圖片!");
-						return;
-					}
-
-					var formData = new FormData();
-					formData.append("image", imageFile);
-					formData.append("imageName", imageName); // 把圖片名稱傳到後端
-
-					$.ajax({
-						url: "/movies/uploadImage", // 這是後端處理圖片上傳的路徑
-						type: "POST",
-						data: formData,
-						contentType: false,
-						processData: false,
-						success: function (response) {
-							alert("圖片上傳成功！");
-							$("#uploadModal").modal("hide");
-						},
-						error: function () {
-							alert("圖片上傳失敗");
-						},
-					});
-				});
-
-				// 顯示詳細訊息
-				$("#movieTable").on("click", ".detailBtn", function () {
-					var movieId = $(this).data("id");
-					$.ajax({
-						url: "/movies/" + movieId + "/details",
-						type: "GET",
-						success: function (movieDetail) {
-							$("#detailRating").text(movieDetail.rating);
-							$("#detailGenre").text(movieDetail.genre);
-							$("#detailDirector").text(movieDetail.director);
-							$("#detailActor").text(movieDetail.actor);
-							$("#detailDescription").text(movieDetail.description);
-
-							// 更新圖片的 src
-							var imageUrl = "/movie/images/" + movieDetail.image; // 拼接圖片路徑
-							$("#detailImage").attr("src", imageUrl); // 設置圖片路徑
-							detailModal.show();
-						},
-						error: function () {
-							alert("載入詳細資料失敗");
-						},
-					});
-				});
-			});
-		</script>
+    $("#movieTable").on("click", ".detailBtn", function () {
+      const movieId = $(this).data("id");
+      $.get(`/movies/${movieId}/details`, detail => {
+        $("#detailRating").text(detail.rating);
+        $("#detailGenre").text(detail.genre);
+        $("#detailDirector").text(detail.director);
+        $("#detailActor").text(detail.actor);
+        $("#detailDescription").text(detail.description);
+        $("#detailImage").attr("src", "/movie/images/" + detail.image);
+        detailModal.show();
+      });
+    });
+    
+  //一鍵新增電影
+	$(document).ready(function () {
+		  $('#fillExampleBtn').click(function () {
+		    $('#addMovieName').val('侏羅紀世界：統霸天下');
+		    $('#addMovieReleased').val('2022-06-10');
+		    $('#addMovieRetired').val('2025-06-10');
+		    $('#addMovieRuntime').val(147);
+		    $('#addMovieState').val('待上映');
+		  });
+		});
+	//一鍵新增電影資訊
+	$(document).ready(function () {
+		  $('#fillDetailExampleBtn').click(function () {
+		    $('#rating').val('PG-13');
+		    $('#genre').val('冒險');
+		    $('#director').val('Colin Trevorrow');
+		    $('#actor').val('Chris Pratt, Bryce Dallas Howard');
+		    $('#description').val('侏羅紀時代來臨，人類與恐龍共存的挑戰開始。');
+		    $('#image').val('侏羅紀世界：統霸天下cover.jpg');
+		  });
+		});
+    
+  });
+</script>
 </body>
 </html>

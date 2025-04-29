@@ -80,7 +80,7 @@
 					<div class="col-md-4 inputGroupContainer">
 						<div class="input-group">
 							<span class="input-group-addon"><i class="fa-solid fa-user"></i></span> <input
-								name="memberId" placeholder="會員" class="form-control" type="text">
+								name="memberId" placeholder="會員" class="form-control" type="text" id="member">
 						</div>
 					</div>
 				</div>
@@ -92,6 +92,17 @@
 						<div class="input-group">
 							<span class="input-group-addon"><i class="fa-solid fa-calendar-days"></i></span> <input
 								type="text" id="datepicker" class="form-control" placeholder="日期">
+						</div>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-md-4 control-label">電影名稱</label>
+					<div class="col-md-4 inputGroupContainer">
+						<div class="input-group">
+							<span class="input-group-addon"><i class="fa-solid fa-film"></i></span> <select
+								name="movieid" class="form-control selectpicker" id="moviename">
+								<option value="">電影</option>
+							</select>
 						</div>
 					</div>
 				</div>
@@ -108,24 +119,14 @@
 					</div>
 				</div>
 
-				<div class="form-group">
-					<label class="col-md-4 control-label">電影名稱</label>
-					<div class="col-md-4 inputGroupContainer">
-						<div class="input-group">
-							<span class="input-group-addon"><i class="fa-solid fa-film"></i></span> <select
-								name="movieid" class="form-control selectpicker" id="moviename">
-								<option value="">電影</option>
-							</select>
-						</div>
-					</div>
-				</div>
 				<!-- Text input-->
 				<div class="form-group">
 					<label class="col-md-4 control-label">廳</label>
 					<div class="col-md-4 inputGroupContainer">
 						<div class="input-group">
 							<span class="input-group-addon"><i class="fa-solid fa-house "></i></span>
-							<input class="form-control selectpicker ud" id="halls" name="hallid" value="" placeholder="會員">
+							<input class="form-control selectpicker ud" id="halls" name="hallid" value=""
+								placeholder="廳">
 
 
 
@@ -209,6 +210,14 @@
 
 			</fieldset>
 		</form>
+		<div class="form-group">
+			<label class="col-md-4 control-label"></label>
+			<div class="col-md-4">
+				<button class="btn btn-warning" id="oneta">
+					一鍵輸入
+				</button>
+			</div>
+		</div>
 	</div>
 	<!-- /.container -->
 	<!-- <script src="https://code.jquery.com/jquery-3.7.1.js"></script> -->
@@ -220,75 +229,85 @@
 	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.17.2/dist/sweetalert2.all.min.js"></script>
 	<script th:inline="javascript">
 		$(function () {
+			////////////一鍵輸入
+			$("#oneta").on("click", function () {
+				$('#member').val(2)
+				$('#datepicker').val('2025-04-20')
+				namedata();
+				$('#type').val(1)
+				$('#money').val(200)
+				$('select[name="payout"]').val('N')
+			})
+
+
+
+
+
 			$("#datepicker").datepicker({ dateFormat: 'yy-mm-dd' });
 			$("#from-datepicker").on("change", function () {
 				var fromdate = $(this).val();
 				alert(fromdate);
 			});
-			//點選日期改時間
-			$("#datepicker").on("change", function () {
-				let selectdate = $("#datepicker").val();
-				console.log(selectdate)
-				$("#time").empty();
+			//點選電影改時間
+			function time() {
+				$('#time').empty();
+				let nameid = $("#moviename").val();
+
 				$.ajax({
-					url: '/booktick/time/' + selectdate,
+					url: '/booktick/timena/' + nameid,
+					// data: { hallid: hall },
+					dataType: 'json',
+					type: 'post',
+					success: function (respones) {
+
+						// console.log(respones)
+						// $('#halls').append(`<option value="${e.theaterid}">${e.theaterid}</option>`)
+						$('#time').append(`<option value="">場次</option>`);
+						$.each(respones, function (i, e) {
+
+							let time = e.showtime.split('.')[0]
+							// $('#time').append(`<option value="${e.showtimeid}">${time}</option>`)
+							// $('#moviename').append(`<option value="${e.movieid}" >${e.movieName}</option>`)
+							$('#time').append(`<option value="${e.showtimeid}">${time}</option>`)
+						})
+
+
+					}
+				})
+			}
+
+			function namedata() {
+				let selectdate = $("#datepicker").val();
+				// console.log(selectdate)
+				$("#moviename").empty();
+				$.ajax({
+					url: '/booktick/timename/' + selectdate,
 
 					dataType: 'json',
 					type: 'post',
 					contentType: 'application/json',
 					success: function (respones) {
-						$('#time').append(`<option value="">場次</option>`);
+						$('#moviename').append(`<option value="">電影</option>`);
 						$.each(respones, function (i, e) {
-							let time = e.showtime.split('.')[0]
-							$('#time').append(`<option value="${e.showtimeid}">${time}</option>`)
+
+							// let time = e.showtime.split('.')[0]
+							$('#moviename').append(`<option value="${e.movieid}" >${e.movieName}</option>`)
 						})
+
 					}
 
 				})
+			}
+
+
+			$("#datepicker").on("change", function () {
+				// time();
+				namedata();
 			});
-			//ready畫面加載預設時間
-
-			///
-			//廳
-			// function name() {
-			// 	$('#moviename').empty();
-			// 	let hall = $("#halls").val();
-			// 	$.ajax({
-			// 		url: '/booktick/name',
-			// 		data: { hallid: hall },
-			// 		dataType: 'json',
-			// 		type: 'GET',
-			// 		success: function (respones) {
 
 
-			// 			$('#moviename').append(`<option value="${respones.movieid}">${respones.moviename}</option>`)
 
 
-			// 		}
-			// 	})
-			// }
-
-			// $("#halls").on("change", function () {
-			// 	name();
-			// 	$('#moviename').empty();
-			// })
-
-
-			$(document).ready(function () {
-
-				$.ajax({
-					url: '/booktick/hall',
-					dataType: 'json',
-					type: 'GET',
-					success: function (respones) {
-						$.each(respones, function (i, e) {
-							//console.log(e.hallid);
-
-							$('#moviename').append(`<option value="${e.movieid}">${e.moviename}</option>`)
-						});
-					}
-				})
-			});
 
 			//////
 			function loadseat() {
@@ -339,14 +358,14 @@
 				let selectmovie = $(this).val();
 
 				$.ajax({
-					url: '/booktick/name',
+					url: '/booktick/namega',
 					data: { nameid: selectmovie },
 					dataType: 'json',
 					type: 'GET',
 					success: function (respones) {
 						console.log(respones);
 
-						$('#halls').val(respones.hallid);
+						$('#halls').val(respones);
 
 
 					}
@@ -354,11 +373,13 @@
 
 			});
 			$('#moviename').on("change", function () {
-
-				setTimeout(loadseat, 100);
+				time();
+				// setTimeout(loadseat, 100);
 
 			});
-
+			$("#time").on("change", function () {
+				setTimeout(loadseat, 100);
+			})
 
 
 

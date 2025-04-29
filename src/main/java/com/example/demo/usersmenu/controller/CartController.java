@@ -63,11 +63,11 @@ public class CartController {
 		List<CartDisplayItem> displayList = new ArrayList<>();
 		int total = 0;
 		if (cart == null || cart.isEmpty()) {
-	        CartViewResponse emptyResponse = new CartViewResponse();
-	        emptyResponse.setItems(displayList); 
-	        emptyResponse.setTotal(0);
-	        return emptyResponse;
-	    }
+			CartViewResponse emptyResponse = new CartViewResponse();
+			emptyResponse.setItems(displayList);
+			emptyResponse.setTotal(0);
+			return emptyResponse;
+		}
 		for (Map.Entry<Integer, SessionCartItem> entry : cart.entrySet()) {
 			Integer menuId = entry.getKey();
 			SessionCartItem sessionItem = entry.getValue();
@@ -86,8 +86,8 @@ public class CartController {
 
 				// 小計 = 價格 * 數量
 				int subtotal = BigDecimal.valueOf(menu.getUnitPrice().intValue())
-                        .multiply(BigDecimal.valueOf(sessionItem.getQuantity()))
-                        .intValue();
+						.multiply(BigDecimal.valueOf(sessionItem.getQuantity()))
+						.intValue();
 
 				displayItem.setSubtotal(subtotal);
 
@@ -95,7 +95,7 @@ public class CartController {
 				displayList.add(displayItem);
 			}
 		}
-	
+
 		CartViewResponse response = new CartViewResponse();
 		response.setItems(displayList);
 		response.setTotal(total);
@@ -114,11 +114,17 @@ public class CartController {
 		session.setAttribute("cart", cart);
 		return "已刪除商品 menuId=" + menuId + "，目前剩餘 " + cart.size() + " 項商品";
 	}
-	
+
 	@GetMapping("/clear")
 	public String clearCart(HttpSession session) {
 		session.removeAttribute("cart");
 		return "購物車已清空";
 	}
-	
+
+	@GetMapping("/success")
+	public String handleClientBack(HttpSession session) {
+		session.removeAttribute("cart");
+		System.out.println("🧹 回到商店時清除購物車");
+		return "redirect:/usersmenu/1";
+	}
 }

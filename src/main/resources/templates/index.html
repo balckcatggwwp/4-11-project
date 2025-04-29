@@ -69,62 +69,14 @@
         </button>
       </div>
 
-      <!-- 電影卡片 -->
-      <section class="home-cards">
-        <div>
-          <img src="/imgs/bear2.jpg" alt="" />
-          <h3>《柏靈頓：熊熊去祕魯》</h3>
-          <p>熊熊出發，揭開祕魯的驚奇冒險！</p>
-          <a th:href="@{/orderset}"
-            >前往訂票<i class="fas fa-chevron-right"></i
-          ></a>
-        </div>
-        <div>
-          <img src="/imgs/DeadPool.png" alt="" />
-          <h3>《死侍與金鋼狼》</h3>
-          <p>嘴炮 vs. 狼爪，史上最爆笑亂鬥登場！</p>
-          <a href="#">前往訂票<i class="fas fa-chevron-right"></i></a>
-        </div>
-        <div>
-          <img src="/imgs/InsideOut2.jpeg" alt="" />
-          <h3>《腦筋急轉彎2》</h3>
-          <p>你的腦內總部，迎來全新情緒風暴！</p>
-          <a href="#">前往訂票<i class="fas fa-chevron-right"></i></a>
-        </div>
-        <div>
-          <img src="/imgs/Joker2.jpg" alt="" />
-          <h3>《小丑2》</h3>
-          <p>瘋狂不再孤單，笑聲背後的黑暗更深邃！</p>
-          <a href="#">前往訂票<i class="fas fa-chevron-right"></i></a>
-        </div>
-      </section>
+	  <!-- 最新上映 -->
+	    <h2 class="text-left mb-4">最新上映</h2>
+	  <section class="home-cards" id="latest-movies">
+	  </section>
 
-      <!-- 餐點卡片 -->
-      <section class="home-cards">
-        <div>
-          <img src="/imgs/CinemaParadise.jpg" alt="" />
-          <h3>《新天堂樂園》</h3>
-          <p>光影交織的夢想，映照不朽的回憶！</p>
-          <a href="#">前往訂票<i class="fas fa-chevron-right"></i></a>
-        </div>
-        <div>
-          <img src="/imgs/Avengers.jpg" alt="" />
-          <h3>《復仇者聯盟：無限之戰》</h3>
-          <p>宇宙命運懸於一指，英雄殊死一戰！</p>
-          <a href="#">前往訂票<i class="fas fa-chevron-right"></i></a>
-        </div>
-        <div>
-          <img src="/imgs/玩命關頭8.jpg" alt="" />
-          <h3>《玩命關頭8》</h3>
-          <p>家人、背叛、極速對決，熱血永不熄滅！</p>
-          <a href="#">前往訂票<i class="fas fa-chevron-right"></i></a>
-        </div>
-        <div>
-          <img src="/imgs/蠟筆小新.jpg" alt="" />
-          <h3>《蠟筆小新：我們的恐龍日記》</h3>
-          <p>小新VS恐龍，爆笑大冒險開啟！</p>
-          <a href="#">前往訂票<i class="fas fa-chevron-right"></i></a>
-        </div>
+	  <!-- 即將上映 -->
+	    <h2 class="text-left mb-4">即將上映</h2>
+	  <section class="home-cards mt-5" id="upcoming-movies">
       </section>
 
       <!-- 關於電影院 -->
@@ -207,9 +159,12 @@
     <th:block th:replace="~{fragments/loginPage :: login}"></th:block>
 
     <!-- 載入 footer fragment -->
+
+    <!-- 載入 footer fragment -->
     <th:block th:replace="~{fragments/footer :: footer}"></th:block>
 
     <!-- Bootstrap JS -->
+    
     
     <script src="/js/jquery.js"></script>
     <script src="/js/bootstrap.bundle.min.js"></script>
@@ -228,9 +183,11 @@
         timerProgressBar: true,
       });
     </script>
-    <script src="/js/loginPage.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/stompjs@2.3.3/lib/stomp.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/stompjs@2.3.3/lib/stomp.min.js"></script>
+    <script src="/js/loginPage.js"></script>
+	<script src="/js/movielatest.js"></script>
+	<script src="/js/moviesoon.js"></script>
     <script src="/js/carousel.js"></script>
     <script src="/js/chat.js"></script>
   </body>

@@ -225,7 +225,7 @@ public class MemberService {
 		return memberRepository.findByEmail(email);
 	}
 
-//	密碼變更
+	// 密碼變更
 	@Transactional
 	public void sendResetPasswordEmail(String email) throws MessagingException {
 		Member member = memberRepository.findByEmail(email);
@@ -320,14 +320,14 @@ public class MemberService {
 	}
 
 	// 更新會員資料
-    @Transactional
-    public void updateMemberProfile(Long memberId, String name, String dateOfBirth, String gender,String nationalId) {
-        Member member = findById(memberId);
-        member.setName(name);
-        member.setDateOfBirth(dateOfBirth);
-        member.setGender(gender);
-        member.setNationalId(nationalId);
+	@Transactional
+	public void updateMemberProfile(Long memberId, String name, String dateOfBirth, String gender, String nationalId) {
+		Member member = findById(memberId);
+		member.setName(name);
+		member.setDateOfBirth(dateOfBirth);
+		member.setGender(gender);
+		member.setNationalId(nationalId);
 
-        memberRepository.save(member);
-    }
+		memberRepository.save(member);
+	}
 }

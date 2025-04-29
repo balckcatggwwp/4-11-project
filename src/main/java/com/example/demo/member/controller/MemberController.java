@@ -29,11 +29,12 @@ public class MemberController {
 	private MemberService memberService;
 
 	// 會員登入-會員註冊在這裡
-	
+
 	@GetMapping("/memberCenter")
 	public String memberCenter() {
 		return "member/memberCenter";
 	}
+
 	// 會員註冊
 	// GetMapping
 	@GetMapping("/register")
@@ -101,28 +102,28 @@ public class MemberController {
 		response.put("name", loginMember.getName());
 		return response;
 	}
-	
+
 	@GetMapping("/verify")
 	public String verifyAccount(@RequestParam("code") String code, Model model) {
 		String result = memberService.verifyMember(code);
 
 		switch (result) {
-		case "success" -> {
-			model.addAttribute("message", "帳號已成功啟用，請登入！");
-			return "member/verifySuccessByFE";
-		}
-		case "already_verified" -> {
-			model.addAttribute("message", "此帳號已經啟用過，請直接登入！");
-			return "member/verifySuccessByFE";
-		}
-		case "error" -> {
-			model.addAttribute("message", "驗證失敗，連結可能已過期或無效！");
-			return "member/verifyFailByFE";
-		}
-		default -> {
-			model.addAttribute("message", "發生未知錯誤，請聯絡客服！");
-			return "member/verifyFailByFE";
-		}
+			case "success" -> {
+				model.addAttribute("message", "帳號已成功啟用，請登入！");
+				return "member/verifySuccessByFE";
+			}
+			case "already_verified" -> {
+				model.addAttribute("message", "此帳號已經啟用過，請直接登入！");
+				return "member/verifySuccessByFE";
+			}
+			case "error" -> {
+				model.addAttribute("message", "驗證失敗，連結可能已過期或無效！");
+				return "member/verifyFailByFE";
+			}
+			default -> {
+				model.addAttribute("message", "發生未知錯誤，請聯絡客服！");
+				return "member/verifyFailByFE";
+			}
 		}
 	}
 
@@ -179,21 +180,20 @@ public class MemberController {
 			return response;
 		}
 	}
-	
-	
-	//登出
+
+	// 登出
 	@GetMapping("/logout")
-	public String logout(HttpSession httpSession,RedirectAttributes redirectAttributes) {
+	public String logout(HttpSession httpSession, RedirectAttributes redirectAttributes) {
 		httpSession.removeAttribute("memberDetail");
 		httpSession.removeAttribute("memberName");
 		httpSession.removeAttribute("memberEmail");
 		httpSession.removeAttribute("memberId");
-	    httpSession.invalidate(); // 清除所有session
-	    redirectAttributes.addFlashAttribute("logoutSuccess", true);
+		httpSession.invalidate(); // 清除所有session
+		redirectAttributes.addFlashAttribute("logoutSuccess", true);
 		return "redirect:/";
 
 	}
-	
+
 	@GetMapping("/forgotPasswordPage")
 	public String forgotPasswordPage() {
 		return "member/forgotPasswordPage";
@@ -221,7 +221,7 @@ public class MemberController {
 		model.addAttribute("code", code);
 		return "member/resetPassword"; // 指向 Thymeleaf 頁面
 	}
-	
+
 	@PostMapping("/resetPasswordConfirm")
 	@ResponseBody
 	public Map<String, Object> resetPasswordConfirm(@RequestParam("password") String password,
@@ -237,14 +237,12 @@ public class MemberController {
 		}
 		return response;
 	}
-	
-	
+
 	@GetMapping("/changeEmailPage")
 	public String changeEmailPage() {
-	    return "member/changeEmail"; // 對應到 templates/member/changeEmail.html
+		return "member/changeEmail"; // 對應到 templates/member/changeEmail.html
 	}
-	
-	
+
 	// 信箱變更
 	@PostMapping("/changeEmail")
 	@ResponseBody
@@ -268,10 +266,10 @@ public class MemberController {
 		model.addAttribute("message", result);
 		return "member/changeEmailResult"; // 顯示結果
 	}
-	
+
 	@GetMapping("/changePasswordPage")
 	public String changePasswordPage() {
-	    return "member/changePassword"; 
+		return "member/changePassword";
 	}
 
 }

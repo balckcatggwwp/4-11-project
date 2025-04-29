@@ -25,7 +25,9 @@ public class MemberOrderController {
 
         Map<OrderHeader, List<OrderItem>> orderMap = orderService.groupItemsByOrder(userId);
         model.addAttribute("orderMap", orderMap);
+
         System.out.print(orderMap);
+
         return "foodmenu/memberFoodOrders";
     }
 
