@@ -7,7 +7,10 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -241,5 +244,24 @@ public class MemberAPIController {
                 })
                 .toList();
     }
+    
+//    刪除會員
+    @DeleteMapping("/deleteMember/{memberId}")
+    public ResponseEntity<Map<String, Object>> deleteMember(@PathVariable Long memberId) {
+        Map<String, Object> response = new HashMap<>();
+        boolean success = memberService.deleteMemberById(memberId);
+        System.out.println(">>> 收到刪除會員請求, memberId = " + memberId);
+        if (success) {
+            response.put("status", "success");
+            response.put("message", "會員刪除成功");
+            
+            return ResponseEntity.ok(response);
+        } else {
+            response.put("status", "error");
+            response.put("message", "會員刪除失敗，請確認是否存在或有綁定資料");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+        }
+    }
+
 }
 
