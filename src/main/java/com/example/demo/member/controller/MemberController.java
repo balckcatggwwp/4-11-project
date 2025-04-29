@@ -108,22 +108,22 @@ public class MemberController {
 		String result = memberService.verifyMember(code);
 
 		switch (result) {
-			case "success" -> {
-				model.addAttribute("message", "帳號已成功啟用，請登入！");
-				return "member/verifySuccessByFE";
-			}
-			case "already_verified" -> {
-				model.addAttribute("message", "此帳號已經啟用過，請直接登入！");
-				return "member/verifySuccessByFE";
-			}
-			case "error" -> {
-				model.addAttribute("message", "驗證失敗，連結可能已過期或無效！");
-				return "member/verifyFailByFE";
-			}
-			default -> {
-				model.addAttribute("message", "發生未知錯誤，請聯絡客服！");
-				return "member/verifyFailByFE";
-			}
+		case "success" -> {
+			model.addAttribute("message", "帳號已成功啟用，請登入！");
+			return "member/verifySuccessByFE";
+		}
+		case "already_verified" -> {
+			model.addAttribute("message", "此帳號已經啟用過，請直接登入！");
+			return "member/verifySuccessByFE";
+		}
+		case "error" -> {
+			model.addAttribute("message", "驗證失敗，連結可能已過期或無效！");
+			return "member/verifyFailByFE";
+		}
+		default -> {
+			model.addAttribute("message", "發生未知錯誤，請聯絡客服！");
+			return "member/verifyFailByFE";
+		}
 		}
 	}
 
@@ -272,4 +272,17 @@ public class MemberController {
 		return "member/changePassword";
 	}
 
+	// 後台網站
+
+	// 會員列表
+	@GetMapping("/memberListEmp")
+	public String memberListEmp() {
+		return "member/memberListEmp";
+	}
+
+	// 前台跳轉
+	@GetMapping("/memberDetail")
+	public String memberDetail() {
+		return "member/memberDetail";
+	}
 }

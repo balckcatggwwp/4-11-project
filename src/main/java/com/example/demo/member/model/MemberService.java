@@ -11,9 +11,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.example.demo.member.model.Member;
-import com.example.demo.member.model.MemberRepository;
-
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 
@@ -112,54 +109,6 @@ public class MemberService {
 				</html>
 				"""
 				.formatted(verifyLink);
-	}
-
-	// 信箱變更驗證
-	private String getChangeEmailContent(String verifyLink) {
-		return """
-				<!DOCTYPE html>
-				<html>
-				<head>
-				  <meta charset='UTF-8'>
-				  <title>信箱變更驗證</title>
-				</head>
-				<body style='font-family: Arial, sans-serif; background-color: #f2f2f2; padding: 20px;'>
-				  <div style='background-color: #ffffff; padding: 20px; border-radius: 5px;'>
-				    <h2>親愛的會員您好：</h2>
-				    <p>您已申請變更註冊信箱，請點擊下方按鈕完成信箱驗證：</p>
-				    <div style='text-align: center; margin: 30px;'>
-				      <a href='%s' style='display: inline-block; padding: 10px 20px; background-color: #ffc107; color: white; text-decoration: none; border-radius: 5px;'>驗證新信箱</a>
-				    </div>
-				    <p style='color: #999;'>如果您未申請變更，請忽略此信件。</p>
-				  </div>
-				</body>
-				</html>
-				"""
-				.formatted(verifyLink);
-	}
-
-	// 重設密碼信 HTML 內容
-	private String getResetPasswordEmailContent(String resetLink) {
-		return """
-				<!DOCTYPE html>
-				<html>
-				<head>
-				  <meta charset='UTF-8'>
-				  <title>重設密碼通知</title>
-				</head>
-				<body style='font-family: Arial, sans-serif; background-color: #f2f2f2; padding: 20px;'>
-				  <div style='background-color: #ffffff; padding: 20px; border-radius: 5px;'>
-				    <h2>親愛的會員您好：</h2>
-				    <p>我們收到您重設密碼的請求，請點擊下方按鈕設定新的密碼：</p>
-				    <div style='text-align: center; margin: 30px;'>
-				      <a href='%s' style='display: inline-block; padding: 10px 20px; background-color: #28a745; color: white; text-decoration: none; border-radius: 5px;'>重設密碼</a>
-				    </div>
-				    <p style='color: #999;'>如果您沒有申請重設密碼，請忽略此信件。</p>
-				  </div>
-				</body>
-				</html>
-				"""
-				.formatted(resetLink);
 	}
 
 	// 會員登入
@@ -319,7 +268,7 @@ public class MemberService {
 				""".formatted(link);
 	}
 
-	// 更新會員資料
+	// 前台更新會員資料
 	@Transactional
 	public void updateMemberProfile(Long memberId, String name, String dateOfBirth, String gender, String nationalId) {
 		Member member = findById(memberId);
@@ -329,5 +278,25 @@ public class MemberService {
 		member.setNationalId(nationalId);
 
 		memberRepository.save(member);
+	}
+
+	// 後台更新會員資料
+	@Transactional
+	public void updateMemberByEmp(Long memberId, String name, String gender, String email, String phoneNumber,
+			String dateOfBirth) {
+		Member member = memberRepository.findById(memberId).orElseThrow(() -> new RuntimeException("查無此會員"));
+		member.setName(name);
+		member.setGender(gender);
+		member.setEmail(email);
+		member.setPhoneNumber(phoneNumber);
+		member.setDateOfBirth(dateOfBirth);
+		memberRepository.save(member);
+	}
+
+	public MemberType findDefaultMemberType(int typeId) {
+		// 你可以這樣設計，例如找 typeName = '普通會員'
+		MemberType memberType = memberTypeRepository.findById(Long.valueOf(typeId))
+				.orElseThrow(() -> new RuntimeException("找不到會員類別"));
+		return memberType;
 	}
 }

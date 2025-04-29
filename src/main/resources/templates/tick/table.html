@@ -3,24 +3,33 @@
 
 <head>
 
-	<meta charset="utf-8">
-	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-	<meta http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate, max-age=0">
-	<meta http-equiv="Pragma" content="no-cache">
-	<meta http-equiv="Expires" content="0">
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta http-equiv="Cache-Control"
+	content="no-store, no-cache, must-revalidate, max-age=0">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
 
-	<title>光影之門後台系統</title>
+<title>光影之門後台系統</title>
 
-	<!-- Custom fonts for this template-->
-	<link href="/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
-	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-	<link href="/css/sb-admin-2.min.css" rel="stylesheet">
-	<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
-	<link href="https://cdn.datatables.net/2.2.2/css/dataTables.bootstrap5.min.css" rel="stylesheet">
-	<link
-		href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
-		rel="stylesheet">
+<!-- Custom fonts for this template-->
+<link href="/vendor/fontawesome-free/css/all.min.css" rel="stylesheet"
+	type="text/css">
+<link
+	href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+	rel="stylesheet">
+<link href="/css/sb-admin-2.min.css" rel="stylesheet">
+<link
+	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+	rel="stylesheet">
+<link
+	href="https://cdn.datatables.net/2.2.2/css/dataTables.bootstrap5.min.css"
+	rel="stylesheet">
+<link
+	href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+	rel="stylesheet">
 
 </head>
 
@@ -46,7 +55,8 @@
 				<div class="container-fluid">
 
 					<!-- Page Heading -->
-					<div class="d-sm-flex align-items-center justify-content-between mb-4">
+					<div
+						class="d-sm-flex align-items-center justify-content-between mb-4">
 						<h1 class="h3 mb-0 text-gray-800">員工後台系統-新增訂票</h1>
 						<!--                         <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i -->
 						<!--                         class="fas fa-download fa-sm text-white-50"></i>列印</a> -->
@@ -55,10 +65,10 @@
 					<div class="row">
 						<div class="container py-4">
 							<!-- 查詢表單 -->
-							<form action="/booktick/other" method="get" class="row gy-2 gx-3 align-items-center">
+							<form action="/booktick/other" method="get"
+								class="row gy-2 gx-3 align-items-center">
 								<div class="col-auto">
-									<label for="findtick" class="form-label">選擇你要查詢的內容</label> <select id="findtick"
-										name="select" class="form-select">
+									<select id="findtick" name="select" class="form-select">
 										<option value="">選項</option>
 										<option value="1">訂票ID</option>
 										<option value="2">訂單編號</option>
@@ -75,6 +85,7 @@
 									<a th:href="@{/ticktable}" class="btn btn-secondary">查全部</a>
 								</div>
 							</form>
+
 
 							<!-- 圖表 -->
 
@@ -108,15 +119,17 @@
 												<td th:text="${tickinfos.orderid}"></td>
 												<td th:text="${tickinfos.memberId}"></td>
 												<td th:text="${tickinfos.showtimedate}"></td>
-												<td th:text="${#strings.substring(tickinfos.showtime, 0, 8)}"></td>
+												<td
+													th:text="${#strings.substring(tickinfos.showtime, 0, 8)}"></td>
 												<td th:text="${tickinfos.seatid}"></td>
 												<td th:text="${tickinfos.hallid}"></td>
 												<td th:text="${tickinfos.onemoney}"></td>
 												<td th:text="${tickinfos.moviename}"></td>
 												<td th:text="${tickinfos.booktype}"></td>
 												<td th:text="${tickinfos.payout}"></td>
-												<td><a th:href="@{/booktick/update(tickid=${tickinfos.tickid})}"
-														class="btn btn-sm btn-warning">修改</a></td>
+												<td><a
+													th:href="@{/booktick/update(tickid=${tickinfos.tickid})}"
+													class="btn btn-sm btn-warning">修改</a></td>
 												<td><button class="btn btn-sm btn-danger dellc"
 														th:value="${tickinfos.tickid}">刪除</button></td>
 											</tr>
@@ -128,8 +141,8 @@
 							<!-- 新增、匯出按鈕 -->
 							<div class="mt-3 d-flex gap-2">
 								<a th:href="@{/booktick/inser}" class="btn btn-success">新增</a>
-								<button type="button" onclick="exportTableToCSV()" class="btn btn-info">匯出 CSV
-									檔</button>
+								<button type="button" onclick="exportTableToCSV()"
+									class="btn btn-info">匯出 CSV 檔</button>
 							</div>
 						</div>
 					</div>
@@ -144,22 +157,27 @@
 		<!-- End of Page Wrapper -->
 
 		<!-- Scroll to Top Button-->
-		<a class="scroll-to-top rounded" href="#page-top"> <i class="fas fa-angle-up"></i>
+		<a class="scroll-to-top rounded" href="#page-top"> <i
+			class="fas fa-angle-up"></i>
 		</a>
 		<!--Logout Modal -->
 		<!-- <th:block th:replace="fragments/empLogoutModel :: logoutModel"></th:block> -->
 
 
-		<script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
-		<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+		<script
+			src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
+		<script
+			src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 		<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 		<script src="https://cdn.datatables.net/2.2.2/js/dataTables.min.js"></script>
-		<script src="https://cdn.datatables.net/2.2.2/js/dataTables.bootstrap5.min.js"></script>
+		<script
+			src="https://cdn.datatables.net/2.2.2/js/dataTables.bootstrap5.min.js"></script>
 		<script src="/js/sb-admin-2.min.js"></script>
 
 		<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 		<script src="/tickjs/csvexpro.js"></script>
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js"></script>
+		<script
+			src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js"></script>
 		<script src="/tickjs/csvexpro.js"></script>
 		<script th:inline="javascript">
 			$(function () {

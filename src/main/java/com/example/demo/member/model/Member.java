@@ -45,7 +45,7 @@ public class Member {
 	private String email;
 	
 	
-	@Column(name = "phoneNumber",nullable = false,length = 10,unique = true)
+	@Column(name = "phoneNumber",nullable = false,length = 10)
 	private String phoneNumber;
 	
 	@Column(name = "password",nullable = false, length = 255)

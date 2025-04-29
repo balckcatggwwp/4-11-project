@@ -11,4 +11,5 @@ public interface EmployeeRepository extends JpaRepository<Employee,UUID> {
 	Employee findByEmail(String email);
 	//Employee 註冊時檢查 信箱和密碼是否已註冊
 	List<Employee> findByEmailOrPhoneNumber(String email, String phoneNumber);
+	List<Employee> findByJobTitleCategoryJobLevelLessThan(int loginLevel);
 }
