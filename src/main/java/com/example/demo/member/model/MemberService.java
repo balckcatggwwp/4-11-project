@@ -299,4 +299,21 @@ public class MemberService {
 				.orElseThrow(() -> new RuntimeException("找不到會員類別"));
 		return memberType;
 	}
+
+	@Transactional
+	public boolean deleteMemberById(Long memberId) {
+	    if (!memberRepository.existsById(memberId)) {
+	    	System.out.println(">>> 查無此會員，刪除失敗");
+	        return false; // 找不到就回傳false
+	    }
+	    
+	    try {
+	        memberRepository.deleteById(memberId);
+	        System.out.println(">>> 刪除成功");
+	        return true; // 刪除成功
+	    } catch (Exception e) {
+	    	System.out.println(">>> 刪除失敗：" + e.getMessage());
+	        return false; // 刪除過程失敗
+	    }
+	}
 }

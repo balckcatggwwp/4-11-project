@@ -41,8 +41,8 @@
 								data-bs-target="#registerModal">
 								<i class="fas fa-user-plus"></i> 新增會員
 							</button>
-							<a class="btn btn-success">
-								<i class="fas fa-user-plus"></i> 會員統計資料
+							<a class="btn btn-success"> <i class="fas fa-user-plus"></i>
+								會員統計資料
 							</a>
 						</div>
 					</div>
@@ -107,6 +107,7 @@
 	<script
 		src="https://cdn.datatables.net/2.2.2/js/dataTables.bootstrap5.min.js"></script>
 	<script src="/js/sb-admin-2.min.js"></script>
+
 	<script>
 		$(function () {
 		  const table = $('#memberTable').DataTable({
@@ -164,40 +165,44 @@
 		    table.column(columnIndex).search(keyword).draw();
 		  });
 		
-		  // 按鈕事件（這裡可以設定點擊後要做什麼）
-		  $('#memberTable tbody').on('click', '.viewBtn', function () {
-		    const memberId = $(this).data('id');
-		    console.log('查看詳細資料', memberId);
-		    // 這裡可以跳 modal 或導頁
-		  });
-		
-		  $('#memberTable tbody').on('click', '.editBtn', function () {
-		    const memberId = $(this).data('id');
-		    console.log('修改會員', memberId);
-		    // 這裡可以跳 modal 編輯
-		  });
-		
-		  $('#memberTable tbody').on('click', '.deleteBtn', function () {
-		    const memberId = $(this).data('id');
-		    console.log('刪除會員', memberId);
-		    Swal.fire({
-		      title: '確定要刪除嗎？',
-		      text: '刪除後將無法恢復！',
-		      icon: 'warning',
-		      showCancelButton: true,
-		      confirmButtonColor: '#d33',
-		      cancelButtonColor: '#3085d6',
-		      confirmButtonText: '確定刪除'
-		    }).then((result) => {
-		      if (result.isConfirmed) {
-		        // 這裡可以呼叫API刪除
-		        console.log('確定刪除', memberId);
-		      }
-		    });
-		  });
-		
 		});
 
+	</script>
+	<script>
+	$('#memberTable tbody').on('click', '.deleteBtn', function () {
+	    const memberId = $(this).data('id');
+	
+	    Swal.fire({
+	        title: '確定要刪除嗎？',
+	        text: '刪除後將無法恢復！',
+	        icon: 'warning',
+	        showCancelButton: true,
+	        confirmButtonColor: '#d33',
+	        cancelButtonColor: '#3085d6',
+	        confirmButtonText: '確定刪除'
+	    }).then((result) => {
+	        if (result.isConfirmed) {
+	            $.ajax({
+	                url: `/memberAPI/deleteMember/${memberId}`,
+	                method: 'DELETE',
+	                success: function (response) {
+	                    if (response.status === 'success') {
+	                        Swal.fire('刪除成功！', response.message, 'success').then(() => {
+	                            $('#memberTable').DataTable().ajax.reload(); // 刷新表格
+	                        });
+	                    } else {
+	                        Swal.fire('刪除失敗', response.message || '請稍後再試', 'error');
+	                    }
+	                },
+	                error: function (xhr) {
+	                    console.log('刪除會員失敗', xhr.responseText);
+	                    Swal.fire('錯誤', '伺服器錯誤或資料綁定無法刪除', 'error');
+	                }
+	            });
+	        }
+	    });
+	});
+	
 	</script>
 	<script>
 		$('#memberTable tbody').on('click', '.editBtn', function () {
@@ -234,7 +239,7 @@
 		});
 		
 		</script>
-		<script>
+	<script>
 		$('#edit-form').submit(function (e) {
 		  e.preventDefault();
 		
@@ -270,7 +275,7 @@
 		});
 		
 		</script>
-		<script>
+	<script>
 		$(function () {
 		  $('#memberTable tbody').on('click', '.viewBtn', function () {
 		    const memberId = $(this).data('id');
@@ -314,7 +319,7 @@
 		  });
 		});	
 		</script>
-		<script>
+	<script>
 		$(function () {
 		  // 打開Modal時，載入會員身份選單
 		  $('#registerModal').on('show.bs.modal', function () {

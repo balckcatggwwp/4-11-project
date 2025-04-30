@@ -1,12 +1,16 @@
 package com.example.demo.employee.model;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import jakarta.transaction.Transactional;
 
 
 
@@ -18,6 +22,12 @@ public class EmployeeService {
 	
 	@Autowired
 	private PasswordEncoder pwdEncoder;
+	
+	@Autowired
+	private EmpPermissionCategoryRepository empPermissionCategoryRepository;
+	
+	@Autowired
+	private JobTitleCategoryRepository jobTitleCategoryRepository;
 	
 	public Employee insertEmployee(Employee employee) {
 		String originalPwd =  employee.getPassword();
@@ -69,4 +79,32 @@ public class EmployeeService {
 			return true;
 		}
 	}
+	
+	//註冊管理員帳號
+	 @Transactional
+	    public void registerAdmin(AdminRegisterDTO dto) {
+	        Employee emp = new Employee();
+	        emp.setName(dto.getName());
+	        emp.setGender(dto.getGender());
+	        emp.setNationalId(dto.getNationalId());
+	        emp.setDateOfBirth(dto.getDateOfBirth());
+	        emp.setEntryTime(dto.getEntryTime());
+	        emp.setEmail(dto.getEmail());
+	        emp.setPhoneNumber(dto.getPhoneNumber());
+	        emp.setPassword(pwdEncoder.encode(dto.getPassword()));
+
+	        JobTitleCategory job = jobTitleCategoryRepository.findById(dto.getJobTitleCategoryId())
+	            .orElseThrow(() -> new RuntimeException("職稱不存在"));
+	        emp.setJobTitleCategory(job);
+
+	        Set<EmpPermissionCategory> perms = new HashSet<>();
+	        for (Long pid : dto.getPermissionIds()) {
+	            EmpPermissionCategory p = empPermissionCategoryRepository.findById(pid)
+	                .orElseThrow(() -> new RuntimeException("權限不存在 ID: " + pid));
+	            perms.add(p);
+	        }
+	        emp.setPermissions(perms);
+
+	        employeeRepository.save(emp);
+	    }
 }
