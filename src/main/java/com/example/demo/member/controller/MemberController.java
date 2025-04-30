@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -19,6 +20,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.example.demo.member.model.Member;
 import com.example.demo.member.model.MemberService;
+import com.example.demo.member.model.MemberType;
+import com.example.demo.member.model.MemberTypeRepository;
 
 import jakarta.mail.MessagingException;
 import jakarta.servlet.http.HttpSession;
@@ -29,6 +32,9 @@ public class MemberController {
 
 	@Autowired
 	private MemberService memberService;
+
+	@Autowired
+	private MemberTypeRepository memberTypeRepository;
 
 	// 會員登入-會員註冊在這裡
 
@@ -287,5 +293,10 @@ public class MemberController {
 	public String memberDetail() {
 		return "member/memberDetail";
 	}
-	
+
+	// 前台跳轉
+	@GetMapping("/memberTypeManager")
+	public String memberTypeManager() {
+		return "member/memberTypeManager";
+	}
 }

@@ -101,9 +101,10 @@ public class EmpController {
 	}
 
 	@GetMapping("/empLogout")
-	public String empLogout(HttpSession httpSession) {
-		httpSession.removeAttribute("empId");
-		return "employee/empLogin";
+	@ResponseBody
+	public Map<String, Object> empLogout(HttpSession session) {
+	    session.invalidate();
+	    return Map.of("status", "success");
 	}
 	
 	@GetMapping("/empList")
@@ -150,5 +151,10 @@ public class EmpController {
 			res.put("message", e.getMessage());
 		}
 		return res;
+	}
+	
+	@GetMapping("/noEmpPermission")
+	public String noEmpPermission() {
+		return "employee/noEmpPermission";
 	}
 }
