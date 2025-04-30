@@ -197,7 +197,8 @@ public class MemberAPIController {
             @RequestParam String email,
             @RequestParam String phoneNumber,
             @RequestParam String dateOfBirth,
-            @RequestParam String nationalId
+            @RequestParam String nationalId,
+            @RequestParam(required = false) Integer memberTypeId // 允許為空
     ) {
         Map<String, Object> response = new HashMap<>();
         try {
@@ -209,16 +210,17 @@ public class MemberAPIController {
             member.setPhoneNumber(phoneNumber);
             member.setDateOfBirth(dateOfBirth);
             member.setNationalId(nationalId);
-
+            
             // 預設密碼：電話號碼當密碼
             member.setPassword(pwdEncoder.encode(phoneNumber));
 
             // 預設已驗證
             member.setVerification(true);
-
-            // 預設會員身份（要確保這裡有一個預設 MemberType存在，例如普通會員）
-            MemberType defaultType = memberService.findDefaultMemberType(1); // 你要確保這個 service存在
-            member.setMemberType(defaultType);
+            //預設一般會員/假如有選取就會是選取的身分
+            MemberType type = (memberTypeId != null)
+                    ? memberService.findDefaultMemberType(memberTypeId)
+                    : memberService.findDefaultMemberType(1); // 預設值
+            member.setMemberType(type);
 
             memberRepository.save(member);
 
