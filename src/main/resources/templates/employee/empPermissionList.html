@@ -70,7 +70,6 @@
 
 	<a class="scroll-to-top rounded" href="#page-top"><i
 		class="fas fa-angle-up"></i></a>
-	<th:block th:replace="fragments/empLogoutModel :: logoutModel"></th:block>
 
 	<script src="https://code.jquery.com/jquery-3.7.1.js"></script>
 	<script
@@ -106,98 +105,101 @@
 	        }
 	    });
 	
-	    // 新增權限
-	    $('#addPermissionForm').submit(function(e) {
-	        e.preventDefault();
-	
-	        const formData = {
-	            empPermissionTypeName: $('#empPermissionTypeName').val()
-	        };
-	
-	        $.ajax({
-	            url: '/empPermissionApi/add',
-	            type: 'POST',
-	            contentType: 'application/json',
-	            data: JSON.stringify(formData),
-	            success: function(response) {
-	                if (response.status === 'success') {
-	                    Swal.fire('新增成功', '', 'success');
-	                    $('#addPermissionForm')[0].reset();
-	                    table.ajax.reload();
-	                } else {
-	                    Swal.fire('新增失敗', response.message || '', 'error');
-	                }
-	            },
-	            error: function(xhr) {
-	                Swal.fire('錯誤', xhr.responseJSON?.message || '', 'error');
-	            }
-	        });
-	    });
-	
-	    // 刪除權限
-	    $('#permissionTable').on('click', '.deleteBtn', function() {
-	        const id = $(this).data('id');
-	        Swal.fire({
-	            title: '確定刪除嗎？',
-	            text: "刪除後將無法恢復！",
-	            icon: 'warning',
-	            showCancelButton: true,
-	            confirmButtonColor: '#d33',
-	            cancelButtonColor: '#3085d6',
-	            confirmButtonText: '刪除'
-	        }).then((result) => {
-	            if (result.isConfirmed) {
-	                $.ajax({
-	                    url: '/empPermissionApi/delete/' + id,
-	                    type: 'DELETE',
-	                    success: function(response) {
-	                        Swal.fire('刪除成功', '', 'success');
-	                        table.ajax.reload();
-	                    },
-	                    error: function(xhr) {
-	                        Swal.fire('錯誤', xhr.responseJSON?.message || '', 'error');
-	                    }
-	                });
-	            }
-	        });
-	    });
-	
-	    // 修改權限
-	    $('#permissionTable').on('click', '.editBtn', function() {
-	        const id = $(this).data('id');
-	        const oldName = $(this).data('name');
-	
-	        Swal.fire({
-	            title: '修改權限名稱',
-	            input: 'text',
-	            inputValue: oldName,
-	            showCancelButton: true,
-	            confirmButtonText: '修改',
-	            cancelButtonText: '取消',
-	            preConfirm: (newName) => {
-	                return { empPermissionTypeName: newName };
-	            }
-	        }).then((result) => {
-	            if (result.isConfirmed) {
-	                $.ajax({
-	                    url: '/empPermissionApi/update/' + id,
-	                    type: 'PUT',
-	                    contentType: 'application/json',
-	                    data: JSON.stringify(result.value),
-	                    success: function(response) {
-	                        Swal.fire('更新成功', '', 'success');
-	                        table.ajax.reload();
-	                    },
-	                    error: function(xhr) {
-	                        Swal.fire('錯誤', xhr.responseJSON?.message || '', 'error');
-	                    }
-	                });
-	            }
-	        });
-	    });
-	
-	});
-</script>
-<script src="/js/empTobar.js"></script>
+		    // 新增權限
+		    $('#addPermissionForm').submit(function(e) {
+		        e.preventDefault();
+		
+		        const formData = {
+		            empPermissionTypeName: $('#empPermissionTypeName').val()
+		        };
+		
+		        $.ajax({
+		            url: '/empPermissionApi/add',
+		            type: 'POST',
+		            contentType: 'application/json',
+		            data: JSON.stringify(formData),
+		            success: function(response) {
+		                if (response.status === 'success') {
+		                    Swal.fire('新增成功', '', 'success');
+		                    $('#addPermissionForm')[0].reset();
+		                    table.ajax.reload();
+		                } else {
+		                    Swal.fire('新增失敗', response.message || '', 'error');
+		                }
+		            },
+		            error: function(xhr) {
+		                Swal.fire('錯誤', xhr.responseJSON?.message || '', 'error');
+		            }
+		        });
+		    });
+		
+		    // 刪除權限
+		    $('#permissionTable').on('click', '.deleteBtn', function() {
+		        const id = $(this).data('id');
+		        Swal.fire({
+		            title: '確定刪除嗎？',
+		            text: "刪除後將無法恢復！",
+		            icon: 'warning',
+		            showCancelButton: true,
+		            confirmButtonColor: '#d33',
+		            cancelButtonColor: '#3085d6',
+		            confirmButtonText: '刪除'
+		        }).then((result) => {
+		            if (result.isConfirmed) {
+		                $.ajax({
+		                    url: '/empPermissionApi/delete/' + id,
+		                    type: 'DELETE',
+		                    success: function(response) {
+		                        Swal.fire('刪除成功', '', 'success');
+		                        table.ajax.reload();
+		                    },
+		                    error: function(xhr) {
+		                        Swal.fire('錯誤', xhr.responseJSON?.message || '', 'error');
+		                    }
+		                });
+		            }
+		        });
+		    });
+		
+		    // 修改權限
+		    $('#permissionTable').on('click', '.editBtn', function() {
+		        const id = $(this).data('id');
+		        const oldName = $(this).data('name');
+		
+		        Swal.fire({
+		            title: '修改權限名稱',
+		            input: 'text',
+		            inputValue: oldName,
+		            showCancelButton: true,
+		            confirmButtonText: '修改',
+		            cancelButtonText: '取消',
+		            preConfirm: (newName) => {
+		                return { empPermissionTypeName: newName };
+		            }
+		        }).then((result) => {
+		            if (result.isConfirmed) {
+		                $.ajax({
+		                    url: '/empPermissionApi/update/' + id,
+		                    type: 'PUT',
+		                    contentType: 'application/json',
+		                    data: JSON.stringify(result.value),
+		                    success: function(response) {
+		                        Swal.fire('更新成功', '', 'success');
+		                        table.ajax.reload();
+		                    },
+		                    error: function(xhr) {
+		                        Swal.fire('錯誤', xhr.responseJSON?.message || '', 'error');
+		                    }
+		                });
+		            }
+		        });
+		    });
+		
+		});
+	</script>
+	<script src="/js/empTobar.js"></script>
+	<script src="/js/empLogout.js"></script>
+	<script src="/js/checkEmpSession.js"></script>
+
 </body>
 </html>

@@ -159,10 +159,6 @@
 		<a class="scroll-to-top rounded" href="#page-top"> <i
 			class="fas fa-angle-up"></i>
 		</a>
-		<!--Logout Modal -->
-		<th:block th:replace="fragments/empLogoutModel :: logoutModel"></th:block>
-
-
 		<script
 			src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
 		<script
@@ -205,22 +201,9 @@
 		    });
 		});
 		</script>
-		<th:block th:if="${notLogin}">
-			<script th:inline="javascript">
-	        Swal.fire({
-	            icon: 'warning',
-	            title: '尚未登入',
-	            text: '請先登入員工帳號',
-	            confirmButtonText: '知道了',
-	            allowOutsideClick: false,
-	            allowEscapeKey: false
-	        }).then((result) => {
-	            if (result.isConfirmed) {
-	                window.location.href = '/employee/empLogin';
-	            }
-	        });
-    		</script>
-		</th:block>
+		<script src="/js/empTobar.js"></script>
+		<script src="/js/empLogout.js"></script>
+		<script src="/js/checkEmpSession.js"></script>
 </body>
 
 </html>
