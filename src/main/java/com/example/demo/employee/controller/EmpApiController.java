@@ -15,6 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -27,6 +28,7 @@ import com.example.demo.employee.model.EmpPermissionCategory;
 import com.example.demo.employee.model.EmpPermissionCategoryRepository;
 import com.example.demo.employee.model.Employee;
 import com.example.demo.employee.model.EmployeeAddDTO;
+import com.example.demo.employee.model.EmployeeProfileEditDTO;
 import com.example.demo.employee.model.EmployeeRepository;
 import com.example.demo.employee.model.JobTitleCategory;
 import com.example.demo.employee.model.JobTitleCategoryRepository;
@@ -276,5 +278,72 @@ public class EmpApiController {
 
 		return res;
 	}
+	//請求登入者的詳細資訊不包含權限/職務
+	@GetMapping("/sessionDetail")
+	public Map<String, Object> getSessionDetail(HttpSession session) {
+	    UUID empId = (UUID) session.getAttribute("empId");
+	    if (empId == null) {
+	        return Map.of("status", "error", "message", "尚未登入");
+	    }
+
+	    Employee emp = employeeRepository.findById(empId).orElse(null);
+	    if (emp == null) {
+	        return Map.of("status", "error", "message", "查無員工資料");
+	    }
+
+	    return Map.of(
+	        "status", "success",
+	        "name", emp.getName(),
+	        "gender", emp.getGender(),
+	        "nationalId", emp.getNationalId(),
+	        "email", emp.getEmail(),
+	        "phoneNumber", emp.getPhoneNumber(),
+	        "dateOfBirth", emp.getDateOfBirth(),
+	        "entryTime", emp.getEntryTime()
+	    );
+	}
+	
+	@PostMapping("/updateProfileSelf")
+	public Map<String, Object> updateOwnProfile(
+	        @ModelAttribute EmployeeProfileEditDTO dto,
+	        HttpSession session
+	) {
+	    Map<String, Object> res = new HashMap<>();
+	    UUID empId = (UUID) session.getAttribute("empId");
+
+	    if (empId == null) {
+	        res.put("status", "error");
+	        res.put("message", "尚未登入");
+	        return res;
+	    }
+
+	    try {
+	        Employee emp = employeeRepository.findById(empId)
+	                .orElseThrow(() -> new RuntimeException("找不到員工"));
+
+	        // ✅ 更新可修改欄位
+	        emp.setName(dto.getName());
+	        emp.setGender(dto.getGender());
+	        emp.setNationalId(dto.getNationalId());
+	        emp.setDateOfBirth(dto.getDateOfBirth());
+	        emp.setEntryTime(dto.getEntryTime());
+	        emp.setEmail(dto.getEmail());
+	        emp.setPhoneNumber(dto.getPhoneNumber());
+
+	        // ✅ 若有填新密碼才改
+	        if (dto.getPassword() != null && !dto.getPassword().isBlank()) {
+	            emp.setPassword(passwordEncoder.encode(dto.getPassword()));
+	        }
+
+	        employeeRepository.save(emp);
+	        res.put("status", "success");
+	    } catch (Exception e) {
+	        res.put("status", "error");
+	        res.put("message", "更新失敗：" + e.getMessage());
+	    }
+
+	    return res;
+	}
+
 
 }

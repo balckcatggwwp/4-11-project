@@ -34,15 +34,22 @@
 						<h1 class="h3 mb-0 text-gray-800">員工後台系統-首頁</h1>
 					</div>
 
-					<!-- Content Row 1 員工資料/權限 -->
+					<!-- Content Row 員工資料/最新公告 -->
 					<div class="row">
+						<!-- 員工資料 -->
 						<div class="col-xl-6 col-md-6 mb-4">
 							<div class="card border-left-primary shadow h-100 py-2">
-								<div class="card-body">
-									<div class="row no-gutters align-items-center">
+								<div class="card-body h-100 d-flex flex-column">
+									<div class="row no-gutters align-items-center flex-grow-1">
 										<div class="col mr-2">
 											<div
-												class="fs-2 font-weight-bold text-primary text-uppercase mb-3">員工資料</div>
+												class="fs-2 font-weight-bold text-primary text-uppercase mb-3">
+												員工資料
+												<button class="btn btn-outline-success btn-sm"
+													data-bs-toggle="modal" data-bs-target="#editProfileModal">
+													<i class="fas fa-pen-to-square me-1"></i> 修改個人資料
+												</button>
+											</div>
 											<div
 												class="text-xs font-weight-bold text-primary text-uppercase mb-1">姓名</div>
 											<div class="h5 mb-3 text-dark" id="empName"></div>
@@ -69,9 +76,9 @@
 							</div>
 						</div>
 
-						<!-- Content Row 2 最新公告/注意事項 -->
+						<!-- 最新公告 -->
 						<div class="col-xl-6 col-md-6 mb-4">
-							<div class="card shadow mb-4">
+							<div class="card shadow h-100 d-flex flex-column">
 								<div class="card-header py-3">
 									<h6 class="m-0 font-weight-bold text-primary">最新公告</h6>
 								</div>
@@ -103,47 +110,158 @@
 							</div>
 						</div>
 					</div>
-
 				</div>
 			</div>
+
 			<div th:replace="fragments/empFooter :: footer"></div>
 		</div>
 	</div>
-	<a class="scroll-to-top rounded" href="#page-top"><i
-		class="fas fa-angle-up"></i></a>
-	<div th:replace="fragments/empLogoutModel :: logoutModel"></div>
 
+	<a class="scroll-to-top rounded" href="#page-top"> <i
+		class="fas fa-angle-up"></i>
+	</a>
+	<!-- 修改個人資料 Modal -->
+	<div class="modal fade" id="editProfileModal" tabindex="-1"
+		aria-labelledby="editProfileModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="editProfileModalLabel">修改個人資料</h5>
+					<button type="button" class="btn-close" data-bs-dismiss="modal"
+						aria-label="關閉"></button>
+				</div>
+				<div class="modal-body">
+					<form id="editProfileForm">
+						<div class="mb-3">
+							<label class="form-label">姓名</label> <input type="text"
+								name="name" class="form-control" required>
+						</div>
+						<div class="mb-3">
+							<label class="form-label">性別</label><br>
+							<div class="form-check form-check-inline">
+								<input class="form-check-input" type="radio" name="gender"
+									value="male"> 男
+							</div>
+							<div class="form-check form-check-inline">
+								<input class="form-check-input" type="radio" name="gender"
+									value="female"> 女
+							</div>
+						</div>
+						<div class="mb-3">
+							<label class="form-label">身分證字號</label> <input type="text"
+								name="nationalId" class="form-control" required>
+						</div>
+						<div class="mb-3">
+							<label class="form-label">生日</label> <input type="date"
+								name="dateOfBirth" class="form-control" required>
+						</div>
+						<div class="mb-3">
+							<label class="form-label">入職日</label> <input type="date"
+								name="entryTime" class="form-control" required>
+						</div>
+						<div class="mb-3">
+							<label class="form-label">Email</label> <input type="email"
+								name="email" class="form-control" required>
+						</div>
+						<div class="mb-3">
+							<label class="form-label">手機號碼</label> <input type="text"
+								name="phoneNumber" class="form-control" required>
+						</div>
+						<div class="mb-3">
+							<label class="form-label">新密碼</label> <input type="password"
+								name="password" id="password" class="form-control">
+						</div>
+						<div class="mb-3">
+							<label class="form-label">確認密碼</label> <input type="password"
+								id="confirmPassword" class="form-control">
+						</div>
+						<div class="d-grid">
+							<button type="submit" class="btn btn-primary">儲存修改</button>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
 	<script src="/js/jquery.js"></script>
 	<script src="/js/bootstrap.bundle.js"></script>
 	<script src="/js/sb-admin-2.min.js"></script>
 	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
 	<script>
-$(function () {
-  $.ajax({
-    url: '/employeeApi/sessionInfo',
-    method: 'GET',
-    success: function (res) {
-      if (res.status === 'success') {
-        $('#empName').text(res.name);
-        $('#empJobTitle').text(res.jobTitleName);
-        $('#empEntryTime').text(res.entryTime);
-        $('#empGender').text(res.gender === 'male' ? '男' : '女');
-        $('#empPhone').text(res.phoneNumber);
-      } else {
-        Swal.fire('錯誤', '無法取得員工資料，請重新登入', 'error').then(() => {
-          window.location.href = '/employee/empLogin';
-        });
-      }
-    },
-    error: function () {
-      Swal.fire('錯誤', '發生異常錯誤', 'error');
-    }
-  });
-});
-</script>
-<script src="/js/empTobar.js"></script>
-<script src="/js/empLogout.js"></script>
-<script src="/js/checkEmpSession.js"></script>
+	$(function () {
+	  $.ajax({
+	    url: '/employeeApi/sessionDetail',
+	    method: 'GET',
+	    success: function (res) {
+	      if (res.status === 'success') {
+	        $('#empName').text(res.name);
+	        $('#empJobTitle').text(res.jobTitleName);
+	        $('#empEntryTime').text(res.entryTime);
+	        $('#empGender').text(res.gender === 'male' ? '男' : '女');
+	        $('#empPhone').text(res.phoneNumber);
+	      } else {
+	        Swal.fire('錯誤', '無法取得員工資料，請重新登入', 'error').then(() => {
+	          window.location.href = '/employee/empLogin';
+	        });
+	      }
+	    },
+	    error: function () {
+	      Swal.fire('錯誤', '發生異常錯誤', 'error');
+	    }
+	  });
+	});
+	</script>
+	<script>
+	  $(function () {
+	    // 預載入現有資料（從 session）
+	    $.get("/employeeApi/sessionDetail", function (res) {
+	      if (res.status === "success") {
+	        const f = $("#editProfileForm");
+	        f.find("[name='name']").val(res.name);
+	        f.find("[name='gender'][value='" + res.gender + "']").prop('checked', true);
+	        f.find("[name='nationalId']").val(res.nationalId);
+	        f.find("[name='dateOfBirth']").val(res.dateOfBirth);
+	        f.find("[name='entryTime']").val(res.entryTime);
+	        f.find("[name='email']").val(res.email);
+	        f.find("[name='phoneNumber']").val(res.phoneNumber);
+	      }
+	    });
+	
+	    // 表單送出
+	    $('#editProfileForm').on('submit', function (e) {
+	      e.preventDefault();
+	      const pwd = $('#password').val();
+		  const confirmPwd = $('#confirmPassword').val();
+		
+			if (pwd && pwd !== confirmPwd) {
+			  Swal.fire("錯誤", "兩次輸入的密碼不一致", "error");
+			  return;
+			}
+	      const formData = $(this).serialize();
+	
+	      $.ajax({
+	        url: "/employeeApi/updateProfileSelf",
+	        method: "POST",
+	        data: formData,
+	        success: function (res) {
+	          if (res.status === "success") {
+	            Swal.fire("成功", "資料已更新", "success");
+	            $('#editProfileModal').modal('hide');
+	            location.reload();
+	          } else {
+	            Swal.fire("錯誤", res.message || "修改失敗", "error");
+	          }
+	        },
+	        error: function () {
+	          Swal.fire("錯誤", "伺服器錯誤", "error");
+	        }
+	      });
+	    });
+	  });
+	</script>
+
+	<script src="/js/empTobar.js"></script>
+	<script src="/js/empLogout.js"></script>
+	<script src="/js/checkEmpSession.js"></script>
 </body>
 </html>

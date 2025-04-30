@@ -299,4 +299,10 @@ public class MemberController {
 	public String memberTypeManager() {
 		return "member/memberTypeManager";
 	}
+
+	// 前台跳轉
+	@GetMapping("/memberStats")
+	public String memberStatus() {
+		return "member/memberStats";
+	}
 }
