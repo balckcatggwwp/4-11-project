@@ -41,7 +41,6 @@ public class EmpController {
 
 	private JobTitleCategoryRepository jobTitleCategoryRepository;
 
-
 	@GetMapping("/empLogin")
 	public String empLogin() {
 		return "employee/empLogin";
@@ -103,10 +102,10 @@ public class EmpController {
 	@GetMapping("/empLogout")
 	@ResponseBody
 	public Map<String, Object> empLogout(HttpSession session) {
-	    session.invalidate();
-	    return Map.of("status", "success");
+		session.invalidate();
+		return Map.of("status", "success");
 	}
-	
+
 	@GetMapping("/empList")
 	public String empList() {
 		return "employee/empList";
@@ -138,11 +137,22 @@ public class EmpController {
 		return "employee/empPermissionList";
 	}
 
-	// 處理 AJAX 註冊請求（POST JSON）
 	@PostMapping("/adminRegister")
 	@ResponseBody
 	public Map<String, Object> registerAdmin(@RequestBody AdminRegisterDTO dto) {
 		Map<String, Object> res = new HashMap<>();
+
+		// 建立一個假的 Employee，只拿來做驗證
+		Employee emp = new Employee();
+		emp.setEmail(dto.getEmail());
+		emp.setPhoneNumber(dto.getPhoneNumber());
+
+		if (!employeeService.empExistCheck(emp)) {
+			res.put("status", "error");
+			res.put("message", "信箱或手機號碼已被註冊");
+			return res;
+		}
+
 		try {
 			employeeService.registerAdmin(dto); // 實際邏輯請實作在 service 裡
 			res.put("status", "success");
@@ -152,9 +162,20 @@ public class EmpController {
 		}
 		return res;
 	}
-	
+
 	@GetMapping("/noEmpPermission")
 	public String noEmpPermission() {
 		return "employee/noEmpPermission";
+	}
+
+	@PostMapping("/checkExist")
+	@ResponseBody
+	public Map<String, Object> checkEmailPhoneExist(@RequestBody Map<String, String> req) {
+		String email = req.get("email");
+		String phone = req.get("phoneNumber");
+
+		List<Employee> found = employeeRepository.findByEmailOrPhoneNumber(email, phone);
+		boolean exists = !found.isEmpty();
+		return Map.of("exists", exists);
 	}
 }

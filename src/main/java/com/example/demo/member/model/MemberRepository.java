@@ -25,4 +25,6 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
     // 查找信箱變更時的新信箱驗證code
     Member findByNewEmailCode(String newEmailCode);
 	Member findByEmailAndResetPasswordCode(String email, String code);
+	boolean existsByEmail(String email);
+	boolean existsByPhoneNumber(String phone);
 }

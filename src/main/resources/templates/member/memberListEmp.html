@@ -378,6 +378,134 @@
 		    });
 		  });
 		});
+		
+		// 工具：隨機英文名稱
+		function getRandomName() {
+		  const names = ["小明", "小華", "艾莉", "John", "Emma", "阿偉", "阿珍"];
+		  return names[Math.floor(Math.random() * names.length)];
+		}
+		
+		// 工具：隨機性別
+		function getRandomGender() {
+		  const gender = ["male", "female", "other"];
+		  return gender[Math.floor(Math.random() * gender.length)];
+		}
+		
+		// 工具：隨機身分證號碼 (簡化範例，非嚴格驗證)
+		function getRandomId() {
+		  const head = String.fromCharCode(65 + Math.floor(Math.random() * 26));
+		  return head + (Math.random() < 0.5 ? "1" : "2") + Math.floor(10000000 + Math.random() * 90000000);
+		}
+		
+		// 工具：隨機手機號碼
+		function getRandomPhone() {
+		  return "09" + Math.floor(100000000 + Math.random() * 90000000).toString().substring(1);
+		}
+		
+		// 工具：隨機 email
+		function getRandomEmail() {
+		  const prefix = "test" + Math.floor(Math.random() * 100000);
+		  return prefix + "@example.com";
+		}
+		
+		// 核心功能：自動填入不重複的會員資料
+		$('#autoFillMemberBtn').click(async function () {
+		  const maxAttempts = 10;
+		  let attempt = 0;
+		  let email, phoneNumber;
+		
+		  while (attempt < maxAttempts) {
+		    email = getRandomEmail();
+		    phoneNumber = getRandomPhone();
+		
+		    const exists = await $.ajax({
+		      url: '/memberAPI/checkEmailPhone',
+		      method: 'POST',
+		      contentType: 'application/json',
+		      data: JSON.stringify({ email, phoneNumber })
+		    });
+		
+		    if (!exists.duplicated) break; // 通過驗證
+		    attempt++;
+		  }
+		
+		  if (attempt >= maxAttempts) {
+		    Swal.fire('錯誤', '無法產生唯一的信箱與手機號碼，請稍後再試', 'error');
+		    return;
+		  }
+		
+		  // 成功產生後填入
+		  $('input[name="name"]').val(getRandomName());
+		  $('input[name="gender"][value="' + getRandomGender() + '"]').prop("checked", true);
+		  $('input[name="email"]').val(email);
+		  $('input[name="phoneNumber"]').val(phoneNumber);
+		  $('input[name="dateOfBirth"]').val("1990-01-01");
+		  $('input[name="nationalId"]').val(getRandomId());
+		  $('#memberTypeId').val($('#memberTypeId option:eq(1)').val()); // 預設選第一個有效身份
+		});
+		$('#batchInsertBtn').click(async function () {
+			  const count = parseInt($('#batchCount').val(), 10);
+			  if (isNaN(count) || count <= 0 || count > 20) {
+			    Swal.fire('錯誤', '請輸入 1~20 的數字', 'warning');
+			    return;
+			  }
+			
+			  const created = [];
+			
+			  for (let i = 0; i < count; i++) {
+			    let email, phoneNumber, tryCount = 0;
+			    const maxTry = 10;
+			
+			    // 嘗試產生不重複的 email / phone
+			    while (tryCount < maxTry) {
+			      email = getRandomEmail();
+			      phoneNumber = getRandomPhone();
+			
+			      const exists = await $.ajax({
+			        url: '/memberAPI/checkEmailPhone',
+			        method: 'POST',
+			        contentType: 'application/json',
+			        data: JSON.stringify({ email, phoneNumber })
+			      });
+			
+			      if (!exists.duplicated) break;
+			      tryCount++;
+			    }
+			
+			    if (tryCount >= maxTry) {
+			      console.warn(`第 ${i + 1} 筆放棄：產生唯一信箱失敗`);
+			      continue;
+			    }
+			
+			    // 送出一筆新增請求
+			    const payload = {
+			      name: getRandomName(),
+			      gender: getRandomGender(),
+			      email: email,
+			      phoneNumber: phoneNumber,
+			      dateOfBirth: "1990-01-01",
+			      nationalId: getRandomId(),
+			      memberTypeId: $('#memberTypeId option:eq(1)').val()
+			    };
+			
+			    try {
+			      const res = await $.ajax({
+			        url: '/memberAPI/registerByEmp',
+			        method: 'POST',
+			        data: payload
+			      });
+			
+			      if (res.status === 'success') {
+			        created.push(payload.email);
+			      }
+			    } catch (err) {
+			      console.warn(`第 ${i + 1} 筆錯誤`, err.responseText);
+			    }
+			  }
+			
+			  Swal.fire(`完成 ${created.length} 筆新增`, `Email：<br>${created.join('<br>')}`, 'success');
+			  $('#memberTable').DataTable().ajax.reload();
+			});
 		</script>
 </body>
 </html>

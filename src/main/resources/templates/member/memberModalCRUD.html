@@ -70,12 +70,25 @@
 			<div class="modal-dialog modal-lg">
 				<form id="register-form" class="modal-content">
 					<div class="modal-header">
-						<h5 class="modal-title">新增會員</h5>
+						<h5 class="modal-title">
+							新增會員
+							<button type="button" class="btn btn-warning"
+								id="autoFillMemberBtn">
+								<i class="fas fa-magic"></i> 一鍵產生測試資料
+							</button>
+						</h5>
 						<button type="button" class="btn-close" data-bs-dismiss="modal"
 							aria-label="關閉"></button>
 					</div>
 					<div class="modal-body">
-
+						<div class="input-group mb-3" style="max-width: 300px;">
+							<input type="number" class="form-control" id="batchCount" min="1"
+								max="20" value="5">
+							<button type="button" class="btn btn-outline-warning"
+								id="batchInsertBtn">
+								<i class="fas fa-user-plus"></i> 批次新增假會員
+							</button>
+						</div>
 						<div class="mb-3">
 							<label class="form-label">姓名</label> <input type="text"
 								name="name" class="form-control" required>

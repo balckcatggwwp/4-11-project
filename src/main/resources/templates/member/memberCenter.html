@@ -31,7 +31,8 @@
 
       <!-- 右側內容區 -->
       <div class="flex-grow-1 p-4 memberDetail">
-        <h3>個人檔案</h3>
+        <h3>個人檔案<button type="button" class="btn btn-warning ms-2" onclick="fillFakeData()">一鍵變更資料（測試用）</button></h3>
+        
         <form id="memberProfileForm">
           <!-- 隱藏會員ID -->
           <input
@@ -113,6 +114,7 @@
             />
           </div>
           <button type="submit" class="btn btn-primary">儲存</button>
+          
         </form>
       </div>
     </div>
@@ -181,6 +183,14 @@
           });
         });
       });
+      
+      function fillFakeData() {
+		  // 不改 name
+		  $('input[name="nationalId"]').val("B234567890");
+		  $('input[name="dateOfBirth"]').val("1990-12-25");
+		  $('input[name="gender"][value="female"]').prop("checked", true);
+		  $('input[name="phoneNumber"]').val("0987654321");
+		}
     </script>
   </body>
 </html>
