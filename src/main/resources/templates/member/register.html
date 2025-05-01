@@ -112,12 +112,12 @@ body {
 											required>
 									</div>
 								</div>
-
+								<button type="button" class="btn btn-success btn-user btn-block" onclick="fillExampleData()">一鍵填入測試資料</button>
 								<button type="submit" class="btn btn-primary btn-user btn-block">確定新增</button>
 								<button type="reset"
 									class="btn btn-secondary btn-user btn-block">取消</button>
 							</form>
-
+				
 							<hr>
 							<div class="text-center">
 								<a class="small" href="#" onclick="redirectWithLoginModal()">已經有帳號？前往首頁並登入</a>
@@ -208,12 +208,21 @@ body {
         });
       });
     });
+	function fillExampleData() {
+	  $('input[name="name"]').val("測試用戶");
+	  $('input[name="nationalId"]').val("A123456789");
+	  $('input[name="dateOfBirth"]').val("1995-05-01");
+	  $('input[name="gender"][value="male"]').prop("checked", true);
+	  $('input[name="email"]').val("membereeit94@gmail.com");
+	  $('input[name="phoneNumber"]').val("0912345678");
+	  $('input[name="password"]').val("1111");
+	  $('input[name="password2"]').val("1111");
+	}
 
     function redirectWithLoginModal() {
       localStorage.setItem("autoShowLogin", "true");
       window.location.href = "/";
     }
   </script>
-
 </body>
 </html>

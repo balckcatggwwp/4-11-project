@@ -270,10 +270,11 @@ public class MemberService {
 
 	// 前台更新會員資料
 	@Transactional
-	public void updateMemberProfile(Long memberId, String name, String dateOfBirth, String gender, String nationalId) {
+	public void updateMemberProfile(Long memberId, String name, String dateOfBirth,String phoneNumber, String gender, String nationalId) {
 		Member member = findById(memberId);
 		member.setName(name);
 		member.setDateOfBirth(dateOfBirth);
+		member.setPhoneNumber(phoneNumber);
 		member.setGender(gender);
 		member.setNationalId(nationalId);
 

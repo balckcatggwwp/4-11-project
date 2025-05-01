@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -66,11 +67,12 @@ public class MemberAPIController {
             @RequestParam String name,
             @RequestParam String dateOfBirth,
             @RequestParam String gender,
+            @RequestParam String phoneNumber,
             @RequestParam String nationalId
     ) {
         Map<String, Object> response = new HashMap<>();
         try {
-            memberService.updateMemberProfile(memberId, name, dateOfBirth, gender,nationalId);
+            memberService.updateMemberProfile(memberId, name, dateOfBirth,phoneNumber, gender,nationalId);
             response.put("status", "success");
             response.put("message", "會員資料更新成功！");
         } catch (Exception e) {
@@ -264,6 +266,16 @@ public class MemberAPIController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
         }
     }
+    
+    @PostMapping("/checkEmailPhone")
+    public Map<String, Object> checkEmailPhone(@RequestBody Map<String, String> payload) {
+        String email = payload.get("email");
+        String phone = payload.get("phoneNumber");
+
+        boolean exists = memberRepository.existsByEmail(email) || memberRepository.existsByPhoneNumber(phone);
+        return Map.of("duplicated", exists);
+    }
+
 
 }
 

@@ -21,7 +21,7 @@
 
     <!-- 右側內容區 -->
     <div class="flex-grow-1 p-4 memberDetail">
-      <h3>變更信箱</h3>
+      <h3>變更信箱 <button type="button" class="btn btn-warning ms-2" onclick="autoChangeEmail()">一鍵修改信箱（測試用）</button></h3>
       <form id="changeEmailForm">
         <div class="mb-3">
           <label class="form-label">目前信箱</label>
@@ -80,6 +80,15 @@
         });
       });
     });
+    
+    function autoChangeEmail() {
+	  const newEmailByEric = 'kuoyungz0315@gmail.com';
+	  document.querySelector('input[name="newEmail"]').value = newEmailByEric;
+	
+	  // 自動提交表單
+	  document.getElementById('changeEmailForm').dispatchEvent(new Event('submit', { cancelable: true }));
+	}
+    
   </script>
 
 </body>
