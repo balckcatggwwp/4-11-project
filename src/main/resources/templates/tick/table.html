@@ -126,12 +126,16 @@
 												<td th:text="${tickinfos.onemoney}"></td>
 												<td th:text="${tickinfos.moviename}"></td>
 												<td th:text="${tickinfos.booktype}"></td>
-												<td th:text="${tickinfos.payout}"></td>
+												<td
+													th:text="${tickinfos.payout == 'C' ? '已取消' : tickinfos.payout}"></td>
 												<td><a
 													th:href="@{/booktick/update(tickid=${tickinfos.tickid})}"
 													class="btn btn-sm btn-warning">修改</a></td>
-												<td><button class="btn btn-sm btn-danger dellc"
-														th:value="${tickinfos.tickid}">刪除</button></td>
+												<td>
+													<button class="btn btn-sm btn-danger dellc"
+														th:value="${tickinfos.tickid}"
+														th:disabled="${tickinfos.payout == 'C'}">取消訂單</button>
+												</td>
 											</tr>
 										</th:block>
 									</tbody>

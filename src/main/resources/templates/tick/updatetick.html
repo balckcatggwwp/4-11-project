@@ -194,6 +194,7 @@
 								<option value="">是否付款</option>
 								<option th:value="Y" th:selected="${tickinfo.payout == 'Y'}">已付</option>
 								<option th:value="N" th:selected="${tickinfo.payout == 'N'}">未付</option>
+								<option th:value="C" th:selected="${tickinfo.payout == 'C'}">已取消</option>
 							</select>
 						</div>
 					</div>
