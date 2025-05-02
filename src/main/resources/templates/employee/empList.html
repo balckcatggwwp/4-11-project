@@ -615,12 +615,55 @@
         });
       });
       
-     async function generateFakeEmployee(index) {
-	  const name = `測試員工${index}`;
+    // === 公用函數 ===
+	function generateFakeNationalId() {
+	  const first = String.fromCharCode(65 + Math.floor(Math.random() * 26));
+	  const second = Math.random() < 0.5 ? '1' : '2';
+	  const numbers = Math.floor(10000000 + Math.random() * 89999999).toString();
+	  return first + second + numbers;
+	}
+	
+	function generateRandomDate(startYear, endYear) {
+	  const start = new Date(`${startYear}-01-01`).getTime();
+	  const end = new Date(`${endYear}-12-31`).getTime();
+	  return new Date(start + Math.random() * (end - start)).toISOString().split('T')[0];
+	}
+	
+	function generateRandomName() {
+	  const surnames = ['王', '李', '張', '陳', '林', '黃', '吳', '劉', '蔡', '楊'];
+	  const givenNames = ['小明', '志強', '美麗', '惠君', '嘉文', '志偉', '怡君', '柏宇', '冠廷', '欣怡'];
+	  const randomSurname = surnames[Math.floor(Math.random() * surnames.length)];
+	  const randomGiven = givenNames[Math.floor(Math.random() * givenNames.length)];
+	  return randomSurname + randomGiven;
+	}
+	
+	async function getUniqueEmailAndPhone() {
+	  let tryCount = 0;
+	  while (tryCount < 5) {
+	    const email = `emp${Date.now()}${tryCount}@demo.com`;
+	    const phone = '09' + Math.floor(10000000 + Math.random() * 89999999);
+	
+	    try {
+	      await $.ajax({
+	        url: '/employeeApi/checkExist',
+	        method: 'POST',
+	        contentType: 'application/json',
+	        data: JSON.stringify({ email, phoneNumber: phone })
+	      });
+	      return { email, phone };
+	    } catch {
+	      tryCount++;
+	    }
+	  }
+	  throw new Error('無法產生唯一的 email / 手機號碼');
+	}
+	
+	async function generateFakeEmployee(index) {
+	  const name = generateRandomName();
 	  const gender = Math.random() < 0.5 ? 'male' : 'female';
 	  const nationalId = generateFakeNationalId();
-	  const dateOfBirth = randomDate(1980, 2000);
-	  const entryTime = randomDate(2010, 2024);
+	  const dateOfBirth = generateRandomDate(1980, 2000);
+	  const entryTime = generateRandomDate(2010, 2024);
 	  const password = '1111';
 	
 	  let email, phone;
@@ -628,128 +671,104 @@
 	  do {
 	    email = `test_emp${Date.now()}_${index}@demo.com`;
 	    phone = `09${Math.floor(10000000 + Math.random() * 89999999)}`;
-	    const checkRes = await $.ajax({
-	      url: '/employee/empRegister',
-	      type: 'POST',
-	      data: { email, phoneNumber: phone },
-	      error: () => ({ status: 'error' })
-	    });
-	    if (checkRes.status === 'error') {
-	      tries++;
-	    } else {
+	    try {
+	      await $.ajax({
+	        url: '/employeeApi/checkExist',
+	        method: 'POST',
+	        contentType: 'application/json',
+	        data: JSON.stringify({ email, phoneNumber: phone })
+	      });
 	      break;
+	    } catch {
+	      tries++;
 	    }
 	  } while (tries < 5);
 	
+	  const jobTitleOptions = $('#jobTitleSelect option');
+	  const randomIndex = Math.floor(Math.random() * (jobTitleOptions.length - 1)) + 1;
+	  const jobTitleCategoryId = jobTitleOptions.eq(randomIndex).val();
+	
+	  const allCheckboxes = $('#permissionsCheckboxes input[type="checkbox"]');
+	  const permList = allCheckboxes.toArray().map(cb => parseInt(cb.value));
+	  const shuffled = permList.sort(() => 0.5 - Math.random());
+	  const howMany = Math.floor(Math.random() * permList.length) + 1;
+	  const permissionIds = shuffled.slice(0, howMany);
+	
 	  return {
-	    name, gender, nationalId, dateOfBirth, entryTime,
-	    email, phoneNumber: phone, password
-	  };
+	  name,
+	  gender,
+	  nationalId,
+	  dateOfBirth,
+	  entryTime,
+	  email,
+	  phoneNumber: phone,
+	  password,
+	  jobTitleCategory: {
+	    jobTitleCategoryId: jobTitleCategoryId
+	  },
+	  permissions: permissionIds.map(id => ({ empPermissionTypeId: id }))
+	};
+
 	}
 	
-	function randomDate(startYear, endYear) {
-	  const start = new Date(`${startYear}-01-01`).getTime();
-	  const end = new Date(`${endYear}-12-31`).getTime();
-	  return new Date(start + Math.random() * (end - start)).toISOString().split('T')[0];
-	}
+	// === 綁定事件 ===
+	$('#autoFillEmpBtn').click(async function () {
+	  try {
+	    const today = new Date().toISOString().split('T')[0];
+	    const gender = Math.random() < 0.5 ? 'male' : 'female';
+	    const { email, phone } = await getUniqueEmailAndPhone();
 	
-	function generateFakeNationalId() {
-	  const first = String.fromCharCode(65 + Math.floor(Math.random() * 26));
-	  const second = Math.random() < 0.5 ? '1' : '2';
-	  const nums = String(Math.floor(10000000 + Math.random() * 89999999));
-	  return first + second + nums;
-	}
+	    $('input[name="name"]').val(generateRandomName());
+	    $(`input[name="gender"][value="${gender}"]`).prop('checked', true);
+	    $('input[name="nationalId"]').val(generateFakeNationalId());
+	    $('input[name="dateOfBirth"]').val(generateRandomDate(1980, 2000));
+	    $('input[name="entryTime"]').val(today);
+	    $('input[name="email"]').val(email);
+	    $('input[name="phoneNumber"]').val(phone);
+	    $('#password').val('1111');
+	    $('#password2').val('1111');
 	
-	// 👇 綁定按鈕用（建議放在 modal 開完職稱權限都載入後）
+	    const jobTitleOptions = $('#jobTitleSelect option');
+	    const randomIndex = Math.floor(Math.random() * (jobTitleOptions.length - 1)) + 1;
+	    const randomJobTitle = jobTitleOptions.eq(randomIndex).val();
+	    $('#jobTitleSelect').val(randomJobTitle);
+	
+	    const checkboxes = $('#permissionsCheckboxes input[type="checkbox"]');
+	    checkboxes.prop('checked', false);
+	    const total = checkboxes.length;
+	    const numToCheck = Math.floor(Math.random() * total) + 1;
+	    const shuffled = checkboxes.toArray().sort(() => 0.5 - Math.random());
+	    for (let i = 0; i < numToCheck; i++) {
+	      $(shuffled[i]).prop('checked', true);
+	    }
+	  } catch (err) {
+	    Swal.fire('錯誤', err.message || '產生測試資料失敗', 'error');
+	  }
+	});
+	
 	$('#batchAddEmployeeBtn').click(async function () {
-	  const jobTitleId = $('#jobTitleSelect option:eq(1)').val();
-	  const permissionIds = $('#permissionsCheckboxes input:checked')
-	    .map((_, el) => parseInt($(el).val())).get();
-	
-	  const promises = [];
+	  const employeeList = [];
 	  for (let i = 1; i <= 5; i++) {
 	    const emp = await generateFakeEmployee(i);
-	    emp.jobTitleCategoryId = jobTitleId;
-	    emp.permissionIds = permissionIds;
-	
-	    promises.push($.ajax({
-	      url: '/employeeApi/add',
-	      method: 'POST',
-	      contentType: 'application/json',
-	      data: JSON.stringify(emp)
-	    }));
+	    console.log(`[DEBUG] 假員工 ${i}:`, emp);
+	    employeeList.push(emp);
 	  }
 	
-	  Promise.all(promises).then(() => {
-	    Swal.fire('完成', '已成功新增 5 位員工', 'success');
-	    $('#employeeTable').DataTable().ajax.reload();
-	  }).catch(() => {
-	    Swal.fire('錯誤', '新增失敗，請檢查格式與權限', 'error');
+	  $.ajax({
+	    url: '/employeeApi/RegisterFakeEmp',
+	    method: 'POST',
+	    contentType: 'application/json',
+	    data: JSON.stringify(employeeList),
+	    success: function () {
+	      Swal.fire('完成', '已成功新增 5 位員工', 'success');
+	      $('#employeeTable').DataTable().ajax.reload();
+	    },
+	    error: function () {
+	      Swal.fire('錯誤', '新增失敗，請檢查格式與權限', 'error');
+	    }
 	  });
 	});
-    </script>
-	<script>
-    function generateFakeNationalId() {
-		  const first = String.fromCharCode(65 + Math.floor(Math.random() * 26));
-		  const second = Math.random() < 0.5 ? '1' : '2';
-		  const numbers = Math.floor(10000000 + Math.random() * 89999999).toString();
-		  return first + second + numbers;
-		}
-		
-		function generateRandomDate(startYear, endYear) {
-		  const start = new Date(`${startYear}-01-01`).getTime();
-		  const end = new Date(`${endYear}-12-31`).getTime();
-		  return new Date(start + Math.random() * (end - start)).toISOString().split('T')[0];
-		}
-		
-		async function getUniqueEmailAndPhone() {
-		  let tryCount = 0;
-		  while (tryCount < 5) {
-		    const email = `emp${Date.now()}${tryCount}@demo.com`;
-		    const phone = '09' + Math.floor(10000000 + Math.random() * 89999999);
-		    
-		    const check = await $.ajax({
-		      url: '/employee/empRegister',
-		      type: 'POST',
-		      data: { email, phoneNumber: phone },
-		      error: () => ({ status: 'error' })
-		    });
-		
-		    if (check.status !== 'error') {
-		      return { email, phone };
-		    }
-		    tryCount++;
-		  }
-		  throw new Error('無法產生唯一的 email / 手機號碼');
-		}
-		
-		$('#autoFillEmpBtn').click(async function () {
-		  try {
-		    const today = new Date().toISOString().split('T')[0];
-		    const gender = Math.random() < 0.5 ? 'male' : 'female';
-		    const { email, phone } = await getUniqueEmailAndPhone();
-		
-		    $('input[name="name"]').val('測試員工');
-		    $(`input[name="gender"][value="${gender}"]`).prop('checked', true);
-		    $('input[name="nationalId"]').val(generateFakeNationalId());
-		    $('input[name="dateOfBirth"]').val(generateRandomDate(1980, 2000));
-		    $('input[name="entryTime"]').val(today);
-		    $('input[name="email"]').val(email);
-		    $('input[name="phoneNumber"]').val(phone);
-		    $('#password').val('1111');
-		    $('#password2').val('1111');
-		
-		    // 預設選擇第一個有效職稱
-		    const firstJobTitle = $('#jobTitleSelect option:eq(1)').val();
-		    $('#jobTitleSelect').val(firstJobTitle);
-		
-		    // 預設勾選所有權限（你可視需要調整）
-		    $('#permissionsCheckboxes input[type="checkbox"]').prop('checked', true);
-		  } catch (err) {
-		    Swal.fire('錯誤', err.message || '產生測試資料失敗', 'error');
-		  }
-		});
-    
+	    
     </script>
 	<script src="/js/empTobar.js"></script>
 	<script src="/js/empLogout.js"></script>

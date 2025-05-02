@@ -30,6 +30,7 @@ import com.example.demo.employee.model.Employee;
 import com.example.demo.employee.model.EmployeeAddDTO;
 import com.example.demo.employee.model.EmployeeProfileEditDTO;
 import com.example.demo.employee.model.EmployeeRepository;
+import com.example.demo.employee.model.EmployeeService;
 import com.example.demo.employee.model.JobTitleCategory;
 import com.example.demo.employee.model.JobTitleCategoryRepository;
 
@@ -49,6 +50,9 @@ public class EmpApiController {
 
 	@Autowired
 	private EmpPermissionCategoryRepository empPermissionCategoryRepository;
+	
+	@Autowired
+	private EmployeeService employeeService;
 
 	@GetMapping("/sessionInfo")
 	public Map<String, Object> getSessionEmployee(HttpSession session) {
@@ -344,6 +348,33 @@ public class EmpApiController {
 
 	    return res;
 	}
+	
+	 @PostMapping("/checkExist")
+	    public ResponseEntity<?> checkExist(@RequestBody Map<String, String> request) {
+	        String email = request.get("email");
+	        String phone = request.get("phoneNumber");
 
+	        boolean available = employeeService.checkEmailOrPhoneAvailable(email, phone);
+	        if (available) {
+	            return ResponseEntity.ok(Map.of("status", "ok"));
+	        } else {
+	            return ResponseEntity.badRequest().body(Map.of("status", "exists"));
+	        }
+	    }
+	 
+	 @PostMapping("/RegisterFakeEmp")
+	    public ResponseEntity<?> registerFakeEmployees(@RequestBody List<Employee> employees) {
+	        try {
+	            for (Employee emp : employees) {
+	                employeeService.insertEmployee(emp); // 含密碼加密
+	            }
+	            return ResponseEntity.ok(Map.of("status", "success", "message", "已成功新增假員工"));
+	        } catch (Exception e) {
+	            return ResponseEntity.badRequest().body(Map.of(
+	                "status", "error",
+	                "message", e.getMessage()
+	            ));
+	        }
+	    }
 
 }

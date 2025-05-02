@@ -2,93 +2,104 @@
 <html xmlns:th="http://www.thymeleaf.org">
 
 <head>
-  <meta charset="UTF-8">
-  <title>變更信箱 - 光影之門</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link rel="stylesheet" href="/css/memberCenter.css">
-  <link rel="stylesheet" href="/css/footer.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" />
+<meta charset="UTF-8">
+<title>變更信箱 - 光影之門</title>
+<link
+	href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+	rel="stylesheet">
+<link rel="stylesheet" href="/css/memberCenter.css">
+<link rel="stylesheet" href="/css/footer.css">
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" />
 </head>
 
 <body>
 
-  <!-- 匯入 navbar -->
-  <div th:replace="fragments/navbar :: navbar"></div>
+	<!-- 匯入 navbar -->
+	<div th:replace="fragments/navbar :: navbar"></div>
 
-  <div class="d-flex">
-    <!-- 左側側邊欄 -->
-    <div th:replace="fragments/memberDetailsideBar :: memberDetailsideBar"></div>
+	<div class="d-flex">
+		<!-- 左側側邊欄 -->
+		<div th:replace="fragments/memberDetailsideBar :: memberDetailsideBar"></div>
 
-    <!-- 右側內容區 -->
-    <div class="flex-grow-1 p-4 memberDetail">
-      <h3>變更信箱 <button type="button" class="btn btn-warning ms-2" onclick="autoChangeEmail()">一鍵修改信箱（測試用）</button></h3>
-      <form id="changeEmailForm">
-        <div class="mb-3">
-          <label class="form-label">目前信箱</label>
-          <input type="email" class="form-control" th:value="${session.memberDetail.email}" readonly>
-        </div>
-        <div class="mb-3">
-          <label class="form-label">新的信箱</label>
-          <input type="email" class="form-control" name="newEmail" placeholder="請輸入新的Email" required>
-        </div>
-        <button type="submit" class="btn btn-primary">送出變更申請</button>
-      </form>
-    </div>
-  </div>
+		<!-- 右側內容區 -->
+		<div class="flex-grow-1 p-4 memberDetail">
+			<h3>
+				變更信箱
+				<button type="button" class="btn btn-warning ms-2"
+					onclick="autoChangeEmail()">一鍵修改信箱（測試用）</button>
+			</h3>
+			<form id="changeEmailForm">
+				<div class="mb-3">
+					<label class="form-label">目前信箱</label> <input type="email"
+						class="form-control" th:value="${session.memberDetail.email}"
+						readonly>
+				</div>
+				<div class="mb-3">
+					<label class="form-label">新的信箱</label> <input type="email"
+						class="form-control" name="newEmail" placeholder="請輸入新的Email"
+						required>
+				</div>
+				<button type="submit" class="btn btn-primary">送出變更申請</button>
+			</form>
+		</div>
+	</div>
 
-  <!-- 匯入 footer -->
-  <th:block th:replace="~{fragments/footer :: footer}"></th:block>
+	<!-- 匯入 footer -->
+	<th:block th:replace="~{fragments/footer :: footer}"></th:block>
 
-  <!-- Bootstrap JS -->
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-  <!-- 引入 SweetAlert2 -->
-  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+	<!-- Bootstrap JS -->
+	<script
+		src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+	<!-- 引入 SweetAlert2 -->
+	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-  <script>
+	<script>
     document.getElementById('changeEmailForm').addEventListener('submit', function (e) {
-      e.preventDefault();
-      const newEmail = document.querySelector('input[name="newEmail"]').value;
+  e.preventDefault();
+  const newEmail = document.querySelector('input[name="newEmail"]').value;
 
-      fetch('/member/changeEmail', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/x-www-form-urlencoded'
-        },
-        body: new URLSearchParams({ newEmail })
-      })
-      .then(response => response.json())
-      .then(data => {
-        if (data.status === 'success') {
-          Swal.fire({
-            icon: 'success',
-            title: '申請成功！',
-            text: data.message
-          });
-        } else {
-          Swal.fire({
-            icon: 'error',
-            title: '申請失敗',
-            text: data.message
-          });
-        }
-      })
-      .catch(error => {
-        Swal.fire({
-          icon: 'error',
-          title: '錯誤',
-          text: '請稍後再試'
-        });
+  // 顯示 loading 畫面
+  Swal.fire({
+    title: '處理中...',
+    text: '請稍候',
+    allowOutsideClick: false,
+    didOpen: () => {
+      Swal.showLoading();
+    }
+  });
+
+  fetch('/member/changeEmail', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded'
+    },
+    body: new URLSearchParams({ newEmail })
+  })
+  .then(response => response.json())
+  .then(data => {
+    if (data.status === 'success') {
+      Swal.fire({
+        icon: 'success',
+        title: '申請成功！',
+        text: data.message
       });
+    } else {
+      Swal.fire({
+        icon: 'error',
+        title: '申請失敗',
+        text: data.message
+      });
+    }
+  })
+  .catch(error => {
+    Swal.fire({
+      icon: 'error',
+      title: '錯誤',
+      text: '請稍後再試'
     });
-    
-    function autoChangeEmail() {
-	  const newEmailByEric = 'kuoyungz0315@gmail.com';
-	  document.querySelector('input[name="newEmail"]').value = newEmailByEric;
-	
-	  // 自動提交表單
-	  document.getElementById('changeEmailForm').dispatchEvent(new Event('submit', { cancelable: true }));
-	}
-    
+  });
+});
   </script>
 
 </body>
