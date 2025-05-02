@@ -140,8 +140,10 @@ public class BooktickController {
 		Optional<OrderBean> op2 = orderService.findbyorder(optional.get().getOrderid());
 		int a= op2.get().getSumpay()-optional.get().getOnemoney();
 		op2.get().setSumpay(a);
-		orderService.update(op2.get());
-		bookvuService.deltick(id);
+//		orderService.update(op2.get());
+		optional.get().setPayout("C");
+//		bookvuService.deltick(id);
+		System.out.println(optional.get().getSeatid());
 		return "redirect:/ticktable";
 	}
 
