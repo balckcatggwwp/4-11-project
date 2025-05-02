@@ -141,7 +141,7 @@ public class MemberController {
 		// 從session拿memberEmail
 		String memberEmail = (String) session.getAttribute("memberEmail");
 		if (memberEmail == null) {
-			return "redirect:/login"; // 沒登入直接打回去
+			return "redirect:/"; // 沒登入直接打回去
 		}
 		model.addAttribute("memberEmail", memberEmail);
 		return "member/resendVerify"; // resources/templates/member/resendVerify.html
