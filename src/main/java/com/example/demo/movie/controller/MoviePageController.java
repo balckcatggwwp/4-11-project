@@ -1,11 +1,13 @@
 package com.example.demo.movie.controller;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 
 @Controller
 public class MoviePageController {
-
+	
 	@GetMapping("/MovieList")
 	public String ListPage() {
 		return "/Movie";
@@ -19,8 +21,15 @@ public class MoviePageController {
 	public String ShowtimeSelectPage() {
 		return "/ShowtimeSelect";
 	}
-	@GetMapping("/MovieInfo")
+	@GetMapping("/MovieShowing")
 	public String MovieInfoPage() {
-		return "/MovieInfo";
+		return "/MovieShowing";
+	}
+	
+	@GetMapping("/MovieInfo/{id}")
+	public String getMovieDetails(@PathVariable Integer id, Model model) {
+	    model.addAttribute("movieid", id);
+	    return  "moviedetails";
+	     // 返回顯示電影詳情的頁面
 	}
 }

@@ -231,10 +231,11 @@ $(function () {
 	//     $("#time, #halls").on('change', loadseat);
 	// });
 
-	// $('#moviename').on('change', function () { loadseat(); })
+	$('#moviename').on('change', function () { seatlist.splice(0, seatlist.length); })
 
 	$('#time').on('change', function () {
 		loadseat();
+		seatlist.splice(0, seatlist.length);
 	})
 
 })
@@ -247,6 +248,7 @@ $(function () {
 	});
 	//點選日期改時間
 	$("#datepicker").on("change", function () {
+		seatlist.splice(0, seatlist.length);
 		let selectdate = $("#datepicker").val();
 		// console.log(selectdate)
 		$("#moviename").empty();
@@ -276,7 +278,7 @@ $(function () {
 
 	///
 	//廳
-	function name() {
+	function time() {
 		$('#time').empty();
 		let nameid = $("#moviename").val();
 
@@ -304,7 +306,7 @@ $(function () {
 	}
 
 	$("#moviename").on("change", function () {
-		name();
+		time();
 		// $('#halls').empty();
 	})
 

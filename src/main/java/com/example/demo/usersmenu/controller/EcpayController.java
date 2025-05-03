@@ -54,7 +54,7 @@ public class EcpayController {
         String merchantID = "2000132";
         String tradeNo = "ORD" + UUID.randomUUID().toString().replaceAll("-", "").substring(0, 15);
         String tradeDate = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss"));
-        String returnURL = "https://2858-36-228-235-238.ngrok-free.app/checkout/confirm";
+        String returnURL = "https://b698-111-243-185-49.ngrok-free.app/checkout/confirm";
         String clientBackURL = "http://localhost:8080/ecpay/success";
 
         Map<String, String> paramMap = new HashMap<>();

@@ -23,7 +23,6 @@
       <tr th:each="item : ${foodOrders}">
         <td th:text="${item.order.orderId}">123</td>
        <td th:text="${#temporals.format(item.order.orderTime, 'yyyy-MM-dd HH:mm')}"></td>
-
         <td th:text="${item.menuName}">熱狗</td>
         <td th:text="${item.quantity}">2</td>
         <td th:text="${item.unitPrice}">50</td>

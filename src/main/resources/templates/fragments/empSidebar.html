@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<!-- Font Awesome -->
+<link
+	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+	rel="stylesheet">
+</head>
+<body>
+	<!-- Sidebar -->
+	<ul th:fragment="sidebar"
+		class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion"
+		id="accordionSidebar">
+
+		<!-- Sidebar - Brand -->
+		<a
+			class="sidebar-brand d-flex align-items-center justify-content-center"
+			href="/employee/empIndex">
+			<div class="sidebar-brand-icon rotate-n-15">
+				<i class="fas fa-theater-masks"></i>
+			</div>
+			<div class="sidebar-brand-text mx-3">
+				光影之門後台管理系統<sup>1.0</sup>
+			</div>
+		</a>
+
+		<!-- Divider -->
+		<hr class="sidebar-divider my-0">
+
+		<!-- Heading -->
+		<div class="sidebar-heading">會員/員工管理</div>
+
+		<li class="nav-item"><a class="nav-link collapsed" href="#"
+			data-bs-toggle="collapse" data-bs-target="#collapseMemberCenter"
+			aria-expanded="false" aria-controls="collapseMemberCenter"> <i
+				class="fas fa-user-circle"></i> <span>會員中心</span>
+		</a>
+			<div id="collapseMemberCenter" class="collapse"
+				data-bs-parent="#accordionSidebar">
+				<div class="py-2 collapse-inner rounded"
+					style="background-color: #a5b7f5;">
+
+					<div>
+						<a
+							class="d-flex align-items-center gap-2 text-white text-decoration-none py-2 ps-4"
+							th:href="@{/member/memberListEmp}"> <i
+							class="fas fa-user-friends"></i> <span>會員管理</span>
+						</a>
+					</div>
+
+					<div class="border-top border-white-50">
+						<a
+							class="d-flex align-items-center gap-2 text-white text-decoration-none py-2 ps-4"
+							th:href="@{/member/memberTypeManager}"> <i
+							class="fas fa-id-badge"></i> <span>會員身分管理</span>
+						</a>
+					</div>
+
+				</div>
+			</div></li>
+		<li class="nav-item"><a class="nav-link" href="/employee/empList">
+				<i class="fas fa-user-tie"></i> <span>下屬員工管理</span>
+		</a></li>
+
+		<hr class="sidebar-divider">
+
+		<!-- Heading -->
+		<div class="sidebar-heading">管理人員專屬</div>
+
+		<li class="nav-item"><a class="nav-link collapsed" href="#"
+			data-bs-toggle="collapse" data-bs-target="#collapseEmpCenter"
+			aria-expanded="false" aria-controls="collapseEmpCenter"> <i
+				class="fas fa-user-circle"></i> <span>員工管理(權限/職務)</span>
+		</a>
+			<div id="collapseEmpCenter" class="collapse"
+				data-bs-parent="#accordionSidebar">
+				<div class="py-2 collapse-inner rounded"
+					style="background-color: #a5b7f5;">
+
+
+					<div>
+						<a
+							class="d-flex align-items-center gap-2 text-white text-decoration-none py-2 ps-4"
+							href="/employee/jobTitleManager"> <i class="fas fa-briefcase"></i>
+							<span>員工職務管理</span>
+						</a>
+					</div>
+					
+					<div class="border-top border-white-50">
+						<a
+							class="d-flex align-items-center gap-2 text-white text-decoration-none py-2 ps-4"
+							href="/employee/empPermissionList"> <i
+						class="fas fa-key"></i> <span>員工權限管理</span>
+						</a>
+					</div>
+				</div>
+			</div></li>
+
+		<hr class="sidebar-divider">
+
+		<!-- Heading -->
+		<div class="sidebar-heading">訂票/電影管理</div>
+
+		<li class="nav-item"><a class="nav-link" href="/MovieList"> <i
+				class="fas fa-film"></i> <span>電影管理</span>
+		</a></li>
+		<li class="nav-item"><a class="nav-link" th:href="@{/ticktable}">
+				<i class="fas fa-ticket-alt"></i> <span>訂票管理</span>
+		</a></li>
+
+		<hr class="sidebar-divider d-none d-md-block">
+
+		<!-- Heading -->
+		<div class="sidebar-heading">餐點管理</div>
+
+		<li class="nav-item"><a class="nav-link"
+			th:href="@{/menu/page/1}"> <i class="fas fa-utensils"></i> <span>餐點管理</span>
+		</a></li>
+
+		<hr class="sidebar-divider d-none d-md-block">
+
+		<!-- Heading -->
+		<div class="sidebar-heading">客服中心</div>
+
+		<li class="nav-item"><a class="nav-link" th:href="@{/admin1}">
+				<i class="fas fa-headset"></i> <span>客服管理</span>
+		</a></li>
+
+		<hr class="sidebar-divider d-none d-md-block">
+
+		<!-- Heading -->
+		<div class="sidebar-heading">其他</div>
+
+		<li class="nav-item"><a class="nav-link" href="/"> <i
+				class="fas fa-home"></i> <span>前往官網</span>
+		</a></li>
+
+		<!-- Sidebar Toggler (Sidebar) -->
+		<div class="text-center d-none d-md-inline">
+			<button class="rounded-circle border-0" id="sidebarToggle"></button>
+		</div>
+
+	</ul>
+	<!-- End of Sidebar -->
+</body>
+</html>

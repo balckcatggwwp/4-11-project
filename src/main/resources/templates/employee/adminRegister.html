@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+	<meta charset="UTF-8">
+	<title>管理員註冊</title>
+	<link href="/vendor/fontawesome-free/css/all.min.css" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css?family=Nunito:200,300,400,700" rel="stylesheet">
+	<link href="/css/sb-admin-2.min.css" rel="stylesheet">
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+	<style>
+	.bg-register-image {
+		background: url('/imgs/register.jpg');
+		background-position: center;
+		background-size: cover;
+	}
+	</style>
+</head>
+<body class="bg-gradient-primary">
+<div class="container">
+	<div class="card o-hidden border-0 shadow-lg my-5">
+		<div class="card-body p-0">
+			<div class="row">
+				<div class="col-lg-5 d-none d-lg-block bg-register-image"></div>
+				<div class="col-lg-7">
+					<div class="p-5">
+						<div class="text-center">
+							<h1 class="h4 text-gray-900 mb-4">註冊管理員帳號</h1>
+						</div>
+						<form id="adminRegisterForm" class="user">
+							<!-- 基本資料 -->
+							<fieldset class="border p-3 mb-4 rounded">
+								<legend class="w-auto px-2">基本資料</legend>
+								<div class="mb-3">
+									<label class="form-label">姓名</label>
+									<input type="text" name="name" class="form-control form-control-user" required>
+								</div>
+								<div class="mb-3">
+									<label class="form-label">性別</label><br>
+									<div class="form-check form-check-inline">
+										<input class="form-check-input" type="radio" name="gender" value="male" required>
+										<label class="form-check-label">男</label>
+									</div>
+									<div class="form-check form-check-inline">
+										<input class="form-check-input" type="radio" name="gender" value="female" required>
+										<label class="form-check-label">女</label>
+									</div>
+								</div>
+								<div class="mb-3">
+									<label class="form-label">身分證字號</label>
+									<input type="text" name="nationalId" class="form-control" required pattern="[A-Z]{1}[12]{1}[0-9]{8}">
+								</div>
+								<div class="mb-3">
+									<label class="form-label">生日</label>
+									<input type="date" name="dateOfBirth" class="form-control" required>
+								</div>
+								<div class="mb-3">
+									<label class="form-label">入職時間</label>
+									<input type="date" name="entryTime" class="form-control" required>
+								</div>
+							</fieldset>
+
+							<!-- 職稱與權限 -->
+							<fieldset class="border p-3 mb-4 rounded">
+								<legend class="w-auto px-2">角色設定</legend>
+								<div class="mb-3">
+									<label class="form-label">選擇職稱</label>
+									<select class="form-select" id="jobTitleSelect" name="jobTitleCategoryId" required></select>
+								</div>
+								<div class="mb-3">
+									<label class="form-label">指派權限</label>
+									<div id="permissionsCheckboxes" class="row"></div>
+								</div>
+							</fieldset>
+
+							<!-- 帳號設定 -->
+							<fieldset class="border p-3 mb-4 rounded">
+								<legend class="w-auto px-2">帳號設定</legend>
+								<div class="mb-3">
+									<label>Email</label>
+									<input type="email" name="email" id="adminEmail" class="form-control" required>
+								</div>
+								<div class="mb-3">
+									<label>手機號碼</label>
+									<input type="text" name="phoneNumber" class="form-control" maxlength="10" required pattern="09[0-9]{8}">
+								</div>
+								<div class="row">
+									<div class="col">
+										<label>密碼</label>
+										<input type="password" id="password" class="form-control" required>
+									</div>
+									<div class="col">
+										<label>確認密碼</label>
+										<input type="password" id="password2" class="form-control" required>
+									</div>
+								</div>
+							</fieldset>
+
+							<div class="d-grid gap-2">
+								<button type="submit" class="btn btn-primary">送出註冊</button>
+								<button type="button" class="btn btn-outline-secondary" id="fillAdmin">一鍵填入</button>
+							</div>
+						</form>
+
+						<hr>
+						<div class="text-center">
+							<a class="small" href="/employee/empLogin">已有帳號？立即登入</a>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- JS 區 -->
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<script>
+$(function () {
+	// 載入職稱
+	$.get('/jobTitleApi/list', function (data) {
+		const $select = $('#jobTitleSelect');
+		$select.empty().append('<option value="">請選擇</option>');
+		data.forEach(j => {
+			$select.append(`<option value="${j.jobTitleCategoryId}">${j.jobTitleName} (等級${j.jobLevel})</option>`);
+		});
+	});
+
+	// 載入權限
+	$.get('/empPermissionApi/list', function (data) {
+		const $perm = $('#permissionsCheckboxes');
+		$perm.empty();
+		data.forEach(p => {
+			$perm.append(`
+				<div class="form-check col-6">
+					<input class="form-check-input" type="checkbox" id="perm${p.empPermissionTypeId}" value="${p.empPermissionTypeId}" name="permissions">
+					<label class="form-check-label" for="perm${p.empPermissionTypeId}">${p.empPermissionTypeName}</label>
+				</div>
+			`);
+		});
+	});
+
+	// 一鍵填入
+	$('#fillAdmin').click(function () {
+		const today = new Date().toISOString().split('T')[0];
+		$('input[name="name"]').val("初始管理員");
+		$('input[name="gender"][value="male"]').prop("checked", true);
+		$('input[name="nationalId"]').val("A123456789");
+		$('input[name="dateOfBirth"]').val("1990-01-01");
+		$('input[name="entryTime"]').val(today);
+		$('#adminEmail').val("movieprojecteeit94@gmail.com");
+		$('input[name="phoneNumber"]').val("0912345678");
+		$('#password, #password2').val("1111");
+		$('#jobTitleSelect').val($('#jobTitleSelect option:eq(1)').val());
+		$('#permissionsCheckboxes input[type="checkbox"]').prop("checked", true);
+	});
+
+	// 表單送出
+	$('#adminRegisterForm').submit(function (e) {
+		e.preventDefault();
+
+		const pwd = $('#password').val();
+		const pwd2 = $('#password2').val();
+		if (pwd !== pwd2) {
+			Swal.fire('錯誤', '兩次密碼不一致', 'warning');
+			return;
+		}
+
+		const selectedPermissions = [];
+		$('input[name="permissions"]:checked').each(function () {
+			selectedPermissions.push($(this).val());
+		});
+
+		const formData = {
+			name: $('input[name="name"]').val(),
+			gender: $('input[name="gender"]:checked').val(),
+			nationalId: $('input[name="nationalId"]').val(),
+			dateOfBirth: $('input[name="dateOfBirth"]').val(),
+			entryTime: $('input[name="entryTime"]').val(),
+			email: $('input[name="email"]').val(),
+			phoneNumber: $('input[name="phoneNumber"]').val(),
+			password: pwd,
+			jobTitleCategoryId: $('#jobTitleSelect').val(),
+			permissionIds: selectedPermissions
+		};
+
+		$.ajax({
+			url: '/employee/adminRegister',
+			method: 'POST',
+			contentType: 'application/json',
+			data: JSON.stringify(formData),
+			success: function (res) {
+				if (res.status === 'success') {
+					Swal.fire('註冊成功', '歡迎管理員加入！', 'success').then(() => {
+						window.location.href = '/employee/empLogin';
+					});
+				} else {
+					Swal.fire('註冊失敗', res.message || '請稍後再試', 'error');
+				}
+			},
+			error: function () {
+				Swal.fire('錯誤', '伺服器錯誤，請稍後再試', 'error');
+			}
+		});
+	});
+});
+</script>
+</body>
+</html>

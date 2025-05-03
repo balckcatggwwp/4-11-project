@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import com.example.demo.DemoApplication;
+import com.example.demo.movie.service.MovieListService;
 import com.example.demo.tick.bean.BookticketBean;
 import com.example.demo.tick.bean.BookticketvuBean;
 import com.example.demo.tick.bean.OrderBean;
@@ -32,24 +33,23 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @Controller
 public class BooktickController {
 
-
 	@Autowired
 	private BookvuService bookvuService;
-	@Autowired 
+	@Autowired
 	private TickorderService orderService;
 	@Autowired
 	private HallService hallService;
 	@Autowired
 	private TimeService timeService;
+	@Autowired
+	private MovieListService movieListService;
 
-
-	
 	@GetMapping("/ticktable")
 	public String tickall(Model model) {
 		List<BookticketvuBean> vu = bookvuService.tickfindAll();
 		List<Map.Entry<String, Long>> top3Movies = bookvuService.getTop3PopularMovies();
-        model.addAttribute("top3", top3Movies);
-		
+		model.addAttribute("top3", top3Movies);
+
 		model.addAttribute("tickall", vu);
 		return "tick/table";
 	}
@@ -66,36 +66,48 @@ public class BooktickController {
 	@PostMapping("/booktick/Updatea")
 	public String updateTick(@ModelAttribute BookticketBean updatedTick) {
 		BookticketvuBean vuBean = bookvuService.findmoneybyid(updatedTick.getTickid());
-		
+
 		OrderBean oBean = new OrderBean();
 		oBean.setUserid(updatedTick.getMemberId());
 		oBean.setOrderid(updatedTick.getOrderid());
-		Optional<OrderBean>optional= orderService.findbyorder(updatedTick.getOrderid());
-		Integer a = optional.get().getSumpay()-vuBean.getOnemoney()+updatedTick.getOnemoney();
-		oBean.setSumpay(a);
+		Optional<OrderBean> optional = orderService.findbyorder(updatedTick.getOrderid());
+		if ("C".equals(vuBean.getPayout())) {
+		    if (!"C".equals(updatedTick.getPayout())) {
+				Integer a1 = optional.get().getSumpay() + updatedTick.getOnemoney();
+				System.out.println("aaaaaaaaa"+a1);
+				oBean.setSumpay(a1);
+				
+			}
+		}else {
+			
+			
+			Integer a = optional.get().getSumpay() - vuBean.getOnemoney() + updatedTick.getOnemoney();
+			oBean.setSumpay(a);
+		}
+		oBean.setPayout(updatedTick.getPayout());
 		oBean.setOrderdate(optional.get().getOrderdate());
 		ShowtimeBean showtimeBean = timeService.findtimedate(updatedTick.getShowtimeid()).get();
 		oBean.setShowdate(showtimeBean.getShowdate());
 		oBean.setShowtime(showtimeBean.getShowtime());
-		oBean.setPayout(updatedTick.getPayout());
-		oBean.setMoviename(hallService.findnamebyhallid(updatedTick.getHallid()).getMoviename());
+		oBean.setMoviename(movieListService.findById(updatedTick.getMovieid()).get().getName());
 //		oBean.setSeat(updatedTick.getSeatid());
 		String seatString = optional.get().getSeat();
 		List<String> seats = new ArrayList<>(Arrays.asList(seatString.split(",")));
 		for (int i = 0; i < seats.size(); i++) {
-            if (seats.get(i).equals(vuBean.getSeatid())) {
-                seats.set(i, updatedTick.getSeatid());
-                break;
-            }
-        }
+			if (seats.get(i).equals(vuBean.getSeatid())) {
+				seats.set(i, updatedTick.getSeatid());
+				break;
+			}
+		}
 
-        String updatedSeatString = String.join(",", seats);
-        oBean.setSeat(updatedSeatString);
+		String updatedSeatString = String.join(",", seats);
+		oBean.setSeat(updatedSeatString);
 		oBean.setHallid(updatedTick.getHallid());
 		orderService.update(oBean);
 		bookvuService.updatetick(updatedTick);
 		return "redirect:/ticktable"; // 更新成功後重定向到訂票列表頁面
 	}
+
 	@PostMapping("/booktick/inser")
 	public String inserTick(@ModelAttribute BookticketBean updatedTick) {
 		OrderBean oBean = new OrderBean();
@@ -109,7 +121,7 @@ public class BooktickController {
 		oBean.setSumpay(updatedTick.getOnemoney());
 		oBean.setHallid(updatedTick.getHallid());
 		oBean.setSeat(updatedTick.getSeatid());
-		oBean.setMoviename(hallService.findnamebyhallid(updatedTick.getHallid()).getMoviename());
+		oBean.setMoviename(movieListService.findById(updatedTick.getMovieid()).get().getName());
 		ShowtimeBean showtimeBean = timeService.findtimedate(updatedTick.getShowtimeid()).get();
 		oBean.setShowdate(showtimeBean.getShowdate());
 		oBean.setShowtime(showtimeBean.getShowtime());
@@ -133,47 +145,59 @@ public class BooktickController {
 
 	@GetMapping("/booktick/del")
 	public String dele(@RequestParam Integer id) {
-		Optional<BookticketvuBean>optional =  bookvuService.findtickbyid(id);
-		
+		Optional<BookticketvuBean> optional = bookvuService.findtickbyid(id);
+		Optional<BookticketBean> op3 = bookvuService.findbyid(id);
 		Optional<OrderBean> op2 = orderService.findbyorder(optional.get().getOrderid());
-		int a= op2.get().getSumpay()-optional.get().getOnemoney();
-		op2.get().setSumpay(a);
-		orderService.update(op2.get());
-		bookvuService.deltick(id);
+		int a = op2.get().getSumpay() - optional.get().getOnemoney();
+		System.out.println(a);
+		if (a == 0) {
+			op2.get().setPayout("C");
+			op2.get().setSumpay(a);
+			orderService.update(op2.get());
+		} else {
+			
+			op2.get().setSumpay(a);
+			orderService.update(op2.get());
+		}
+
+		op3.get().setPayout("C");
+		bookvuService.updatetick(op3.get());
+//		bookvuService.deltick(id);
+//		System.out.println(optional.get().getSeatid());
 		return "redirect:/ticktable";
 	}
 
 	///////////// other
 	@GetMapping("/booktick/other")
-	public String findother(@RequestParam Integer select,
-			@RequestParam(required = false) Integer tickid, @RequestParam(required = false) Long orderid,
-			@RequestParam(required = false) Long memberId, @RequestParam(required = false) String startdate,
-			@RequestParam(required = false) Integer hallid, @RequestParam(required = false) String findname,
-			@RequestParam(required = false) String payout,Model model
+	public String findother(@RequestParam Integer select, @RequestParam(required = false) Integer tickid,
+			@RequestParam(required = false) Long orderid, @RequestParam(required = false) Long memberId,
+			@RequestParam(required = false) String startdate, @RequestParam(required = false) Integer hallid,
+			@RequestParam(required = false) String findname, @RequestParam(required = false) String payout, Model model
 
 	) {
+		System.out.println(startdate);
 		List<BookticketvuBean> vu = null;
 		if (select == 1) {
-			vu=bookvuService.findother(select, tickid,null);
-			
+			vu = bookvuService.findother(select, tickid, null);
+
 		} else if (select == 2) {
-			vu= bookvuService.findothers(select, null,orderid);
+			vu = bookvuService.findothers(select, null, orderid);
 		} else if (select == 3) {
-			vu= bookvuService.findother(select, null,memberId);
+			vu = bookvuService.findother(select, null, memberId);
 		} else if (select == 4) {
-			vu= bookvuService.findothers(select, startdate,null);
-		} else if (select == 5) { 
-			vu= bookvuService.findother(select, hallid,null);
-		}else if (select == 6) {
+			vu = bookvuService.findothers(select, startdate, null);
+		} else if (select == 5) {
+			vu = bookvuService.findother(select, hallid, null);
+		} else if (select == 6) {
 			System.out.println(findname);
-			vu= bookvuService.findothers(select, findname,null);
-		}else if (select == 7) {
-			vu= bookvuService.findothers(select, payout,null);
+			vu = bookvuService.findothers(select, findname, null);
+		} else if (select == 7) {
+			vu = bookvuService.findothers(select, payout, null);
 		}
-		
+
 		model.addAttribute("tickall", vu);
 		return "tick/table";
-		
+
 	}
 
 }

@@ -32,7 +32,7 @@ public class HallService {
 	public onofflineBean findhallbyname(Integer id) {
 		return onoffRepository.findHallidByMovieid(id);
 	}
-	public Optional<onofflineBean> findhallbyname2(Integer id) {
+	public Optional<Integer> findhallbyname2(Integer id) {
 		return onoffRepository.findDistinctHallidsByMovieid(id);
 	}
 	public List<onofflineBean> findallonline() {

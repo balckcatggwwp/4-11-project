@@ -17,6 +17,9 @@ public interface MovieNewsRepository extends JpaRepository<MovieNews, Integer> {
 	List<MovieNews> findByIsAdTrue();
 	
 	Page<MovieNews> findByTitleContainingIgnoreCaseOrSummaryContainingIgnoreCase(String keyword1, String keyword2, Pageable pageable);
+	
+	List<MovieNews> findByType(String type);
+
 
 
 }

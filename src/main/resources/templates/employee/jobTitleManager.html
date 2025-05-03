@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="zh-TW" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>職稱管理 - 光影之門</title>
+
+<link
+	href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+	rel="stylesheet">
+<link href="https://fonts.googleapis.com/css?family=Nunito"
+	rel="stylesheet">
+<link href="/css/sb-admin-2.min.css" rel="stylesheet">
+<link
+	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+	rel="stylesheet">
+<link
+	href="https://cdn.datatables.net/2.2.2/css/dataTables.bootstrap5.min.css"
+	rel="stylesheet">
+
+</head>
+
+<body id="page-top">
+	<div id="wrapper">
+		<th:block th:replace="fragments/empSidebar :: sidebar"></th:block>
+
+		<div id="content-wrapper" class="d-flex flex-column">
+			<div id="content">
+				<th:block th:replace="fragments/empTopbar :: topbar"></th:block>
+
+				<div class="container-fluid">
+					<h1 class="h3 mb-4 text-gray-800">職稱管理</h1>
+
+					<!-- 新增職稱表單 -->
+					<div class="card shadow mb-4">
+						<div class="card-body">
+							<form id="addJobTitleForm">
+								<div class="form-group">
+									<label for="jobTitleName">職稱名稱</label> <input type="text"
+										class="form-control" id="jobTitleName" name="jobTitleName"
+										placeholder="例如：經理、工讀生" required>
+								</div>
+
+								<div class="form-group">
+									<label for="jobLevel">職位等級 (1~5)</label> <select
+										class="form-control" id="jobLevel" name="jobLevel" required>
+										<option value="">請選擇等級</option>
+										<option value="1">1 - 一般員工</option>
+										<option value="2">2 - 高級員工</option>
+										<option value="3">3 - 小主管</option>
+										<option value="4">4 - 店長級別</option>
+										<option value="5">5 - 高層主管</option>
+									</select>
+								</div>
+
+								<button type="submit" class="btn btn-primary">新增職稱</button>
+							</form>
+						</div>
+					</div>
+
+					<!-- 職稱清單表格 -->
+					<div class="card shadow mb-4">
+						<div class="card-body">
+							<table id="jobTitleTable"
+								class="table table-bordered table-striped">
+								<thead>
+									<tr>
+										<th>職稱名稱</th>
+										<th>職位等級</th>
+										<th>操作</th>
+									</tr>
+								</thead>
+							</table>
+						</div>
+					</div>
+
+				</div>
+			</div>
+
+			<th:block th:replace="fragments/empFooter :: footer"></th:block>
+		</div>
+	</div>
+
+	<a class="scroll-to-top rounded" href="#page-top"><i
+		class="fas fa-angle-up"></i></a>
+
+	<script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+	<script
+		src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+	<script src="https://cdn.datatables.net/2.2.2/js/dataTables.min.js"></script>
+	<script
+		src="https://cdn.datatables.net/2.2.2/js/dataTables.bootstrap5.min.js"></script>
+
+	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+	<script src="/js/sb-admin-2.min.js"></script>
+
+	<script>
+$(document).ready(function() {
+    // 初始化職稱列表
+    const table = $('#jobTitleTable').DataTable({
+        ajax: {
+            url: '/jobTitleApi/list',
+            dataSrc: ''
+        },
+        columns: [
+            { data: 'jobTitleName' },
+            { data: 'jobLevel' },
+            {
+                data: 'jobTitleCategoryId',
+                render: function (data, type, row) {
+                    return `
+                        <button class="btn btn-sm btn-warning editBtn" data-id="${data}" data-name="${row.jobTitleName}" data-level="${row.jobLevel}"><i class="fas fa-edit"></i>修改</button>
+                        <button class="btn btn-sm btn-danger deleteBtn" data-id="${data}"><i class="fas fa-trash-alt"></i>刪除</button>
+                    `;
+                }
+            }
+        ],
+        language: {
+            url: 'https://cdn.datatables.net/plug-ins/1.13.6/i18n/zh-HANT.json'
+        }
+    });
+
+    // 新增職稱
+    $('#addJobTitleForm').submit(function(e) {
+        e.preventDefault();
+
+        const formData = {
+            jobTitleName: $('#jobTitleName').val(),
+            jobLevel: $('#jobLevel').val()
+        };
+
+        $.ajax({
+            url: '/jobTitleApi/add',
+            type: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify(formData),
+            success: function(response) {
+                if (response.status === 'success') {
+                    Swal.fire('新增成功', '', 'success');
+                    $('#addJobTitleForm')[0].reset();
+                    table.ajax.reload();
+                } else {
+                    Swal.fire('新增失敗', response.message || '', 'error');
+                }
+            },
+            error: function(xhr) {
+                Swal.fire('錯誤', xhr.responseJSON?.message || '', 'error');
+            }
+        });
+    });
+
+    // 刪除職稱
+    $('#jobTitleTable').on('click', '.deleteBtn', function() {
+        const id = $(this).data('id');
+        Swal.fire({
+            title: '確定刪除嗎？',
+            text: "刪除後將無法恢復！",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#3085d6',
+            confirmButtonText: '刪除'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    url: '/jobTitleApi/delete/' + id,
+                    type: 'DELETE',
+                    success: function(response) {
+                        Swal.fire('刪除成功', '', 'success');
+                        table.ajax.reload();
+                    },
+                    error: function(xhr) {
+                        Swal.fire('錯誤', xhr.responseJSON?.message || '', 'error');
+                    }
+                });
+            }
+        });
+    });
+
+    // 修改職稱
+    $('#jobTitleTable').on('click', '.editBtn', function() {
+        const id = $(this).data('id');
+        const oldName = $(this).data('name');
+        const oldLevel = $(this).data('level');
+
+        Swal.fire({
+            title: '修改職稱',
+            html:
+                `<input id="newName" class="swal2-input" value="${oldName}" placeholder="職稱名稱">` +
+                `<input id="newLevel" type="number" class="swal2-input" value="${oldLevel}" placeholder="職位等級" min="1" max="5">`,
+            focusConfirm: false,
+            preConfirm: () => {
+                return {
+                    jobTitleName: document.getElementById('newName').value,
+                    jobLevel: document.getElementById('newLevel').value
+                }
+            }
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    url: '/jobTitleApi/update/' + id,
+                    type: 'PUT',
+                    contentType: 'application/json',
+                    data: JSON.stringify(result.value),
+                    success: function(response) {
+                        Swal.fire('更新成功', '', 'success');
+                        table.ajax.reload();
+                    },
+                    error: function(xhr) {
+                        Swal.fire('錯誤', xhr.responseJSON?.message || '', 'error');
+                    }
+                });
+            }
+        });
+    });
+
+});
+</script>
+	<script src="/js/empTobar.js"></script>
+	<script src="/js/empLogout.js"></script>
+	<script src="/js/checkEmpSession.js"></script>
+</body>
+</html>

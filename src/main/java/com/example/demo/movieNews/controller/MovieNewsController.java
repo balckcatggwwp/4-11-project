@@ -39,7 +39,7 @@ public class MovieNewsController {
    
 
     @GetMapping("/search")
-    public List<MovieNews> search(@RequestParam String keyword) {
+    public List<MovieNews> search(@RequestParam("keyword") String keyword) {
         return repository.findByTitleContainingIgnoreCaseOrSummaryContainingIgnoreCase(keyword, keyword);
     }
 
@@ -50,13 +50,13 @@ public class MovieNewsController {
     }
 
     @PutMapping("/{id}")
-    public MovieNews updateNews(@PathVariable int id, @RequestBody MovieNews news) {
+    public MovieNews updateNews(@PathVariable("id") int id, @RequestBody MovieNews news) {
         news.setId(id);
         return service.update(news);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteNews(@PathVariable int id) {
+    public ResponseEntity<?> deleteNews(@PathVariable("id") int id) {
         boolean success = service.delete(id);
         return success ? ResponseEntity.ok().build() : ResponseEntity.notFound().build();
     }
@@ -72,7 +72,7 @@ public class MovieNewsController {
     }
     
     @GetMapping("/{id}")
-    public MovieNews getNewsById(@PathVariable int id) {
+    public MovieNews getNewsById(@PathVariable("id") int id) {
         return service.findById(id);
     }
     
@@ -98,8 +98,13 @@ public class MovieNewsController {
     }
     
     @GetMapping("/search-page")
-    public Page<MovieNews> searchWithPage(@RequestParam String keyword, Pageable pageable) {
+    public Page<MovieNews> searchWithPage(@RequestParam("keyword") String keyword, Pageable pageable) {
         return service.searchByPage(keyword, pageable);
+    }
+    
+    @GetMapping("/type")
+    public List<MovieNews> getByType(@RequestParam("type") String type) {
+        return repository.findByType(type);
     }
 
 }

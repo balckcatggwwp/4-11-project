@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="zh-TW" xmlns:th="http://www.thymeleaf.org">
+<body>
+
+<!-- 新增員工 Modal -->
+<div th:fragment="addEmployeeModal">
+    <div class="modal fade" id="addEmployeeModal" tabindex="-1" aria-labelledby="addEmployeeModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">新增員工</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="關閉"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="addEmployeeForm">
+                        <fieldset class="border p-3 mb-4 rounded">
+                            <legend class="w-auto px-2">基本資料</legend>
+                            <div class="mb-3">
+                                <label class="form-label">姓名</label>
+                                <input type="text" class="form-control" name="name" required>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">性別</label><br>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="gender" value="male" required>
+                                    <label class="form-check-label">男</label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="gender" value="female" required>
+                                    <label class="form-check-label">女</label>
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">身分證字號</label>
+                                <input type="text" class="form-control" name="nationalId" pattern="[A-Z]{1}[12]{1}[0-9]{8}" required>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">生日</label>
+                                <input type="date" class="form-control" name="dateOfBirth" required>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">入職時間</label>
+                                <input type="date" class="form-control" name="entryTime" required>
+                            </div>
+                        </fieldset>
+
+                        <fieldset class="border p-3 mb-4 rounded">
+                            <legend class="w-auto px-2">帳號資訊</legend>
+                            <div class="mb-3">
+                                <label class="form-label">Email</label>
+                                <input type="email" class="form-control" name="email" required>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">手機號碼</label>
+                                <input type="text" class="form-control" name="phoneNumber" pattern="09[0-9]{8}" required>
+                            </div>
+                            <div class="row">
+                                <div class="col">
+                                    <label class="form-label">密碼</label>
+                                    <input type="password" id="password" name="password" class="form-control" required>
+                                </div>
+                                <div class="col">
+                                    <label class="form-label">確認密碼</label>
+                                    <input type="password" id="password2" class="form-control" required>
+                                </div>
+                            </div>
+                        </fieldset>
+
+                        <fieldset class="border p-3 mb-4 rounded">
+                            <legend class="w-auto px-2">角色與權限</legend>
+                            <div class="mb-3">
+                                <label class="form-label">選擇職稱</label>
+                                <select class="form-select" id="jobTitleSelect" name="jobTitleCategoryId" required></select>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">指派權限</label>
+                                <div id="permissionsCheckboxes" class="row"></div>
+                            </div>
+                        </fieldset>
+
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-primary">新增員工</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 編輯員工 Modal -->
+<div th:fragment="editEmployeeModal">
+    <div class="modal fade" id="editEmployeeModal" tabindex="-1" aria-labelledby="editEmployeeModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">編輯員工資料</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="關閉"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="editEmployeeForm">
+                        <!-- 動態用JS載入修改表單 -->
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 刪除員工 Modal -->
+<div th:fragment="deleteEmployeeModal">
+    <div class="modal fade" id="deleteEmployeeModal" tabindex="-1" aria-labelledby="deleteEmployeeModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">刪除確認</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="關閉"></button>
+                </div>
+                <div class="modal-body">
+                    <p>確定要刪除這位員工嗎？刪除後無法復原。</p>
+                    <input type="hidden" id="deleteEmployeeId">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
+                    <button type="button" class="btn btn-danger" id="confirmDeleteBtn">確認刪除</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+</body>
+</html>
