@@ -66,7 +66,7 @@
 						<div class="input-group">
 							<span class="input-group-addon"><i class="fa-solid fa-clipboard-list"></i></span> <input
 								name="orderid" placeholder="訂單編號" class="form-control ud" type="text"
-								th:value="${tickinfo.orderid}">
+								th:value="${tickinfo.orderid}" required>
 
 						</div>
 					</div>
@@ -80,7 +80,7 @@
 						<div class="input-group">
 							<span class="input-group-addon"><i class="fa-solid fa-user"></i></span> <input
 								name="memberId" placeholder="會員" class="form-control ud" type="text"
-								th:value="${tickinfo.memberId}">
+								th:value="${tickinfo.memberId}" required>
 						</div>
 					</div>
 				</div>
@@ -92,7 +92,7 @@
 						<div class="input-group">
 							<span class="input-group-addon"><i class="fa-solid fa-calendar-days"></i></span> <input
 								type="text" id="datepicker" class="form-control" placeholder="日期"
-								th:value="${tickinfo.showtimedate}">
+								th:value="${tickinfo.showtimedate}" required>
 						</div>
 					</div>
 				</div>
@@ -102,8 +102,8 @@
 					<div class="col-md-4 inputGroupContainer">
 						<div class="input-group">
 							<span class="input-group-addon"><i class="fa-solid fa-film"></i></span> <select
-								name="movieid" class="form-control selectpicker" id="moviename">
-								<option value=" ">電影</option>
+								name="movieid" class="form-control selectpicker" id="moviename" required>
+								<option value=" " >電影</option>
 							</select>
 						</div>
 					</div>
@@ -113,7 +113,7 @@
 					<div class="col-md-4 inputGroupContainer">
 						<div class="input-group">
 							<span class="input-group-addon"><i class="fa-solid fa-clock"></i></span> <select
-								name="showtimeid" class="form-control selectpicker" id="time">
+								name="showtimeid" class="form-control selectpicker" id="time" required>
 								<option value=" ">場次</option>
 
 							</select>
@@ -142,7 +142,7 @@
 					<div class="col-md-4 inputGroupContainer">
 						<div class="input-group">
 							<span class="input-group-addon"><i class="fa-solid fa-chair"></i></span> <select
-								name="seatid" class="form-control selectpicker" id="seat">
+								name="seatid" class="form-control selectpicker" id="seat" required>
 								<option value="">座位</option>
 
 
@@ -157,7 +157,7 @@
 					<div class="col-md-4 selectContainer">
 						<div class="input-group">
 							<span class="input-group-addon"><i class="fa-solid fa-ticket"></i></span> <select
-								name="tickettypeid" class="form-control selectpicker" id="type">
+								name="tickettypeid" class="form-control selectpicker" id="type" required>
 								<option value=" ">票種</option>
 							</select>
 						</div>
@@ -190,10 +190,11 @@
 
 
 							<span class="input-group-addon"><i class="fa-solid fa-money-bill-wave"></i></span>
-							<select name="payout" class="form-control selectpicker">
+							<select name="payout" class="form-control selectpicker" required>
 								<option value="">是否付款</option>
 								<option th:value="Y" th:selected="${tickinfo.payout == 'Y'}">已付</option>
 								<option th:value="N" th:selected="${tickinfo.payout == 'N'}">未付</option>
+								<option th:value="C" th:selected="${tickinfo.payout == 'C'}">已取消</option>
 							</select>
 						</div>
 					</div>

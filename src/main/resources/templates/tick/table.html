@@ -68,7 +68,7 @@
 							<form action="/booktick/other" method="get"
 								class="row gy-2 gx-3 align-items-center">
 								<div class="col-auto">
-									<select id="findtick" name="select" class="form-select">
+									<select id="findtick" name="select" class="form-select" required>
 										<option value="">選項</option>
 										<option value="1">訂票ID</option>
 										<option value="2">訂單編號</option>
@@ -105,9 +105,9 @@
 											<th>座位</th>
 											<th>廳</th>
 											<th>單價</th>
-											<th>電影名稱</th>
+											<th>電影</th>
 											<th>票種</th>
-											<th>是否付款</th>
+											<th>付款</th>
 											<th>修改</th>
 											<th>刪除</th>
 										</tr>
@@ -126,12 +126,16 @@
 												<td th:text="${tickinfos.onemoney}"></td>
 												<td th:text="${tickinfos.moviename}"></td>
 												<td th:text="${tickinfos.booktype}"></td>
-												<td th:text="${tickinfos.payout}"></td>
+												<td
+													th:text="${tickinfos.payout == 'C' ? '已取消' : tickinfos.payout}"></td>
 												<td><a
 													th:href="@{/booktick/update(tickid=${tickinfos.tickid})}"
 													class="btn btn-sm btn-warning">修改</a></td>
-												<td><button class="btn btn-sm btn-danger dellc"
-														th:value="${tickinfos.tickid}">刪除</button></td>
+												<td>
+													<button class="btn btn-sm btn-danger dellc"
+														th:value="${tickinfos.tickid}"
+														th:disabled="${tickinfos.payout == 'C'}">取消訂單</button>
+												</td>
 											</tr>
 										</th:block>
 									</tbody>
@@ -265,33 +269,33 @@
 						console.log(1);
 						//
 						$("#fromfind").append(
-							`<input placeholder="請輸入訂票ID" name="tickid">`
+							`<input placeholder="請輸入訂票ID" name="tickid" required>`
 						);
 					} else if ($("#findtick").val() == 2) {
 						console.log(2);
 
 						$("#fromfind").append(
-							`<input placeholder="請輸入訂票編號" name="orderid">`
+							`<input placeholder="請輸入訂票編號" name="orderid" required>`
 						);
 					} else if ($("#findtick").val() == 3) {
 						console.log(3);
 						$("#fromfind").append(
-							`<input placeholder="請輸入會員ID" name="memberId">`
+							`<input placeholder="請輸入會員ID" name="memberId" required>`
 						);
 					} else if ($("#findtick").val() == 4) {
 						console.log(4);
 						$("#fromfind").append(
-							`<p><input type="date" placeholder="請選擇日期" name="startdate" id="date1"></p>`
+							`<p><input type="date" placeholder="請選擇日期" name="startdate" id="date1" required></p>`
 						);
 					} else if ($("#findtick").val() == 5) {
 						console.log(5);
 						$("#fromfind").append(
-							`<input placeholder="請輸入廳" name="hallid">`
+							`<input placeholder="請輸入廳" name="hallid" required>`
 						);
 					} else if ($("#findtick").val() == 6) {
 						console.log(6);
 						$("#fromfind").append(
-							`<select id="selname" name="findname" class="form-controlaa"></select>`
+							`<select id="selname" name="findname" class="form-controlaa" required></select>`
 						);
 
 						$.ajax({
@@ -321,18 +325,18 @@
 					let idtick = $(this).attr("value");
 
 					Swal.fire({
-						title: "你確定要刪除?",
-						text: "資料會從這個世界上消失！",
+						title: "是否取消訂單?",
+						text: "會員會取消訂單！",
 						icon: "warning",
 						showCancelButton: true,
 						confirmButtonColor: "#3085d6",
 						cancelButtonColor: "#d33",
-						confirmButtonText: "是，這筆資料不重要!",
+						confirmButtonText: "是，要取消!",
 					}).then((result) => {
 						if (result.isConfirmed) {
 							Swal.fire({
-								title: "刪除成功!",
-								text: "以已消失的無影無蹤了!!",
+								title: "取消成功!",
+								text: "以已取消!!",
 								icon: "success",
 							});
 							// console.log(idtick)

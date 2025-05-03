@@ -61,6 +61,9 @@ public class BookvuService {
 	public BookticketvuBean findmoneybyid( Integer id) {
 		return booktickvuRepo.findbymoney(id);
 	}
+	public Optional<BookticketBean> findbyid (Integer id) {
+		return booktickRepository.findById(id);
+	}
 	
 	///////////////////////////// find other
 	public List<BookticketvuBean> findother(Integer se, Integer id,Long loid) {

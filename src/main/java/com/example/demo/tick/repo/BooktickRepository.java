@@ -12,7 +12,7 @@ import com.example.demo.tick.bean.BookticketBean;
 
 public interface BooktickRepository extends JpaRepository<BookticketBean, Integer> {
 
-	@Query("SELECT b FROM BookticketBean b WHERE b.hallid = :hallid AND b.showtimeid = :showtimeid")
+	@Query("SELECT b FROM BookticketBean b WHERE b.hallid = :hallid AND b.showtimeid = :showtimeid AND b.payout IN ('Y', 'N')" )
 	List<BookticketBean> findSeatidbyHallidShowtimeid(@Param("hallid") Integer hallid,
 			@Param("showtimeid") Integer showtimeid);
 
