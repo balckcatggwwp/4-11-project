@@ -280,19 +280,28 @@ public class MemberService {
 
 		memberRepository.save(member);
 	}
-
-	// 後台更新會員資料
+	
 	@Transactional
-	public void updateMemberByEmp(Long memberId, String name, String gender, String email, String phoneNumber,
-			String dateOfBirth) {
-		Member member = memberRepository.findById(memberId).orElseThrow(() -> new RuntimeException("查無此會員"));
-		member.setName(name);
-		member.setGender(gender);
-		member.setEmail(email);
-		member.setPhoneNumber(phoneNumber);
-		member.setDateOfBirth(dateOfBirth);
-		memberRepository.save(member);
+	public void updateMemberByEmp(Long memberId, String name, String gender, String email,
+	                              String phoneNumber, String dateOfBirth, Long memberTypeId) {
+	    Member member = memberRepository.findById(memberId)
+	            .orElseThrow(() -> new RuntimeException("查無此會員"));
+
+	    member.setName(name);
+	    member.setGender(gender);
+	    member.setEmail(email);
+	    member.setPhoneNumber(phoneNumber);
+	    member.setDateOfBirth(dateOfBirth);
+
+	    if (memberTypeId != null) {
+	        MemberType type = memberTypeRepository.findById(memberTypeId)
+	                .orElseThrow(() -> new RuntimeException("查無此會員身份"));
+	        member.setMemberType(type);
+	    }
+
+	    memberRepository.save(member);
 	}
+
 
 	public MemberType findDefaultMemberType(int typeId) {
 		// 你可以這樣設計，例如找 typeName = '普通會員'

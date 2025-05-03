@@ -16,4 +16,5 @@ public class MemberDTOFE {
 	private String nationalId;
 	private String dateOfBirth; // 這邊傳成字串比較好處理
 	private String memberType;
+	
 }

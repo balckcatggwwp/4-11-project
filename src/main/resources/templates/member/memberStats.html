@@ -102,7 +102,7 @@
       new Chart(document.getElementById("genderChart"), {
 		  type: "pie",
 		  data: {
-		    labels: ["男", "女", "不明"],
+		    labels: ["男", "女", "不願透露"],
 		    datasets: [{
 		      data: res.genderRatio,
 		      backgroundColor: ["#4dc9c0", "#ff6384", "#b0c4de"]
@@ -111,21 +111,23 @@
 		});
 
       new Chart(document.getElementById("ageChart"), {
-        type: "bar",
-        data: {
-          labels: ["1-14歲", "15-64歲", "65歲以上"],
-          datasets: [{
-            label: "人數",
-            data: res.ageGroups,
-            backgroundColor: "#36b9cc"
-          }]
-        },
-        options: {
-          scales: {
-            y: { beginAtZero: true }
-          }
-        }
-      });
+	  type: "bar",
+	  data: {
+	    labels: ["0-9歲", "10-19歲", "20-29歲", "30-39歲", "40-49歲", "50-59歲", "60-69歲", "70-79歲", "80歲以上"],
+	    datasets: [{
+	      label: "人數",
+	      data: res.ageGroups,
+	      backgroundColor: "#36b9cc"
+	    }]
+	  },
+	  options: {
+	    scales: {
+	      y: {
+	        beginAtZero: true
+	      }
+	    }
+	  }
+	});
 
       $("#todayCount").text(res.todayCount);
     });
@@ -135,5 +137,6 @@
 	<script src="/js/empTobar.js"></script>
 	<script src="/js/empLogout.js"></script>
 	<script src="/js/checkEmpSession.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

@@ -63,7 +63,6 @@ public class EmpController {
 		if (result) {
 			Employee insertEmployee = employeeService.insertEmployee(employee);
 			if (insertEmployee != null) {
-				System.out.println("可以註冊");
 				return ResponseEntity.ok(Map.of("status", "success", "message", "註冊成功", "name",
 						insertEmployee.getName(), "email", insertEmployee.getEmail()));
 			} else {

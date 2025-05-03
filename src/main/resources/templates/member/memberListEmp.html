@@ -1,511 +1,612 @@
 <!DOCTYPE html>
 <html lang="zh-TW" xmlns:th="http://www.thymeleaf.org">
-<head>
-<meta charset="UTF-8">
-<meta http-equiv="Cache-Control"
-	content="no-store, no-cache, must-revalidate, max-age=0">
-<meta http-equiv="Pragma" content="no-cache">
-<meta http-equiv="Expires" content="0">
-<title>會員管理 - 光影之門</title>
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      http-equiv="Cache-Control"
+      content="no-store, no-cache, must-revalidate, max-age=0"
+    />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
+    <title>會員管理 - 光影之門</title>
 
-<link href="/vendor/fontawesome-free/css/all.min.css" rel="stylesheet"
-	type="text/css">
-<link
-	href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
-	rel="stylesheet">
-<link href="/css/sb-admin-2.min.css" rel="stylesheet">
-<link
-	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
-	rel="stylesheet">
-<link
-	href="https://cdn.datatables.net/2.2.2/css/dataTables.bootstrap5.min.css"
-	rel="stylesheet">
-<link
-	href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
-	rel="stylesheet">
+    <link
+      href="/vendor/fontawesome-free/css/all.min.css"
+      rel="stylesheet"
+      type="text/css"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link href="/css/sb-admin-2.min.css" rel="stylesheet" />
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdn.datatables.net/2.2.2/css/dataTables.bootstrap5.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+      rel="stylesheet"
+    />
+  </head>
+  <body id="page-top">
+    <div id="wrapper">
+      <th:block th:replace="fragments/empSidebar :: sidebar"></th:block>
+      <div id="content-wrapper" class="d-flex flex-column">
+        <div id="content">
+          <th:block th:replace="fragments/empTopbar :: topbar"></th:block>
 
-</head>
-<body id="page-top">
-	<div id="wrapper">
-		<th:block th:replace="fragments/empSidebar :: sidebar"></th:block>
-		<div id="content-wrapper" class="d-flex flex-column">
-			<div id="content">
-				<th:block th:replace="fragments/empTopbar :: topbar"></th:block>
+          <div class="container-fluid mt-4">
+            <div
+              class="d-sm-flex align-items-center justify-content-between mb-4"
+            >
+              <h1 class="h4 text-gray-800">會員管理系統</h1>
+              <div class="d-flex gap-2">
+                <button
+                  class="btn btn-success"
+                  data-bs-toggle="modal"
+                  data-bs-target="#registerModal"
+                >
+                  <i class="fas fa-user-plus"></i> 新增會員
+                </button>
+                <a class="btn btn-success" href="/member/memberStats">
+                  <i class="fas fa-user-plus"></i> 會員統計資料
+                </a>
+              </div>
+            </div>
 
-				<div class="container-fluid mt-4">
-					<div
-						class="d-sm-flex align-items-center justify-content-between mb-4">
-						<h1 class="h4 text-gray-800">會員管理系統</h1>
-						<div class="d-flex gap-2">
-							<button class="btn btn-success" data-bs-toggle="modal"
-								data-bs-target="#registerModal">
-								<i class="fas fa-user-plus"></i> 新增會員
-							</button>
-							<a class="btn btn-success" href="/member/memberStats"> <i class="fas fa-user-plus"></i>
-								會員統計資料
-							</a>
-						</div>
-					</div>
+            <div class="card mb-4">
+              <div class="card-body">
+                <div class="row mb-3">
+                  <div class="col-md-3">
+                    <select id="searchType" class="form-select">
+                      <option value="" selected>請選擇搜尋的功能</option>
+                      <option value="name">姓名模糊搜尋</option>
+                      <option value="email">信箱模糊搜尋</option>
+                      <option value="phone">手機號碼模糊搜尋</option>
+                    </select>
+                  </div>
+                  <div class="col-md-5">
+                    <input
+                      type="text"
+                      id="keyword"
+                      class="form-control"
+                      placeholder="請輸入關鍵字"
+                    />
+                  </div>
+                  <div class="col-md-2">
+                    <button class="btn btn-primary" id="searchBtn">搜尋</button>
+                  </div>
+                </div>
+                <div class="table-responsive">
+                  <table
+                    id="memberTable"
+                    class="table table-bordered table-striped"
+                  >
+                    <thead class="table-light">
+                      <tr>
+                        <th>會員ID</th>
+                        <th>姓名</th>
+                        <th>性別</th>
+                        <th>電子信箱</th>
+                        <th>手機號碼</th>
+                        <th>註冊時間</th>
+                        <th>操作</th>
+                      </tr>
+                    </thead>
+                    <tbody></tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <th:block th:replace="fragments/empFooter :: footer"></th:block>
+      </div>
+    </div>
 
-					<div class="card mb-4">
-						<div class="card-body">
-							<div class="row mb-3">
-								<div class="col-md-3">
-									<select id="searchType" class="form-select">
-										<option value="" selected>請選擇搜尋的功能</option>
-										<option value="name">姓名模糊搜尋</option>
-										<option value="email">信箱模糊搜尋</option>
-										<option value="phone">手機號碼模糊搜尋</option>
-									</select>
-								</div>
-								<div class="col-md-5">
-									<input type="text" id="keyword" class="form-control"
-										placeholder="請輸入關鍵字">
-								</div>
-								<div class="col-md-2">
-									<button class="btn btn-primary" id="searchBtn">搜尋</button>
-								</div>
-							</div>
-							<div class="table-responsive">
-								<table id="memberTable"
-									class="table table-bordered table-striped">
-									<thead class="table-light">
-										<tr>
-											<th>會員ID</th>
-											<th>姓名</th>
-											<th>性別</th>
-											<th>電子信箱</th>
-											<th>手機號碼</th>
-											<th>註冊時間</th>
-											<th>操作</th>
-										</tr>
-									</thead>
-									<tbody></tbody>
-								</table>
-							</div>
-						</div>
-					</div>
-				</div>
+    <a class="scroll-to-top rounded" href="#page-top"
+      ><i class="fas fa-angle-up"></i
+    ></a>
+    <th:block th:replace="member/memberModalCRUD :: viewModal"></th:block>
+    <th:block th:replace="member/memberModalCRUD :: registerModal"></th:block>
+    <th:block th:replace="member/memberModalCRUD :: editModal"></th:block>
 
-			</div>
-			<th:block th:replace="fragments/empFooter :: footer"></th:block>
-		</div>
-	</div>
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdn.datatables.net/2.2.2/js/dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/2.2.2/js/dataTables.bootstrap5.min.js"></script>
+    <script src="/js/sb-admin-2.min.js"></script>
+    <script src="/js/empTobar.js"></script>
+    <script src="/js/empLogout.js"></script>
+    <script src="/js/checkEmpSession.js"></script>
 
-	<a class="scroll-to-top rounded" href="#page-top"><i
-		class="fas fa-angle-up"></i></a>
-	<th:block th:replace="member/memberModalCRUD :: viewModal"></th:block>
-	<th:block th:replace="member/memberModalCRUD :: registerModal"></th:block>
-	<th:block th:replace="member/memberModalCRUD :: editModal"></th:block>
-
-	<script
-		src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
-	<script
-		src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-	<script src="https://cdn.datatables.net/2.2.2/js/dataTables.min.js"></script>
-	<script
-		src="https://cdn.datatables.net/2.2.2/js/dataTables.bootstrap5.min.js"></script>
-	<script src="/js/sb-admin-2.min.js"></script>
-	<script src="/js/empTobar.js"></script>
-	<script src="/js/empLogout.js"></script>
-	<script src="/js/checkEmpSession.js"></script>
-
-	<script>
-		$(function () {
-		  const table = $('#memberTable').DataTable({
-		    ajax: {
-		      url: '/memberAPI/memberListEmp',
-		      dataSrc: '',
-		      error: function(xhr, error, thrown) {
-		        console.log('DataTables AJAX error:', xhr.responseText);
-		        Swal.fire('讀取資料失敗', '請稍後再試或檢查API', 'error');
-		      }
-		    },
-		    columns: [
-		      { data: 'memberId' },
-		      { data: 'name' },
-		      { data: 'gender' },
-		      { data: 'email' },
-		      { data: 'phoneNumber' },
-		      { data: 'createTime' },
-		      {
-		        data: null,
-		        orderable: false,
-		        searchable: false,
-		        render: function(data, type, row) {
-		          return `
+    <script>
+      $(function () {
+        const table = $("#memberTable").DataTable({
+          ajax: {
+            url: "/memberAPI/memberListEmp",
+            dataSrc: "",
+            error: function (xhr, error, thrown) {
+              console.log("DataTables AJAX error:", xhr.responseText);
+              Swal.fire("讀取資料失敗", "請稍後再試或檢查API", "error");
+            },
+          },
+          columns: [
+            { data: "memberId" },
+            { data: "name" },
+            { data: "gender" },
+            { data: "email" },
+            { data: "phoneNumber" },
+            { data: "createTime" },
+            {
+              data: null,
+              orderable: false,
+              searchable: false,
+              render: function (data, type, row) {
+                return `
 		            <button class="btn btn-info btn-sm me-1 viewBtn" data-id="${row.memberId}"><i class="fas fa-eye"></i> 詳細</button>
 		            <button class="btn btn-warning btn-sm me-1 editBtn" data-id="${row.memberId}"><i class="fas fa-edit"></i> 修改</button>
 		            <button class="btn btn-danger btn-sm deleteBtn" data-id="${row.memberId}"><i class="fas fa-trash"></i> 刪除</button>
 		          `;
-		        }
-		      }
-		    ],
-		    columnDefs: [
-		      { targets: '_all', className: 'text-left' }
-		    ],
-		    language: {
-		      url: 'https://cdn.datatables.net/plug-ins/1.13.6/i18n/zh-HANT.json'
-		    }
-		  });
-		
-		  // 搜尋功能
-		  $('#searchBtn').click(function () {
-		    const searchType = $('#searchType').val();
-		    const keyword = $('#keyword').val().trim();
-		
-		    if (!searchType || !keyword) {
-		      Swal.fire('請選擇搜尋類型並輸入關鍵字！');
-		      return;
-		    }
-		
-		    let columnIndex;
-		    if (searchType === 'name') columnIndex = 1;
-		    else if (searchType === 'email') columnIndex = 3;
-		    else if (searchType === 'phone') columnIndex = 4;
-		
-		    table.column(columnIndex).search(keyword).draw();
-		  });
-		
-		});
+              },
+            },
+          ],
+          columnDefs: [{ targets: "_all", className: "text-left" }],
+          language: {
+            url: "https://cdn.datatables.net/plug-ins/1.13.6/i18n/zh-HANT.json",
+          },
+        });
 
-	</script>
-	<script>
-	$('#memberTable tbody').on('click', '.deleteBtn', function () {
-	    const memberId = $(this).data('id');
+        // 搜尋功能
+        $("#searchBtn").click(function () {
+          const searchType = $("#searchType").val();
+          const keyword = $("#keyword").val().trim();
+
+          if (!searchType || !keyword) {
+            Swal.fire("請選擇搜尋類型並輸入關鍵字！");
+            return;
+          }
+
+          let columnIndex;
+          if (searchType === "name") columnIndex = 1;
+          else if (searchType === "email") columnIndex = 3;
+          else if (searchType === "phone") columnIndex = 4;
+
+          table.column(columnIndex).search(keyword).draw();
+        });
+      });
+    </script>
+    <script>
+      $("#memberTable tbody").on("click", ".deleteBtn", function () {
+        const memberId = $(this).data("id");
+
+        Swal.fire({
+          title: "確定要刪除嗎？",
+          text: "刪除後將無法恢復！",
+          icon: "warning",
+          showCancelButton: true,
+          confirmButtonColor: "#d33",
+          cancelButtonColor: "#3085d6",
+          confirmButtonText: "確定刪除",
+        }).then((result) => {
+          if (result.isConfirmed) {
+            $.ajax({
+              url: `/memberAPI/deleteMember/${memberId}`,
+              method: "DELETE",
+              success: function (response) {
+                if (response.status === "success") {
+                  Swal.fire("刪除成功！", response.message, "success").then(
+                    () => {
+                      $("#memberTable").DataTable().ajax.reload(); // 刷新表格
+                    }
+                  );
+                } else {
+                  Swal.fire(
+                    "刪除失敗",
+                    response.message || "請稍後再試",
+                    "error"
+                  );
+                }
+              },
+              error: function (xhr) {
+                console.log("刪除會員失敗", xhr.responseText);
+                Swal.fire("錯誤", "伺服器錯誤或資料綁定無法刪除", "error");
+              },
+            });
+          }
+        });
+      });
+    </script>
+    <script>
+      // 點擊「修改」按鈕
+      $("#memberTable tbody").on("click", ".editBtn", function () {
+        const memberId = $(this).data("id");
+
+        $.ajax({
+          url: `/memberAPI/memberDetailByEmp/${memberId}`,
+          method: "GET",
+          success: function (data) {
+            if (data.status !== "success") {
+              Swal.fire("錯誤", data.message, "error");
+              return;
+            }
+
+            // 基本欄位填入
+            $('#edit-form [name="memberId"]').val(data.memberId);
+            $('#edit-form [name="name"]').val(data.name);
+            $('#edit-form [name="email"]').val(data.email);
+            $('#edit-form [name="phoneNumber"]').val(data.phoneNumber);
+            $('#edit-form [name="dateOfBirth"]').val(data.dateOfBirth);
+
+            $('#edit-form [name="gender"]').each(function () {
+              $(this).prop("checked", $(this).val() === data.gender);
+            });
+
+            // 載入會員身份下拉選單
+            $.ajax({
+              url: "/memberAPI/memberTypes",
+              method: "GET",
+              success: function (types) {
+                const $select = $('#edit-form [name="memberTypeId"]');
+                $select.empty();
+                $select.append('<option value="">請選擇會員身份</option>');
+                types.forEach(function (type) {
+                  const selected =
+                    type.id == data.memberTypeId ? "selected" : "";
+                  $select.append(
+                    `<option value="${type.id}" ${selected}>${type.name}</option>`
+                  );
+                });
+
+                // 顯示 modal
+                $("#editModal").modal("show");
+              },
+            });
+          },
+          error: function (xhr) {
+            Swal.fire("錯誤", "無法載入會員資料", "error");
+          },
+        });
+      });
+
+      // 提交表單
+      $("#edit-form").submit(function (e) {
+        e.preventDefault();
+
+        const formData = {
+          memberId: $('#edit-form [name="memberId"]').val(),
+          name: $('#edit-form [name="name"]').val(),
+          gender: $('#edit-form [name="gender"]:checked').val(),
+          email: $('#edit-form [name="email"]').val(),
+          phoneNumber: $('#edit-form [name="phoneNumber"]').val(),
+          dateOfBirth: $('#edit-form [name="dateOfBirth"]').val(),
+          memberTypeId: $('#edit-form [name="memberTypeId"]').val(),
+        };
+
+        $.ajax({
+          url: "/memberAPI/updateProfileByEmp",
+          method: "POST",
+          data: formData,
+          success: function (res) {
+            if (res.status === "success") {
+              Swal.fire("更新成功！", "", "success");
+              $("#editModal").modal("hide");
+              $("#memberTable").DataTable().ajax.reload();
+            } else {
+              Swal.fire("更新失敗", res.message || "請稍後再試", "error");
+            }
+          },
+          error: function () {
+            Swal.fire("錯誤", "更新時發生錯誤", "error");
+          },
+        });
+      });
+    </script>
+    <script>
+      $(function () {
+        $("#memberTable tbody").on("click", ".viewBtn", function () {
+          const memberId = $(this).data("id");
+
+          $.ajax({
+            url: `/memberAPI/memberDetailByEmp/${memberId}`, // ⚡ 改成新的API（會包含完整資訊）
+            method: "GET",
+            success: function (data) {
+              if (data.status === "success") {
+                $("#view-memberId").text(data.memberId || "無");
+                $("#view-name").text(data.name || "無");
+                $("#view-gender").text(
+                  data.gender === "male"
+                    ? "男"
+                    : data.gender === "female"
+                    ? "女"
+                    : data.gender === "other"
+                    ? "不願透露"
+                    : "-"
+                );
+                $("#view-dateOfBirth").text(data.dateOfBirth || "無");
+                $("#view-nationalId").text(data.nationalId || "無");
+                $("#view-email").text(data.email || "無");
+                $("#view-phoneNumber").text(data.phoneNumber || "無");
+                $("#view-newEmail").text(data.newEmail || "無");
+                $("#view-verification").html(
+                  data.verification
+                    ? '<span class="badge bg-success">已驗證</span>'
+                    : '<span class="badge bg-danger">未驗證</span>'
+                );
+                $("#view-createTime").text(data.createTime || "無");
+                $("#view-memberType").text(data.memberType || "無");
+
+                $("#viewModal").modal("show");
+              } else {
+                Swal.fire("錯誤", data.message, "error");
+              }
+            },
+            error: function (xhr) {
+              console.log("取得會員詳細失敗", xhr.responseText);
+              Swal.fire("錯誤", "取得詳細資料失敗", "error");
+            },
+          });
+        });
+      });
+    </script>
+    <script>
+      $(function () {
+        // 打開Modal時，載入會員身份選單
+        $("#registerModal").on("show.bs.modal", function () {
+          $.ajax({
+            url: "/memberAPI/memberTypes",
+            method: "GET",
+            success: function (data) {
+              const $memberTypeSelect = $("#memberTypeId");
+              $memberTypeSelect.empty();
+              $memberTypeSelect.append(
+                '<option value="">請選擇會員身份</option>'
+              );
+              data.forEach(function (type) {
+                $memberTypeSelect.append(
+                  `<option value="${type.id}">${type.name}</option>`
+                );
+              });
+            },
+            error: function (xhr) {
+              console.log("取得會員身份失敗", xhr.responseText);
+              Swal.fire("錯誤", "取得會員身份選單失敗", "error");
+            },
+          });
+        });
+
+        // 提交表單送出新增
+        $("#register-form").submit(function (e) {
+          e.preventDefault();
+
+          const formData = {
+            name: $('#register-form [name="name"]').val(),
+            gender: $('#register-form [name="gender"]:checked').val(),
+            email: $('#register-form [name="email"]').val(),
+            phoneNumber: $('#register-form [name="phoneNumber"]').val(),
+            dateOfBirth: $('#register-form [name="dateOfBirth"]').val(),
+            nationalId: $('#register-form [name="nationalId"]').val(),
+            memberTypeId: $('#register-form [name="memberTypeId"]').val(),
+          };
+
+          $.ajax({
+            url: "/memberAPI/registerByEmp",
+            method: "POST",
+            data: formData,
+            success: function (response) {
+              if (response.status === "success") {
+                Swal.fire("新增成功", response.message, "success");
+                $("#registerModal").modal("hide");
+                $("#memberTable").DataTable().ajax.reload(); // 新增成功後刷新表格
+              } else {
+                Swal.fire("錯誤", response.message, "error");
+              }
+            },
+            error: function (xhr) {
+              console.log("新增會員失敗", xhr.responseText);
+              Swal.fire("錯誤", "新增會員時發生錯誤", "error");
+            },
+          });
+        });
+      });
+
+      function getRandomName() {
+	  const firstNames = ["王", "李", "張", "陳", "林", "黃", "趙", "吳", "周", "徐"];
+	  const lastNames = ["志明", "小美", "家豪", "怡君", "子涵", "柏翰", "靜宜", "思妤", "建銘", "宥嘉"];
 	
-	    Swal.fire({
-	        title: '確定要刪除嗎？',
-	        text: '刪除後將無法恢復！',
-	        icon: 'warning',
-	        showCancelButton: true,
-	        confirmButtonColor: '#d33',
-	        cancelButtonColor: '#3085d6',
-	        confirmButtonText: '確定刪除'
-	    }).then((result) => {
-	        if (result.isConfirmed) {
-	            $.ajax({
-	                url: `/memberAPI/deleteMember/${memberId}`,
-	                method: 'DELETE',
-	                success: function (response) {
-	                    if (response.status === 'success') {
-	                        Swal.fire('刪除成功！', response.message, 'success').then(() => {
-	                            $('#memberTable').DataTable().ajax.reload(); // 刷新表格
-	                        });
-	                    } else {
-	                        Swal.fire('刪除失敗', response.message || '請稍後再試', 'error');
-	                    }
-	                },
-	                error: function (xhr) {
-	                    console.log('刪除會員失敗', xhr.responseText);
-	                    Swal.fire('錯誤', '伺服器錯誤或資料綁定無法刪除', 'error');
-	                }
-	            });
-	        }
-	    });
-	});
+	  const engFirst = ["James", "Emily", "Michael", "Emma", "John", "Olivia", "David", "Sophia"];
+	  const engLast = ["Smith", "Johnson", "Brown", "Lee", "Taylor", "Clark", "Lopez", "Walker"];
 	
-	</script>
-	<script>
-		$('#memberTable tbody').on('click', '.editBtn', function () {
-		  const memberId = $(this).data('id');
-		
-		  // 先打 API 取得這個會員詳細資料
-		  $.ajax({
-		    url: `/memberAPI/memberDetial/${memberId}`,
-		    method: 'GET',
-		    success: function (data) {
-		      console.log('載入會員資料', data);
-		      // 把資料塞到 modal 的 input 裡
-		      $('#edit-form [name="memberId"]').val(data.memberId);
-		      $('#edit-form [name="name"]').val(data.name);
-		      $('#edit-form [name="email"]').val(data.email);
-		      $('#edit-form [name="phoneNumber"]').val(data.phoneNumber);
-		      $('#edit-form [name="dateOfBirth"]').val(data.dateOfBirth);
-		      
-		      // 性別 radio button 選取
-		      $('#edit-form [name="gender"]').each(function () {
-		        if ($(this).val() === data.gender) {
-		          $(this).prop('checked', true);
-		        }
-		      });
-		
-		      // 打開 modal
-		      $('#editModal').modal('show');
-		    },
-		    error: function (xhr) {
-		      console.log('取得會員資料失敗', xhr.responseText);
-		      Swal.fire('錯誤', '取得會員資料失敗', 'error');
-		    }
-		  });
-		});
-		
-		</script>
-	<script>
-		$('#edit-form').submit(function (e) {
-		  e.preventDefault();
-		
-		  const formData = {
-		    memberId: $('#edit-form [name="memberId"]').val(),
-		    name: $('#edit-form [name="name"]').val(),
-		    gender: $('#edit-form [name="gender"]:checked').val(),
-		    email: $('#edit-form [name="email"]').val(),
-		    phoneNumber: $('#edit-form [name="phoneNumber"]').val(),
-		    dateOfBirth: $('#edit-form [name="dateOfBirth"]').val()
-		  };
-		
-		  console.log('送出修改資料', formData);
-		
-		  $.ajax({
-		    url: '/memberAPI/updateProfileByEmp',  // 👉 (等等會補這支後端)
-		    method: 'POST',
-		    data: formData,
-		    success: function (response) {
-		      if (response.status === 'success') {
-		        Swal.fire('更新成功！', '', 'success');
-		        $('#editModal').modal('hide');
-		        $('#memberTable').DataTable().ajax.reload();
-		      } else {
-		        Swal.fire('更新失敗', response.message, 'error');
-		      }
-		    },
-		    error: function (xhr) {
-		      console.log('更新失敗', xhr.responseText);
-		      Swal.fire('錯誤', '更新資料時發生錯誤', 'error');
-		    }
-		  });
-		});
-		
-		</script>
-	<script>
-		$(function () {
-		  $('#memberTable tbody').on('click', '.viewBtn', function () {
-		    const memberId = $(this).data('id');
-		
-		    $.ajax({
-		      url: `/memberAPI/memberDetailByEmp/${memberId}`,  // ⚡ 改成新的API（會包含完整資訊）
-		      method: 'GET',
-		      success: function (data) {
-		        if (data.status === 'success') {
-		          $('#view-memberId').text(data.memberId || '無');
-		          $('#view-name').text(data.name || '無');
-		          $('#view-gender').text(
-		            data.gender === 'male' ? '男' :
-		            data.gender === 'female' ? '女' :
-		            data.gender === 'other' ? '不願透露' :
-		            '-'
-		          );
-		          $('#view-dateOfBirth').text(data.dateOfBirth || '無');
-		          $('#view-nationalId').text(data.nationalId || '無');
-		          $('#view-email').text(data.email || '無');
-		          $('#view-phoneNumber').text(data.phoneNumber || '無');
-		          $('#view-newEmail').text(data.newEmail || '無');
-		          $('#view-verification').html(
-		            data.verification
-		              ? '<span class="badge bg-success">已驗證</span>'
-		              : '<span class="badge bg-danger">未驗證</span>'
-		          );
-		          $('#view-createTime').text(data.createTime || '無');
-		          $('#view-memberType').text(data.memberType || '無');
-		
-		          $('#viewModal').modal('show');
-		        } else {
-		          Swal.fire('錯誤', data.message, 'error');
-		        }
-		      },
-		      error: function (xhr) {
-		        console.log('取得會員詳細失敗', xhr.responseText);
-		        Swal.fire('錯誤', '取得詳細資料失敗', 'error');
-		      }
-		    });
-		  });
-		});	
-		</script>
-	<script>
-		$(function () {
-		  // 打開Modal時，載入會員身份選單
-		  $('#registerModal').on('show.bs.modal', function () {
-		    $.ajax({
-		      url: '/memberAPI/memberTypes',
-		      method: 'GET',
-		      success: function (data) {
-		        const $memberTypeSelect = $('#memberTypeId');
-		        $memberTypeSelect.empty();
-		        $memberTypeSelect.append('<option value="">請選擇會員身份</option>');
-		        data.forEach(function (type) {
-		          $memberTypeSelect.append(`<option value="${type.id}">${type.name}</option>`);
-		        });
-		      },
-		      error: function (xhr) {
-		        console.log('取得會員身份失敗', xhr.responseText);
-		        Swal.fire('錯誤', '取得會員身份選單失敗', 'error');
-		      }
-		    });
-		  });
-		
-		  // 提交表單送出新增
-		  $('#register-form').submit(function (e) {
-		    e.preventDefault();
-		
-		    const formData = {
-		      name: $('#register-form [name="name"]').val(),
-		      gender: $('#register-form [name="gender"]:checked').val(),
-		      email: $('#register-form [name="email"]').val(),
-		      phoneNumber: $('#register-form [name="phoneNumber"]').val(),
-		      dateOfBirth: $('#register-form [name="dateOfBirth"]').val(),
-		      nationalId: $('#register-form [name="nationalId"]').val(),
-		      memberTypeId: $('#register-form [name="memberTypeId"]').val()
-		    };
-		
-		    $.ajax({
-		      url: '/memberAPI/registerByEmp',
-		      method: 'POST',
-		      data: formData,
-		      success: function (response) {
-		        if (response.status === 'success') {
-		          Swal.fire('新增成功', response.message, 'success');
-		          $('#registerModal').modal('hide');
-		          $('#memberTable').DataTable().ajax.reload(); // 新增成功後刷新表格
-		        } else {
-		          Swal.fire('錯誤', response.message, 'error');
-		        }
-		      },
-		      error: function (xhr) {
-		        console.log('新增會員失敗', xhr.responseText);
-		        Swal.fire('錯誤', '新增會員時發生錯誤', 'error');
-		      }
-		    });
-		  });
-		});
-		
-		// 工具：隨機英文名稱
-		function getRandomName() {
-		  const names = ["小明", "小華", "艾莉", "John", "Emma", "阿偉", "阿珍"];
-		  return names[Math.floor(Math.random() * names.length)];
-		}
-		
-		// 工具：隨機性別
-		function getRandomGender() {
-		  const gender = ["male", "female", "other"];
-		  return gender[Math.floor(Math.random() * gender.length)];
-		}
-		
-		// 工具：隨機身分證號碼 (簡化範例，非嚴格驗證)
-		function getRandomId() {
-		  const head = String.fromCharCode(65 + Math.floor(Math.random() * 26));
-		  return head + (Math.random() < 0.5 ? "1" : "2") + Math.floor(10000000 + Math.random() * 90000000);
-		}
-		
-		// 工具：隨機手機號碼
-		function getRandomPhone() {
-		  return "09" + Math.floor(100000000 + Math.random() * 90000000).toString().substring(1);
-		}
-		
-		// 工具：隨機 email
-		function getRandomEmail() {
-		  const prefix = "test" + Math.floor(Math.random() * 100000);
-		  return prefix + "@example.com";
-		}
-		
-		// 核心功能：自動填入不重複的會員資料
-		$('#autoFillMemberBtn').click(async function () {
-		  const maxAttempts = 10;
-		  let attempt = 0;
-		  let email, phoneNumber;
-		
-		  while (attempt < maxAttempts) {
-		    email = getRandomEmail();
-		    phoneNumber = getRandomPhone();
-		
-		    const exists = await $.ajax({
-		      url: '/memberAPI/checkEmailPhone',
-		      method: 'POST',
-		      contentType: 'application/json',
-		      data: JSON.stringify({ email, phoneNumber })
-		    });
-		
-		    if (!exists.duplicated) break; // 通過驗證
-		    attempt++;
-		  }
-		
-		  if (attempt >= maxAttempts) {
-		    Swal.fire('錯誤', '無法產生唯一的信箱與手機號碼，請稍後再試', 'error');
-		    return;
-		  }
-		
-		  // 成功產生後填入
-		  $('input[name="name"]').val(getRandomName());
-		  $('input[name="gender"][value="' + getRandomGender() + '"]').prop("checked", true);
-		  $('input[name="email"]').val(email);
-		  $('input[name="phoneNumber"]').val(phoneNumber);
-		  $('input[name="dateOfBirth"]').val("1990-01-01");
-		  $('input[name="nationalId"]').val(getRandomId());
-		  $('#memberTypeId').val($('#memberTypeId option:eq(1)').val()); // 預設選第一個有效身份
-		});
-		$('#batchInsertBtn').click(async function () {
-			  const count = parseInt($('#batchCount').val(), 10);
-			  if (isNaN(count) || count <= 0 || count > 20) {
-			    Swal.fire('錯誤', '請輸入 1~20 的數字', 'warning');
-			    return;
-			  }
-			
-			  const created = [];
-			
-			  for (let i = 0; i < count; i++) {
-			    let email, phoneNumber, tryCount = 0;
-			    const maxTry = 10;
-			
-			    // 嘗試產生不重複的 email / phone
-			    while (tryCount < maxTry) {
-			      email = getRandomEmail();
-			      phoneNumber = getRandomPhone();
-			
-			      const exists = await $.ajax({
-			        url: '/memberAPI/checkEmailPhone',
-			        method: 'POST',
-			        contentType: 'application/json',
-			        data: JSON.stringify({ email, phoneNumber })
-			      });
-			
-			      if (!exists.duplicated) break;
-			      tryCount++;
-			    }
-			
-			    if (tryCount >= maxTry) {
-			      console.warn(`第 ${i + 1} 筆放棄：產生唯一信箱失敗`);
-			      continue;
-			    }
-			
-			    // 送出一筆新增請求
-			    const payload = {
-			      name: getRandomName(),
-			      gender: getRandomGender(),
-			      email: email,
-			      phoneNumber: phoneNumber,
-			      dateOfBirth: "1990-01-01",
-			      nationalId: getRandomId(),
-			      memberTypeId: $('#memberTypeId option:eq(1)').val()
-			    };
-			
-			    try {
-			      const res = await $.ajax({
-			        url: '/memberAPI/registerByEmp',
-			        method: 'POST',
-			        data: payload
-			      });
-			
-			      if (res.status === 'success') {
-			        created.push(payload.email);
-			      }
-			    } catch (err) {
-			      console.warn(`第 ${i + 1} 筆錯誤`, err.responseText);
-			    }
-			  }
-			
-			  Swal.fire(`完成 ${created.length} 筆新增`, `Email：<br>${created.join('<br>')}`, 'success');
-			  $('#memberTable').DataTable().ajax.reload();
-			});
-		</script>
-</body>
+	  const isChinese = Math.random() < 0.6; // 60% 中文名，40% 英文名
+	
+	  if (isChinese) {
+	    return firstNames[Math.floor(Math.random() * firstNames.length)] +
+	           lastNames[Math.floor(Math.random() * lastNames.length)];
+	  } else {
+	    return engFirst[Math.floor(Math.random() * engFirst.length)] + " " +
+	           engLast[Math.floor(Math.random() * engLast.length)];
+	  }
+	}
+
+      // 工具：隨機性別
+      function getRandomGender() {
+        const gender = ["male", "female", "other"];
+        return gender[Math.floor(Math.random() * gender.length)];
+      }
+
+      // 工具：隨機身分證號碼 (簡化範例，非嚴格驗證)
+      function getRandomId() {
+        const head = String.fromCharCode(65 + Math.floor(Math.random() * 26));
+        return (
+          head +
+          (Math.random() < 0.5 ? "1" : "2") +
+          Math.floor(10000000 + Math.random() * 90000000)
+        );
+      }
+
+      // 工具：隨機手機號碼
+      function getRandomPhone() {
+        return (
+          "09" +
+          Math.floor(100000000 + Math.random() * 90000000)
+            .toString()
+            .substring(1)
+        );
+      }
+
+      // 工具：隨機 email
+      function getRandomEmail() {
+        const prefix = "test" + Math.floor(Math.random() * 100000);
+        return prefix + "@example.com";
+      }
+
+      // 核心功能：自動填入不重複的會員資料
+      $("#autoFillMemberBtn").click(async function () {
+        const maxAttempts = 10;
+        let attempt = 0;
+        let email, phoneNumber;
+
+        while (attempt < maxAttempts) {
+          email = getRandomEmail();
+          phoneNumber = getRandomPhone();
+
+          const exists = await $.ajax({
+            url: "/memberAPI/checkEmailPhone",
+            method: "POST",
+            contentType: "application/json",
+            data: JSON.stringify({ email, phoneNumber }),
+          });
+
+          if (!exists.duplicated) break; // 通過驗證
+          attempt++;
+        }
+
+        if (attempt >= maxAttempts) {
+          Swal.fire(
+            "錯誤",
+            "無法產生唯一的信箱與手機號碼，請稍後再試",
+            "error"
+          );
+          return;
+        }
+
+        // 成功產生後填入
+        $('input[name="name"]').val(getRandomName());
+        $('input[name="gender"][value="' + getRandomGender() + '"]').prop(
+          "checked",
+          true
+        );
+        $('input[name="email"]').val(email);
+        $('input[name="phoneNumber"]').val(phoneNumber);
+        $('input[name="dateOfBirth"]').val(getRandomBirthday());
+        $('input[name="nationalId"]').val(getRandomId());
+        $("#memberTypeId").val($("#memberTypeId option:eq(1)").val()); // 預設選第一個有效身份
+      });
+      $("#batchInsertBtn").click(async function () {
+        const count = parseInt($("#batchCount").val(), 10);
+        if (isNaN(count) || count <= 0 || count > 20) {
+          Swal.fire("錯誤", "請輸入 1~20 的數字", "warning");
+          return;
+        }
+
+        const created = [];
+
+        for (let i = 0; i < count; i++) {
+          let email,
+            phoneNumber,
+            tryCount = 0;
+          const maxTry = 10;
+
+          // 嘗試產生不重複的 email / phone
+          while (tryCount < maxTry) {
+            email = getRandomEmail();
+            phoneNumber = getRandomPhone();
+
+            const exists = await $.ajax({
+              url: "/memberAPI/checkEmailPhone",
+              method: "POST",
+              contentType: "application/json",
+              data: JSON.stringify({ email, phoneNumber }),
+            });
+
+            if (!exists.duplicated) break;
+            tryCount++;
+          }
+
+          if (tryCount >= maxTry) {
+            console.warn(`第 ${i + 1} 筆放棄：產生唯一信箱失敗`);
+            continue;
+          }
+
+          // 送出一筆新增請求
+          const payload = {
+            name: getRandomName(),
+            gender: getRandomGender(),
+            email: email,
+            phoneNumber: phoneNumber,
+            dateOfBirth: getRandomBirthday(),
+            nationalId: getRandomId(),
+            memberTypeId: $("#memberTypeId option:eq(1)").val(),
+          };
+
+          try {
+            const res = await $.ajax({
+              url: "/memberAPI/registerByEmp",
+              method: "POST",
+              data: payload,
+            });
+
+            if (res.status === "success") {
+              created.push(payload.email);
+            }
+          } catch (err) {
+            console.warn(`第 ${i + 1} 筆錯誤`, err.responseText);
+          }
+        }
+
+        Swal.fire(
+          `完成 ${created.length} 筆新增`,
+          `Email：<br>${created.join("<br>")}`,
+          "success"
+        );
+        $("#memberTable").DataTable().ajax.reload();
+      });
+      
+      function getRandomBirthday() {
+	  const ranges = [
+	    { min: 15, max: 24, weight: 0.35 },
+	    { min: 25, max: 39, weight: 0.35 },
+	    { min: 40, max: 64, weight: 0.2 },
+	    { min: 1,  max: 14, weight: 0.05 },
+	    { min: 65, max: 85, weight: 0.05 }
+	  ];
+	
+	  const totalWeight = ranges.reduce((sum, r) => sum + r.weight, 0);
+	  const rand = Math.random() * totalWeight;
+	  let cumulative = 0, selected;
+	
+	  for (const range of ranges) {
+	    cumulative += range.weight;
+	    if (rand <= cumulative) {
+	      selected = range;
+	      break;
+	    }
+	  }
+	
+	  const currentYear = new Date().getFullYear();
+	  const age = Math.floor(Math.random() * (selected.max - selected.min + 1)) + selected.min;
+	  const birthYear = currentYear - age;
+	  const month = String(Math.floor(Math.random() * 12) + 1).padStart(2, '0');
+	  const day = String(Math.floor(Math.random() * 28) + 1).padStart(2, '0');
+	
+	  return `${birthYear}-${month}-${day}`;
+	}
+    </script>
+  </body>
 </html>
