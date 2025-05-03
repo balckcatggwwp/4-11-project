@@ -50,7 +50,7 @@ public class EmpApiController {
 
 	@Autowired
 	private EmpPermissionCategoryRepository empPermissionCategoryRepository;
-	
+
 	@Autowired
 	private EmployeeService employeeService;
 
@@ -282,99 +282,96 @@ public class EmpApiController {
 
 		return res;
 	}
-	//請求登入者的詳細資訊不包含權限/職務
+
 	@GetMapping("/sessionDetail")
 	public Map<String, Object> getSessionDetail(HttpSession session) {
-	    UUID empId = (UUID) session.getAttribute("empId");
-	    if (empId == null) {
-	        return Map.of("status", "error", "message", "尚未登入");
-	    }
+		UUID empId = (UUID) session.getAttribute("empId");
+		if (empId == null) {
+			return Map.of("status", "error", "message", "尚未登入");
+		}
 
-	    Employee emp = employeeRepository.findById(empId).orElse(null);
-	    if (emp == null) {
-	        return Map.of("status", "error", "message", "查無員工資料");
-	    }
+		Employee emp = employeeRepository.findById(empId).orElse(null);
+		if (emp == null) {
+			return Map.of("status", "error", "message", "查無員工資料");
+		}
 
-	    return Map.of(
-	        "status", "success",
-	        "name", emp.getName(),
-	        "gender", emp.getGender(),
-	        "nationalId", emp.getNationalId(),
-	        "email", emp.getEmail(),
-	        "phoneNumber", emp.getPhoneNumber(),
-	        "dateOfBirth", emp.getDateOfBirth(),
-	        "entryTime", emp.getEntryTime()
-	    );
+		Map<String, Object> response = new HashMap<>();
+		response.put("status", "success");
+		response.put("name", emp.getName());
+		response.put("gender", emp.getGender());
+		response.put("nationalId", emp.getNationalId());
+		response.put("email", emp.getEmail());
+		response.put("jobLevel", emp.getJobTitleCategory() != null ? emp.getJobTitleCategory().getJobLevel() : null);
+		response.put("jobTitleName",
+				emp.getJobTitleCategory() != null ? emp.getJobTitleCategory().getJobTitleName() : null);
+		response.put("phoneNumber", emp.getPhoneNumber());
+		response.put("dateOfBirth", emp.getDateOfBirth());
+		response.put("entryTime", emp.getEntryTime());
+
+		return response;
 	}
-	
+
 	@PostMapping("/updateProfileSelf")
-	public Map<String, Object> updateOwnProfile(
-	        @ModelAttribute EmployeeProfileEditDTO dto,
-	        HttpSession session
-	) {
-	    Map<String, Object> res = new HashMap<>();
-	    UUID empId = (UUID) session.getAttribute("empId");
+	public Map<String, Object> updateOwnProfile(@ModelAttribute EmployeeProfileEditDTO dto, HttpSession session) {
+		Map<String, Object> res = new HashMap<>();
+		UUID empId = (UUID) session.getAttribute("empId");
 
-	    if (empId == null) {
-	        res.put("status", "error");
-	        res.put("message", "尚未登入");
-	        return res;
-	    }
+		if (empId == null) {
+			res.put("status", "error");
+			res.put("message", "尚未登入");
+			return res;
+		}
 
-	    try {
-	        Employee emp = employeeRepository.findById(empId)
-	                .orElseThrow(() -> new RuntimeException("找不到員工"));
+		try {
+			Employee emp = employeeRepository.findById(empId).orElseThrow(() -> new RuntimeException("找不到員工"));
 
-	        // ✅ 更新可修改欄位
-	        emp.setName(dto.getName());
-	        emp.setGender(dto.getGender());
-	        emp.setNationalId(dto.getNationalId());
-	        emp.setDateOfBirth(dto.getDateOfBirth());
-	        emp.setEntryTime(dto.getEntryTime());
-	        emp.setEmail(dto.getEmail());
-	        emp.setPhoneNumber(dto.getPhoneNumber());
+			// ✅ 更新可修改欄位
+			emp.setName(dto.getName());
+			emp.setGender(dto.getGender());
+			emp.setNationalId(dto.getNationalId());
+			emp.setDateOfBirth(dto.getDateOfBirth());
+			emp.setEntryTime(dto.getEntryTime());
+			emp.setEmail(dto.getEmail());
+			emp.setPhoneNumber(dto.getPhoneNumber());
 
-	        // ✅ 若有填新密碼才改
-	        if (dto.getPassword() != null && !dto.getPassword().isBlank()) {
-	            emp.setPassword(passwordEncoder.encode(dto.getPassword()));
-	        }
+			// ✅ 若有填新密碼才改
+			if (dto.getPassword() != null && !dto.getPassword().isBlank()) {
+				emp.setPassword(passwordEncoder.encode(dto.getPassword()));
+			}
 
-	        employeeRepository.save(emp);
-	        res.put("status", "success");
-	    } catch (Exception e) {
-	        res.put("status", "error");
-	        res.put("message", "更新失敗：" + e.getMessage());
-	    }
+			employeeRepository.save(emp);
+			res.put("status", "success");
+		} catch (Exception e) {
+			res.put("status", "error");
+			res.put("message", "更新失敗：" + e.getMessage());
+		}
 
-	    return res;
+		return res;
 	}
-	
-	 @PostMapping("/checkExist")
-	    public ResponseEntity<?> checkExist(@RequestBody Map<String, String> request) {
-	        String email = request.get("email");
-	        String phone = request.get("phoneNumber");
 
-	        boolean available = employeeService.checkEmailOrPhoneAvailable(email, phone);
-	        if (available) {
-	            return ResponseEntity.ok(Map.of("status", "ok"));
-	        } else {
-	            return ResponseEntity.badRequest().body(Map.of("status", "exists"));
-	        }
-	    }
-	 
-	 @PostMapping("/RegisterFakeEmp")
-	    public ResponseEntity<?> registerFakeEmployees(@RequestBody List<Employee> employees) {
-	        try {
-	            for (Employee emp : employees) {
-	                employeeService.insertEmployee(emp); // 含密碼加密
-	            }
-	            return ResponseEntity.ok(Map.of("status", "success", "message", "已成功新增假員工"));
-	        } catch (Exception e) {
-	            return ResponseEntity.badRequest().body(Map.of(
-	                "status", "error",
-	                "message", e.getMessage()
-	            ));
-	        }
-	    }
+	@PostMapping("/checkExist")
+	public ResponseEntity<?> checkExist(@RequestBody Map<String, String> request) {
+		String email = request.get("email");
+		String phone = request.get("phoneNumber");
+
+		boolean available = employeeService.checkEmailOrPhoneAvailable(email, phone);
+		if (available) {
+			return ResponseEntity.ok(Map.of("status", "ok"));
+		} else {
+			return ResponseEntity.badRequest().body(Map.of("status", "exists"));
+		}
+	}
+
+	@PostMapping("/RegisterFakeEmp")
+	public ResponseEntity<?> registerFakeEmployees(@RequestBody List<Employee> employees) {
+		try {
+			for (Employee emp : employees) {
+				employeeService.insertEmployee(emp); // 含密碼加密
+			}
+			return ResponseEntity.ok(Map.of("status", "success", "message", "已成功新增假員工"));
+		} catch (Exception e) {
+			return ResponseEntity.badRequest().body(Map.of("status", "error", "message", e.getMessage()));
+		}
+	}
 
 }

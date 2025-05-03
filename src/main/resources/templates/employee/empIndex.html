@@ -57,6 +57,9 @@
 												class="text-xs font-weight-bold text-primary text-uppercase mb-1">職稱</div>
 											<div class="h5 mb-3 text-dark" id="empJobTitle"></div>
 											<div
+												class="text-xs font-weight-bold text-primary text-uppercase mb-1">權限等級</div>
+											<div class="h5 mb-3 text-dark" id="empJobLevel"></div>
+											<div
 												class="text-xs font-weight-bold text-primary text-uppercase mb-1">入職時間</div>
 											<div class="h5 mb-3 text-dark" id="empEntryTime"></div>
 											<div
@@ -195,6 +198,7 @@
 	    success: function (res) {
 	      if (res.status === 'success') {
 	        $('#empName').text(res.name);
+	        $('#empJobLevel').text(res.jobLevel);
 	        $('#empJobTitle').text(res.jobTitleName);
 	        $('#empEntryTime').text(res.entryTime);
 	        $('#empGender').text(res.gender === 'male' ? '男' : '女');
