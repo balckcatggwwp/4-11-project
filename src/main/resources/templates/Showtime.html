@@ -202,12 +202,14 @@
         });
     }
 
+    let dataTable;
+
     function searchShowtimes() {
         const date = $("#filterDate").val();
         const movieId = $("#filterMovie").val();
         const theaterId = $("#filterTheater").val();
-        const queryParams = {};
 
+        const queryParams = {};
         if (date) queryParams.date = date;
         if (movieId) queryParams.movieId = movieId;
         if (theaterId) queryParams.theaterId = theaterId;
@@ -217,31 +219,45 @@
             type: "GET",
             data: queryParams,
             success: function (showtimes) {
-                const tbody = $("#resultTableBody").empty();
-
-                if (showtimes.length === 0) {
-                    tbody.append(`<tr><td colspan="4">查無資料</td></tr>`);
-                    return;
+                if (dataTable) {
+                    dataTable.clear().rows.add(showtimes).draw();
+                } else {
+                    dataTable = $('#showtimeTable').DataTable({
+                        data: showtimes,
+                        columns: [
+                            { data: "showDate", className: "text-center" },
+                            { data: "movieName", className: "text-center" },
+                            { data: "theaterName", className: "text-center" },
+                            {
+                                data: "showTime",
+                                className: "text-center",
+                                render: function (data) {
+                                    return data.substring(0, 5);
+                                }
+                            },
+                            {
+                                data: "showtimeId",
+                                className: "text-center",
+                                render: function (data) {
+                                    return `<button class="btn btn-sm btn-danger" onclick="deleteShowtime(${data})">刪除</button>`;
+                                },
+                                orderable: false,
+                                searchable: false
+                            }
+                        ],
+                        destroy: true, // 允許重新初始化
+                        searching: false, // 🔹取消搜尋欄位
+                        language: {
+                            url: "//cdn.datatables.net/plug-ins/1.13.6/i18n/zh-HANT.json"
+                        }
+                    });
                 }
-
-                showtimes.forEach(s => {
-                    tbody.append(`
-                        <tr>
-                            <td>${s.showDate}</td>
-                            <td>${s.movieName}</td>
-                            <td>${s.theaterName}</td>
-                            <td>${s.showTime.substring(0,5)}</td>
-                            <td>
-                            <button class="btn btn-sm btn-danger" onclick="deleteShowtime(${s.showtimeId})">刪除</button>
-                        </td>
-                        </tr>
-                    `);
-                });
             },
             error: function (xhr) {
                 alert("查詢錯誤：" + xhr.responseText);
             }
         });
+
     }
 
     $(document).ready(function () {
