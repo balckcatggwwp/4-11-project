@@ -32,7 +32,7 @@
 			<form id="changeEmailForm">
 				<div class="mb-3">
 					<label class="form-label">目前信箱</label> <input type="email"
-						class="form-control" th:value="${session.memberDetail.email}"
+						class="form-control" id="currentEmail"
 						readonly>
 				</div>
 				<div class="mb-3">
@@ -55,51 +55,70 @@
 	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 	<script>
+	 // 頁面載入後取得目前信箱
+	  window.addEventListener('DOMContentLoaded', function () {
+	    fetch('/memberAPI/getCurrentEmail')
+	      .then(response => response.json())
+	      .then(data => {
+	        if (data.status === 'success') {
+	          document.getElementById('currentEmail').value = data.email;
+	        } else {
+	          document.getElementById('currentEmail').value = '無法取得信箱';
+	        }
+	      })
+	      .catch(error => {
+	        document.getElementById('currentEmail').value = '錯誤';
+	      });
+	  });
     document.getElementById('changeEmailForm').addEventListener('submit', function (e) {
-  e.preventDefault();
-  const newEmail = document.querySelector('input[name="newEmail"]').value;
-
-  // 顯示 loading 畫面
-  Swal.fire({
-    title: '處理中...',
-    text: '請稍候',
-    allowOutsideClick: false,
-    didOpen: () => {
-      Swal.showLoading();
-    }
-  });
-
-  fetch('/member/changeEmail', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/x-www-form-urlencoded'
-    },
-    body: new URLSearchParams({ newEmail })
-  })
-  .then(response => response.json())
-  .then(data => {
-    if (data.status === 'success') {
-      Swal.fire({
-        icon: 'success',
-        title: '申請成功！',
-        text: data.message
-      });
-    } else {
-      Swal.fire({
-        icon: 'error',
-        title: '申請失敗',
-        text: data.message
-      });
-    }
-  })
-  .catch(error => {
-    Swal.fire({
-      icon: 'error',
-      title: '錯誤',
-      text: '請稍後再試'
-    });
-  });
-});
+	  e.preventDefault();
+	  const newEmail = document.querySelector('input[name="newEmail"]').value;
+	
+	  // 顯示 loading 畫面
+	  Swal.fire({
+	    title: '處理中...',
+	    text: '請稍候',
+	    allowOutsideClick: false,
+	    didOpen: () => {
+	      Swal.showLoading();
+	    }
+	  });
+	
+	  fetch('/member/changeEmail', {
+	    method: 'POST',
+	    headers: {
+	      'Content-Type': 'application/x-www-form-urlencoded'
+	    },
+	    body: new URLSearchParams({ newEmail })
+	  })
+	  .then(response => response.json())
+	  .then(data => {
+	    if (data.status === 'success') {
+	      Swal.fire({
+	        icon: 'success',
+	        title: '申請成功！',
+	        text: data.message
+	      });
+	    } else {
+	      Swal.fire({
+	        icon: 'error',
+	        title: '申請失敗',
+	        text: data.message
+	      });
+	    }
+	  })
+	  .catch(error => {
+	    Swal.fire({
+	      icon: 'error',
+	      title: '錯誤',
+	      text: '請稍後再試'
+	    });
+	  });
+	});
+	function autoChangeEmail() {
+	    const testEmail = 'kuoyungz0315@gmail.com';
+	    document.querySelector('input[name="newEmail"]').value = testEmail;
+	  }
   </script>
 
 </body>

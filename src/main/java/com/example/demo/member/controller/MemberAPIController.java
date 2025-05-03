@@ -150,11 +150,12 @@ public class MemberAPIController {
             @RequestParam String gender,
             @RequestParam String email,
             @RequestParam String phoneNumber,
-            @RequestParam String dateOfBirth
+            @RequestParam String dateOfBirth,
+            @RequestParam Long memberTypeId  // ✅ 新增這行
     ) {
         Map<String, Object> response = new HashMap<>();
         try {
-            memberService.updateMemberByEmp(memberId, name, gender, email, phoneNumber, dateOfBirth);
+            memberService.updateMemberByEmp(memberId, name, gender, email, phoneNumber, dateOfBirth, memberTypeId);  // ✅ 加參數
             response.put("status", "success");
         } catch (Exception e) {
             response.put("status", "error");
@@ -162,7 +163,6 @@ public class MemberAPIController {
         }
         return response;
     }
-    
     
 //    後台看會員的詳細資料
     
@@ -188,6 +188,7 @@ public class MemberAPIController {
         response.put("verification", member.isVerification());
         response.put("createTime", member.getCreateTime() != null ? member.getCreateTime().toLocalDate().toString() : null);
         response.put("memberType", member.getMemberType() != null ? member.getMemberType().getTypeName() : null);
+        response.put("memberTypeId", member.getMemberType() != null ? member.getMemberType().getMemberTypeId() : null); // ✅ 多加這一行
         return response;
     }
     
@@ -276,6 +277,26 @@ public class MemberAPIController {
         return Map.of("duplicated", exists);
     }
 
+    @GetMapping("/getCurrentEmail")
+    public Map<String, Object> getCurrentEmail(HttpSession session) {
+        Map<String, Object> result = new HashMap<>();
+        
+        Long memberId = (Long) session.getAttribute("memberId");  // 只取 memberId
+        System.out.println("Session memberId: " + memberId);
+        if (memberId != null) {
+            memberRepository.findById(memberId).ifPresentOrElse(member -> {
+                result.put("status", "success");
+                result.put("email", member.getEmail());
+            }, () -> {
+                result.put("status", "fail");
+                result.put("message", "找不到該會員資料");
+            });
+        } else {
+            result.put("status", "fail");
+            result.put("message", "尚未登入或 session 已過期");
+        }
 
+        return result;
+    }
 }
 
