@@ -325,18 +325,18 @@
 					let idtick = $(this).attr("value");
 
 					Swal.fire({
-						title: "你確定要刪除?",
-						text: "資料會從這個世界上消失！",
+						title: "是否取消訂單?",
+						text: "會員會取消訂單！",
 						icon: "warning",
 						showCancelButton: true,
 						confirmButtonColor: "#3085d6",
 						cancelButtonColor: "#d33",
-						confirmButtonText: "是，這筆資料不重要!",
+						confirmButtonText: "是，要取消!",
 					}).then((result) => {
 						if (result.isConfirmed) {
 							Swal.fire({
-								title: "刪除成功!",
-								text: "以已消失的無影無蹤了!!",
+								title: "取消成功!",
+								text: "以已取消!!",
 								icon: "success",
 							});
 							// console.log(idtick)

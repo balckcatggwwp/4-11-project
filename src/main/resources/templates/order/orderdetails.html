@@ -76,7 +76,7 @@
 
 								<td th:text="${tickinfos.orderid}"></td>
 								<td th:text="${tickinfos.orderdate}"></td>
-								<td th:text="${tickinfos.sumpay}"></td>
+								<td th:text="${tickinfos.sumpay == 0 ? '已取消（0 元）' : tickinfos.sumpay}"></td>
 								<td th:text="${tickinfos.moviename}"></td>
 								<td th:text="${tickinfos.showdate}"></td>
 								<td th:text="${#strings.substring(tickinfos.showtime, 0, 8)}"></td>
