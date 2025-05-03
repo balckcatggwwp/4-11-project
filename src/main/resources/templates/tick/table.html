@@ -68,7 +68,7 @@
 							<form action="/booktick/other" method="get"
 								class="row gy-2 gx-3 align-items-center">
 								<div class="col-auto">
-									<select id="findtick" name="select" class="form-select">
+									<select id="findtick" name="select" class="form-select" required>
 										<option value="">選項</option>
 										<option value="1">訂票ID</option>
 										<option value="2">訂單編號</option>
@@ -269,33 +269,33 @@
 						console.log(1);
 						//
 						$("#fromfind").append(
-							`<input placeholder="請輸入訂票ID" name="tickid">`
+							`<input placeholder="請輸入訂票ID" name="tickid" required>`
 						);
 					} else if ($("#findtick").val() == 2) {
 						console.log(2);
 
 						$("#fromfind").append(
-							`<input placeholder="請輸入訂票編號" name="orderid">`
+							`<input placeholder="請輸入訂票編號" name="orderid" required>`
 						);
 					} else if ($("#findtick").val() == 3) {
 						console.log(3);
 						$("#fromfind").append(
-							`<input placeholder="請輸入會員ID" name="memberId">`
+							`<input placeholder="請輸入會員ID" name="memberId" required>`
 						);
 					} else if ($("#findtick").val() == 4) {
 						console.log(4);
 						$("#fromfind").append(
-							`<p><input type="date" placeholder="請選擇日期" name="startdate" id="date1"></p>`
+							`<p><input type="date" placeholder="請選擇日期" name="startdate" id="date1" required></p>`
 						);
 					} else if ($("#findtick").val() == 5) {
 						console.log(5);
 						$("#fromfind").append(
-							`<input placeholder="請輸入廳" name="hallid">`
+							`<input placeholder="請輸入廳" name="hallid" required>`
 						);
 					} else if ($("#findtick").val() == 6) {
 						console.log(6);
 						$("#fromfind").append(
-							`<select id="selname" name="findname" class="form-controlaa"></select>`
+							`<select id="selname" name="findname" class="form-controlaa" required></select>`
 						);
 
 						$.ajax({
