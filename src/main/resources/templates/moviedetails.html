@@ -84,7 +84,7 @@ h2#name {
 				href="https://linkedin.com"><img src="/imgs/social-linkedin.png"
 				alt="Linkedin" /></a>
 		</section>
-</div>
+	</div>
 	<!-- 登入 Modal -->
 	<th:block th:replace="~{fragments/loginPage :: login}"></th:block>
 
@@ -102,6 +102,9 @@ h2#name {
 		/*<![CDATA[*/
 		let movieId = /*[[${movieid}]]*/ 0;
 		/*]]>*/
+	</script>
+	<script th:inline="javascript">
+  	let currentUser = /*[[${session.memberName}]]*/ '';
 	</script>
 
 	<!-- AJAX 取得電影資料 -->

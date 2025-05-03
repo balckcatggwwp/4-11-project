@@ -9,6 +9,16 @@ function loadComments() {
       } else {
         comments.forEach(comment => {
           let formattedTime = comment.createdAt.replace('T', ' ').substring(0, 16);
+          let buttonsHtml = '';
+          if (currentUser === comment.memberName) {
+            buttonsHtml = `
+              <div class="text-end mt-2">
+                <button class="btn btn-sm btn-outline-light me-2" onclick="editComment(${comment.commentId}, \`${comment.content.replace(/`/g, '\\`')}\`)">編輯</button>
+                <button class="btn btn-sm btn-outline-danger" onclick="deleteComment(${comment.commentId})">刪除</button>
+              </div>
+            `;
+          }
+
           html += `
             <div class="d-flex align-items-start mb-3">
               <div class="flex-grow-1 ms-3">
@@ -17,7 +27,8 @@ function loadComments() {
                     <strong class="text-light">${comment.memberName}</strong>
                     <small class="text-muted">${formattedTime}</small>
                   </div>
-                  <p class="mb-0 mt-2 text-light">${comment.content}</p>
+                  <p class="mb-0 mt-2 text-light" id="comment-content-${comment.commentId}">${comment.content}</p>
+                  ${buttonsHtml}
                 </div>
               </div>
             </div>
@@ -28,6 +39,7 @@ function loadComments() {
     }
   });
 }
+
 
 function postComment() {
   const content = $('#comment').val().trim();
@@ -59,6 +71,63 @@ function postComment() {
   });
 }
 
+function editComment(commentId, currentContent) {
+	Swal.fire({
+		title: '編輯留言',
+		input: 'textarea',
+		inputLabel: '請輸入新的留言內容',
+		inputValue: currentContent,
+		showCancelButton: true,
+		confirmButtonText: '更新',
+		cancelButtonText: '取消',
+		preConfirm: (newContent) => {
+			if (!newContent) {
+				Swal.showValidationMessage('內容不能為空');
+			}
+			return newContent;
+		}
+	}).then((result) => {
+		if (result.isConfirmed) {
+			$.ajax({
+				url: `/movies/${movieId}/comments/${commentId}`,
+				method: 'PUT',
+				contentType: 'application/json',
+				data: JSON.stringify({ content: result.value }),
+				success: function () {
+					Swal.fire('成功', '留言已更新', 'success');
+					loadComments();
+				},
+				error: function () {
+					Swal.fire('錯誤', '更新留言時發生錯誤', 'error');
+				}
+			});
+		}
+	});
+}
+
+function deleteComment(commentId) {
+	Swal.fire({
+		title: '確定要刪除這則留言嗎？',
+		icon: 'warning',
+		showCancelButton: true,
+		confirmButtonText: '刪除',
+		cancelButtonText: '取消'
+	}).then((result) => {
+		if (result.isConfirmed) {
+			$.ajax({
+				url: `/movies/${movieId}/comments/${commentId}`,
+				method: 'DELETE',
+				success: function () {
+					Swal.fire('已刪除', '留言已成功刪除', 'success');
+					loadComments();
+				},
+				error: function () {
+					Swal.fire('錯誤', '刪除留言時發生錯誤', 'error');
+				}
+			});
+		}
+	});
+}
 $(document).ready(function () {
   loadComments();
 });
